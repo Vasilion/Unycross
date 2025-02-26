@@ -1,0 +1,29 @@
+<section class="portfolio">
+  <div class="container">
+    <h1 mat-headline-1 [@fadeInUp]="state">UnyX Portfolio</h1>
+    <p mat-body-1 [@fadeInUp]="state">
+      Explore our work in web development, specializing in motocross and beyond.
+    </p>
+    <div class="portfolio-grid">
+      <mat-card
+        class="project-card"
+        *ngFor="let project of projects"
+        [@fadeInUp]="state"
+        (click)="openProject(project.url)"
+      >
+        <img mat-card-image [src]="project.image" [alt]="project.title" />
+        <mat-card-header>
+          <mat-card-title>{{ project.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ project.description }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <a mat-button color="primary" [href]="project.url" target="_blank"
+            >Visit Site</a
+          >
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>

@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+// Font variables
+$heading-font: "Orbitron", sans-serif;
+$body-font: "Rajdhani", sans-serif;
+$accent-font: "Audiowide", cursive;
+
+// Custom colors for overrides
+$primary-color: #6b40a0;
+$primary-color-hover: #592388;
+$background-color: #121212;
+
+// Global styles
+body {
+  background: $background-color;
+  color: #ffffff;
+  line-height: 1.6;
+  margin: 0;
+  font-family: $body-font;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+// Button overrides
+.mat-mdc-raised-button.mat-primary {
+  background-color: $primary-color !important;
+  font-family: $heading-font !important;
+  letter-spacing: 1px;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  background-color: $primary-color-hover !important;
+}
+
+// Typography styles
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $heading-font;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.accent-text {
+  font-family: $accent-font;
+}
+
+// Material components typography overrides
+.mat-mdc-card-title {
+  font-family: $heading-font !important;
+  letter-spacing: 1px;
+}
+
+.mat-mdc-menu-item {
+  font-family: $body-font !important;
+}
+
+// Navigation
+.nav-links {
+  font-family: $heading-font;
+  letter-spacing: 1px;
+}
+
+// Logo
+.logo {
+  font-family: $accent-font;
+  letter-spacing: 2px;
+}

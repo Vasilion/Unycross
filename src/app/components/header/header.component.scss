@@ -1,0 +1,107 @@
+header {
+  background: #1a1a1a;
+  padding: 1rem 2rem;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  color: #6b40a0;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Orbitron", sans-serif; // Futuristic logo
+}
+
+.hamburger {
+  display: none; // Hidden by default on desktop
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+
+  .hamburger-line {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #ffffff;
+    margin: 5px 0;
+    transition: all 0.3s ease;
+  }
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+}
+
+.nav-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-family: "Orbitron", sans-serif; // Futuristic navigation
+  transition: color 0.3s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.active {
+  color: #6b40a0;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: block; // Show hamburger on mobile
+  }
+
+  .nav-links {
+    display: none; // Hide by default on mobile
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #1a1a1a;
+    flex-direction: column;
+    padding: 1rem;
+    gap: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  .nav-links.open {
+    display: flex; // Show when menu is open
+  }
+
+  .nav-links li {
+    width: 100%;
+    text-align: center;
+  }
+
+  .nav-links li a {
+    display: block;
+    padding: 0.5rem;
+    font-size: 1.2rem; // Slightly larger for touch targets
+  }
+
+  // Hamburger animation
+  .hamburger.open .hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+
+  .hamburger.open .hamburger-line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+
+  .hamburger.open .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+  }
+}

@@ -1,0 +1,26 @@
+<header>
+  <nav class="navbar">
+    <div class="logo">UnyX</div>
+    <button class="hamburger" (click)="toggleMenu()">
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+      <span class="hamburger-line"></span>
+    </button>
+    <ul class="nav-links" [class.open]="isMenuOpen">
+      <li>
+        <a
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          >Home</a
+        >
+      </li>
+      <li><a routerLink="/about" routerLinkActive="active">About</a></li>
+      <li><a routerLink="/services" routerLinkActive="active">Services</a></li>
+      <li>
+        <a routerLink="/portfolio" routerLinkActive="active">Portfolio</a>
+      </li>
+      <li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+    </ul>
+  </nav>
+</header>

@@ -1,0 +1,68 @@
+<section class="hero">
+  <div class="hero-content">
+    <h1 mat-headline-1 [@fadeIn]="state" class="title">Unycross Web</h1>
+    <p mat-body-1 [@fadeIn]="state">
+      Specializing in motocross-inspired web development that accelerates your
+      brand—on and off the track.
+    </p>
+    <button
+      mat-raised-button
+      color="primary"
+      class="cta"
+      routerLink="/contact"
+      [@fadeIn]="state"
+    >
+      Get Started
+    </button>
+  </div>
+  <div class="hero-slider">
+    <!-- <div class="slide"></div>
+    <div class="slide"></div> -->
+    <div class="slide"></div>
+  </div>
+</section>
+
+<section class="services-teaser">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">What We Offer</h2>
+    <div class="cards">
+      <mat-card
+        class="service-card"
+        *ngFor="let service of services"
+        [@fadeInUp]="state"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ service.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ service.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <h3 mat-headline-3 [@fadeInUp]="state">What Our Clients Say</h3>
+    <mat-card
+      class="testimonial-card"
+      *ngFor="let testimonial of testimonials"
+      [@fadeInUp]="state"
+    >
+      <mat-card-content>
+        <p>{{ testimonial.quote }}</p>
+        <p class="author">- {{ testimonial.author }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</section>
+
+<section class="tagline">
+  <div class="container">
+    <h3 mat-headline-3 [@fadeIn]="state">Built for Speed. Designed to Win.</h3>
+    <p mat-body-2 [@fadeIn]="state">
+      Let’s create a digital presence that leaves the competition in the dust.
+    </p>
+  </div>
+</section>

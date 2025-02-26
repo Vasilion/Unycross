@@ -1,0 +1,208 @@
+.hero {
+  position: relative;
+  height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem;
+  overflow: hidden;
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  // Commented out slider functionality for later
+  /*
+    .hero-slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+  
+    .slide {
+    
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+      // filter: brightness(0.8);
+    }
+  
+    .slide:nth-child(1) {
+      background-image: url("../../../assets/pic1.png");
+      opacity: 1; // Start with the first image visible
+      animation: slideFade 15s infinite;
+    }
+  
+    .slide:nth-child(2) {
+      background-image: url("../../../assets/pic2.png");
+      animation: slideFade 15s infinite 5s;
+    }
+  
+    .slide:nth-child(3) {
+      background-image: url("../../../assets/pic3.jpeg");
+      animation: slideFade 15s infinite 10s;
+    }
+  
+    @keyframes slideFade {
+      0%,
+      33.33% {
+        opacity: 0.3;
+      }
+      33.34%,
+      100% {
+        opacity: 0;
+      }
+    }
+    */
+
+  // Static background for slide 3
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url("../../../assets/pic3.jpeg");
+  background-size: cover;
+  background-position: center;
+  // Optional: match the brightness if you had it in the slider
+
+  h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    font-size: 1.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .cta {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+  }
+
+  .title {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+}
+
+// Rest of your CSS remains unchanged
+.services-teaser {
+  padding: 4rem 2rem;
+  background: #1a1a1a;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #6b40a0;
+  margin-bottom: 3rem;
+  font-size: 2.5rem;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.service-card {
+  background: #2e2e2e;
+  color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(187, 134, 252, 0.2);
+  cursor: pointer;
+}
+
+mat-card-title {
+  color: #6b40a0;
+}
+
+.testimonials {
+  padding: 4rem 2rem;
+  background: #121212;
+}
+
+.testimonial-card {
+  background: #2e2e2e;
+  margin: 1rem 0;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    cursor: pointer;
+  }
+
+  .author {
+    font-style: italic;
+    color: #6b40a0;
+    text-align: right;
+  }
+}
+
+.tagline {
+  padding: 3rem 2rem;
+  background: #1a1a1a;
+  text-align: center;
+}
+
+h3 {
+  font-size: 2rem;
+  color: #6b40a0;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+  .hero {
+    height: 80vh;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .hero p {
+    font-size: 1.2rem;
+  }
+  h2 {
+    font-size: 2rem;
+  }
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}

@@ -126,6 +126,25 @@ body {
 }
 
 // Typography styles
+h1 {
+  animation: text-flicker 5s infinite;
+}
+h2 {
+  animation: text-flicker 3s infinite;
+}
+h3 {
+  animation: text-flicker 3s infinite;
+}
+h4 {
+  animation: text-flicker 7s infinite;
+}
+h5 {
+  animation: text-flicker 7s infinite;
+}
+h6 {
+  animation: text-flicker 9s infinite;
+}
+
 h1,
 h2,
 h3,
@@ -137,7 +156,6 @@ h6 {
   letter-spacing: 2px;
   text-transform: uppercase;
   @include neon-glow(rgba($primary-color, 0.3));
-  animation: text-flicker 3s infinite;
 }
 
 * {

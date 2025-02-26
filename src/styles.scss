@@ -8,6 +8,95 @@ $primary-color: #6b40a0;
 $primary-color-hover: #592388;
 $background-color: #121212;
 
+@mixin neon-glow($color) {
+  text-shadow: 0 0 7px $color, 0 0 10px $color, 0 0 21px $color;
+}
+
+@mixin cyber-border {
+  border: 2px solid rgba($primary-color, 0.5);
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 2px;
+    background: $primary-color;
+    animation: cyber-border 3s infinite;
+  }
+}
+
+@keyframes text-flicker {
+  0%,
+  95%,
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+    text-shadow: 0 0 7px rgba(107, 64, 160, 0.3),
+      0 0 10px rgba(107, 64, 160, 0.3), 0 0 21px rgba(107, 64, 160, 0.3);
+  }
+  96% {
+    opacity: 0.8;
+    transform: translateX(-2px);
+    text-shadow: 0 0 7px rgba(107, 64, 160, 0.5),
+      0 0 10px rgba(107, 64, 160, 0.5), 0 0 21px rgba(107, 64, 160, 0.5);
+  }
+  97% {
+    opacity: 0.6;
+    transform: translateX(2px);
+    text-shadow: 0 0 7px rgba(107, 64, 160, 0.7),
+      0 0 10px rgba(107, 64, 160, 0.7), 0 0 21px rgba(107, 64, 160, 0.7);
+  }
+  98% {
+    opacity: 0.8;
+    transform: translateX(-1px);
+    text-shadow: 0 0 7px rgba(107, 64, 160, 0.5),
+      0 0 10px rgba(107, 64, 160, 0.5), 0 0 21px rgba(107, 64, 160, 0.5);
+  }
+  99% {
+    opacity: 0.9;
+    transform: translateX(1px);
+    text-shadow: 0 0 7px rgba(107, 64, 160, 0.4),
+      0 0 10px rgba(107, 64, 160, 0.4), 0 0 21px rgba(107, 64, 160, 0.4);
+  }
+}
+
+@keyframes button-shine {
+  0% {
+    left: -100%;
+  }
+  20% {
+    left: 100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+@keyframes cyber-border {
+  0% {
+    width: 0;
+    left: -2px;
+  }
+  25% {
+    width: 100%;
+    left: -2px;
+  }
+  50% {
+    width: 0;
+    left: 100%;
+  }
+  75% {
+    width: 100%;
+    right: -2px;
+  }
+  100% {
+    width: 0;
+    left: -2px;
+  }
+}
+
 // Global styles
 body {
   background: $background-color;
@@ -15,21 +104,25 @@ body {
   line-height: 1.6;
   margin: 0;
   font-family: $body-font;
-}
+  position: relative;
 
-* {
-  box-sizing: border-box;
-}
-
-// Button overrides
-.mat-mdc-raised-button.mat-primary {
-  background-color: $primary-color !important;
-  font-family: $heading-font !important;
-  letter-spacing: 1px;
-}
-
-.mat-mdc-raised-button.mat-primary:hover {
-  background-color: $primary-color-hover !important;
+  &::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.15),
+      rgba(0, 0, 0, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
 }
 
 // Typography styles
@@ -43,10 +136,127 @@ h6 {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
+  @include neon-glow(rgba($primary-color, 0.3));
+  animation: text-flicker 3s infinite;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a:not(.mat-mdc-button) {
+  color: $primary-color;
+  text-decoration: none;
+  position: relative;
+
+  &::before {
+    content: attr(data-text);
+    position: absolute;
+    left: -2px;
+    text-shadow: 2px 0 $primary-color;
+    top: 0;
+    color: $primary-color;
+    background: $background-color;
+    overflow: hidden;
+    clip: rect(0, 900px, 0, 0);
+    animation: glitch-effect 3s infinite linear alternate-reverse;
+  }
+}
+
+@keyframes glitch-effect {
+  0% {
+    clip: rect(44px, 9999px, 56px, 0);
+  }
+  5% {
+    clip: rect(12px, 9999px, 33px, 0);
+  }
+  10% {
+    clip: rect(23px, 9999px, 61px, 0);
+  }
+  15% {
+    clip: rect(10px, 9999px, 89px, 0);
+  }
+  20% {
+    clip: rect(45px, 9999px, 58px, 0);
+  }
+  25% {
+    clip: rect(89px, 9999px, 98px, 0);
+  }
+  30% {
+    clip: rect(76px, 9999px, 78px, 0);
+  }
+  100% {
+    clip: rect(44px, 9999px, 56px, 0);
+  }
+}
+
+.cyber-loading-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient($primary-color, $primary-color-hover);
+  z-index: 10000;
+}
+
+@keyframes loading-bar {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+// Button overrides
+.mat-mdc-raised-button.mat-primary {
+  background-color: $primary-color !important;
+  font-family: $heading-font !important;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    animation: button-shine 3s infinite;
+  }
+
+  &:hover {
+    @include neon-glow(rgba($primary-color, 0.7));
+  }
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  background-color: $primary-color-hover !important;
 }
 
 .accent-text {
   font-family: $accent-font;
+}
+
+.mat-mdc-card {
+  // @include cyber-border;
+  background: rgba($background-color, 0.9) !important;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 10px rgba($primary-color, 0.3),
+      0 0 20px rgba($primary-color, 0.2), 0 0 30px rgba($primary-color, 0.1);
+  }
 }
 
 // Material components typography overrides
@@ -63,6 +273,7 @@ h6 {
 .nav-links {
   font-family: $heading-font;
   letter-spacing: 1px;
+  animation: text-flicker 10s infinite;
 }
 
 // Logo

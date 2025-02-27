@@ -1,0 +1,173 @@
+.about-hero {
+  height: 80vh;
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2e1a47 100%);
+  color: #ffffff;
+  overflow: hidden;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding: 2rem;
+  }
+
+  .hero-content {
+    flex: 1;
+    text-align: left;
+    max-width: 50%;
+  }
+
+  h1 {
+    font-size: 3.5rem;
+    color: #bb86fc;
+    margin-bottom: 1.5rem;
+    font-family: "Orbitron", sans-serif; // Futuristic headline
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    font-family: "Orbitron", sans-serif; // Futuristic body text
+  }
+
+  button {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-family: "Orbitron", sans-serif; // Futuristic button text
+    background: #bb86fc;
+    color: #ffffff;
+
+    &:hover {
+      background: #9f5ed8;
+    }
+  }
+
+  .hero-image {
+    margin-top: 25%;
+    flex: 1;
+    height: 70%;
+    max-width: 50%;
+    // Image area left empty as requested, no background-image or src
+    // background: url('') no-repeat center/cover; // Commented out as per request
+    border-radius: 10px;
+    background-color: rgba(
+      46,
+      46,
+      46,
+      0.5
+    ); // Placeholder visual for empty state, optional
+    opacity: 0.7;
+  }
+}
+
+.about-mission,
+.about-tech {
+  padding: 4rem 2rem;
+  background: #121212;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #bb86fc;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-family: "Orbitron", sans-serif; // Futuristic headline
+}
+
+p {
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  font-family: "Orbitron", sans-serif; // Futuristic body text
+}
+
+@media (max-width: 768px) {
+  .about-hero {
+    height: 60vh;
+    flex-direction: column;
+    padding: 1rem;
+    text-align: center;
+
+    .hero-content {
+      max-width: 100%;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+    }
+
+    .hero-image {
+      display: none; // Hide image on mobile for simplicity, as in the reference
+    }
+  }
+
+  .about-mission,
+  .about-tech {
+    padding: 2rem 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+//animation
+.hero-container {
+  position: relative;
+  top: 40%;
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.item {
+  position: absolute;
+  background-color: transparent;
+  width: calc(var(--i) * 2.5vmin);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 0.9vmin solid rgb(0, 200, 255);
+  transform-style: preserve-3d;
+  transform: rotateX(70deg) translateZ(50px);
+  animation: my-move 3s ease-in-out calc(var(--i) * 0.08s) infinite;
+  box-shadow: 0px 0px 15px rgb(124, 124, 124),
+    inset 0px 0px 15px rgb(124, 124, 124);
+}
+
+@keyframes my-move {
+  0%,
+  100% {
+    transform: rotateX(70deg) translateZ(50px) translateY(0px);
+    filter: hue-rotate(0deg);
+  }
+
+  50% {
+    transform: rotateX(70deg) translateZ(50px) translateY(-50vmin);
+    filter: hue-rotate(180deg);
+  }
+}

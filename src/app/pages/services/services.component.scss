@@ -1,0 +1,107 @@
+.services-hero {
+  height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2e1a47 100%);
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem;
+
+  h1 {
+    font-size: 3rem;
+    color: #bb86fc;
+    margin-bottom: 1rem;
+    font-family: "Orbitron", sans-serif; // Futuristic headline
+  }
+
+  p {
+    font-size: 1.2rem;
+    font-family: "Orbitron", sans-serif; // Futuristic body text
+  }
+}
+
+.services-list {
+  padding: 4rem 2rem;
+  background: #1a1a1a;
+}
+
+.ai-tech {
+  padding: 4rem 2rem;
+  background: #121212;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+h2 {
+  text-align: center;
+  color: #bb86fc;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  font-family: "Orbitron", sans-serif; // Futuristic headline
+}
+
+.service-grid,
+.ai-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.service-card,
+.ai-card {
+  background: #2e2e2e;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(187, 134, 252, 0.2);
+    cursor: pointer;
+  }
+
+  mat-card-title,
+  h3 {
+    color: #bb86fc;
+    font-family: "Orbitron", sans-serif; // Futuristic titles
+  }
+
+  p {
+    font-family: "Orbitron", sans-serif; // Futuristic body text
+  }
+}
+
+@media (max-width: 768px) {
+  .services-hero {
+    height: 50vh;
+    padding: 1rem;
+  }
+
+  .services-hero h1 {
+    font-size: 2rem;
+  }
+
+  .services-hero p {
+    font-size: 1rem;
+  }
+
+  .services-list,
+  .ai-tech {
+    padding: 2rem 1rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  .service-grid,
+  .ai-features {
+    grid-template-columns: 1fr;
+  }
+}

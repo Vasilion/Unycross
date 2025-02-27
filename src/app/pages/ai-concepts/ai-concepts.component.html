@@ -1,0 +1,48 @@
+<section class="ai-hero">
+  <div class="container">
+    <h1 mat-headline-1 [@fadeInZoom]="state">
+      AI Innovations: Powering Your Future
+    </h1>
+    <p mat-body-1 [@fadeInZoom]="state">
+      Explore how our AI tools revolutionize web hosting and development for
+      motocross and beyond.
+    </p>
+  </div>
+</section>
+
+<section class="ai-grid">
+  <div class="container">
+    <div class="grid-container">
+      <mat-card
+        class="ai-card"
+        *ngFor="let tool of aiTools; let i = index"
+        [@fadeInZoom]="state"
+        [style.animation-delay]="i * 0.2 + 's'"
+      >
+        <mat-card-header>
+          <!-- <mat-icon [svgIcon]="tool.icon"></mat-icon> -->
+          <mat-card-title>{{ tool.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ tool.description }}</p>
+          <div class="iframe-container" *ngIf="tool.iframeUrl">
+            <iframe
+              [src]="getSafeUrl(tool.iframeUrl)"
+              title="Meshy AI Tool"
+              width="100%"
+              height="300px"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="showDetails(tool)">
+            Learn More
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>

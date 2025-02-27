@@ -1,1 +1,51 @@
-<p>services works!</p>
+<section class="services-hero">
+  <div class="container">
+    <h1 mat-headline-1 [@fadeIn]="state">Unleash Your Digital Potential</h1>
+    <p mat-body-1 [@fadeIn]="state">
+      Expert web hosting and development, powered by cutting-edge technology for
+      motocross and beyond.
+    </p>
+  </div>
+</section>
+
+<section class="services-list">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Our Services</h2>
+    <div class="service-grid">
+      <mat-card
+        class="service-card"
+        *ngFor="let service of services"
+        [@fadeInUp]="state"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ service.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ service.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="ai-tech">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Innovate with AI Technology</h2>
+    <p mat-body-1 [@fadeInUp]="state">
+      Leverage our AI solutions for smarter web experiences—personalized
+      content, analytics, and automation for your motocross or niche projects.
+    </p>
+    <div class="ai-features">
+      <mat-card
+        class="ai-card"
+        *ngFor="let feature of aiFeatures"
+        [@fadeInUp]="state"
+      >
+        <mat-card-content>
+          <h3 mat-subheading-2>{{ feature.title }}</h3>
+          <p>{{ feature.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</section>

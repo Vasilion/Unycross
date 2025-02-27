@@ -211,6 +211,30 @@ h3 {
   scale: 5;
 }
 
+@media (max-width: 1200px) {
+  .cube {
+    scale: 4;
+  }
+}
+
+@media (max-width: 992px) {
+  .cube {
+    scale: 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .cube {
+    scale: 2;
+  }
+}
+
+@media (max-width: 576px) {
+  .cube {
+    scale: 1.5;
+  }
+}
+
 @keyframes animateD {
   0% {
     transform: rotateX(-15deg) rotateY(0deg);

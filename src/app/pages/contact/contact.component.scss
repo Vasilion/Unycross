@@ -1,0 +1,106 @@
+.contact-hero {
+  height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2e1a47 100%);
+  color: #ffffff;
+  text-align: center;
+  padding: 2rem;
+
+  h1 {
+    font-size: 3rem;
+    color: #bb86fc;
+    margin-bottom: 1rem;
+    font-family: "Orbitron", sans-serif; // Futuristic headline
+  }
+
+  p {
+    font-size: 1.2rem;
+    font-family: "Orbitron", sans-serif; // Futuristic body text
+  }
+}
+
+.contact-form {
+  padding: 4rem 2rem;
+  background: #121212;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-card {
+  background: #2e2e2e;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+mat-form-field {
+  font-family: "Orbitron", sans-serif; // Futuristic form labels and inputs
+}
+
+mat-label,
+input,
+textarea {
+  font-family: "Orbitron", sans-serif; // Futuristic text
+  color: #ffffff;
+}
+
+mat-error {
+  font-family: "Orbitron", sans-serif; // Futuristic errors
+  color: #ff4444;
+}
+
+button {
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-family: "Orbitron", sans-serif; // Futuristic button text
+  background: #bb86fc;
+  color: #ffffff;
+
+  &:hover {
+    background: #9f5ed8;
+  }
+
+  &:disabled {
+    background: #4a4a4a;
+    cursor: not-allowed;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-hero {
+    height: 40vh;
+    padding: 1rem;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+  }
+
+  .contact-form {
+    padding: 2rem 1rem;
+  }
+
+  .form-card {
+    padding: 1.5rem;
+  }
+
+  button {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+}

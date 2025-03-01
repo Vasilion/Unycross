@@ -68,6 +68,42 @@
   </div>
 </section>
 
+<section class="photo-gallery">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Why you need a website</h2>
+    <div class="gallery-grid">
+      <div class="gallery-item gallery-item-wide" [@fadeInUp]="state">
+        <img src="assets/benefits.png" alt="Web development process" />
+        <div class="overlay">
+          <span>Benefits</span>
+        </div>
+      </div>
+      <div [@fadeInUp]="state">
+        <mat-card class="testimonial-card gallery-card"
+          >A business website is essential because it enhances visibility,
+          builds credibility, engages customers, supports marketing efforts, and
+          facilitates e-commerce, all of which are vital for staying competitive
+          and meeting consumer expectations in a digital-first world.</mat-card
+        >
+      </div>
+      <div [@fadeInUp]="state">
+        <mat-card class="testimonial-card gallery-card"
+          >Owning a website is vital for overcoming competitive disadvantages,
+          expanding market reach, building trust, and unlocking marketing
+          potential. In the current digital age, it’s a critical tool for
+          businesses to thrive and adapt to consumer expectations.</mat-card
+        >
+      </div>
+      <div class="gallery-item" [@fadeInUp]="state">
+        <img src="assets/impact.png" alt="Motocross track aerial view" />
+        <div class="overlay">
+          <span>Impact</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="testimonials">
   <div class="container">
     <h3 mat-headline-3 [@fadeInUp]="state">What Our Clients Say</h3>
@@ -88,7 +124,7 @@
   <div class="container">
     <h3 mat-headline-3 [@fadeIn]="state">Built for Speed. Designed to Win.</h3>
     <p mat-body-2 [@fadeIn]="state">
-      Let’s create a digital presence that leaves the competition in the dust.
+      Let's create a digital presence that leaves the competition in the dust.
     </p>
   </div>
 </section>

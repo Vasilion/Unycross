@@ -5,11 +5,34 @@
       Let’s accelerate your digital journey—contact us for web hosting,
       development, or AI solutions.
     </p>
+    <div class="loading">
+      <div class="loading-box">
+        <div class="WH color l1"></div>
+        <div class="ball color"></div>
+        <div class="WH color l2"></div>
+      </div>
+    </div>
   </div>
 </section>
 
 <section class="contact-form">
   <div class="container">
+    <div *ngIf="loading" class="loading-overlay">
+      <div class="spinner-container">
+        <div class="spinner">
+          <div class="spinner">
+            <div class="spinner">
+              <div class="spinner">
+                <div class="spinner">
+                  <div class="spinner"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p>Sending your message...</p>
+    </div>
     <mat-card class="form-card" [@fadeInUp]="state">
       <mat-card-content>
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
@@ -49,7 +72,28 @@
 
           <mat-form-field class="full-width">
             <mat-label>Phone Number (Optional)</mat-label>
-            <input matInput formControlName="phone" type="tel" />
+            <input
+              matInput
+              formControlName="phoneNumber"
+              type="tel"
+              (input)="onPhoneInput($event)"
+            />
+            <mat-error
+              *ngIf="
+                contactForm.get('phoneNumber')?.touched &&
+                contactForm.get('phoneNumber')?.hasError('maxlength')
+              "
+            >
+              Phone number must not exceed 10 digits.
+            </mat-error>
+            <mat-error
+              *ngIf="
+                contactForm.get('phoneNumber')?.touched &&
+                contactForm.get('phoneNumber')?.hasError('pattern')
+              "
+            >
+              Please enter only numbers.
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field class="full-width">

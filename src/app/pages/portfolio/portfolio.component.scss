@@ -10,7 +10,6 @@
 
   h1 {
     font-size: 3rem;
-    color: #6b40a0;
     margin-bottom: 1.5rem;
     font-family: "Orbitron", sans-serif; // Futuristic headline
     text-align: center;
@@ -39,7 +38,6 @@
     &:hover {
       transform: translateY(-10px);
       box-shadow: 0 10px 20px rgba(187, 134, 252, 0.2);
-      cursor: pointer;
     }
 
     img {
@@ -49,7 +47,6 @@
     }
 
     mat-card-title {
-      color: #6b40a0;
       font-family: "Orbitron", sans-serif; // Futuristic title
     }
 

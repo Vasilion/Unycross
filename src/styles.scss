@@ -7,6 +7,14 @@ $accent-font: "Audiowide", cursive;
 $primary-color: #6b40a0;
 $primary-color-hover: #592388;
 $background-color: #121212;
+$accent-color: #bb86fc;
+$secondary-color: #9f5ed8;
+$glow-color: rgba(187, 134, 252, 0.3);
+$text-color-1: #ffffff; // Pure white for maximum contrast
+$text-color-2: #e1bee7; // Light purple
+$text-color-3: #ce93d8; // Medium purple
+$text-color-4: #ba68c8; // Deep purple
+$text-color-5: #ab47bc; // Vibrant purple
 
 @mixin neon-glow($color) {
   text-shadow: 0 0 7px $color, 0 0 10px $color, 0 0 21px $color;
@@ -22,7 +30,7 @@ $background-color: #121212;
     left: -2px;
     width: 0;
     height: 2px;
-    background: $primary-color;
+    background: linear-gradient(90deg, $primary-color, $accent-color);
     animation: cyber-border 3s infinite;
   }
 }
@@ -100,7 +108,7 @@ $background-color: #121212;
 // Global styles
 body {
   background: $background-color;
-  color: #ffffff;
+  color: $text-color-1;
   line-height: 1.6;
   margin: 0;
   font-family: $body-font;
@@ -115,8 +123,8 @@ body {
     height: 100%;
     background: repeating-linear-gradient(
       0deg,
-      rgba(0, 0, 0, 0.15),
-      rgba(0, 0, 0, 0.15) 1px,
+      rgba($primary-color, 0.03),
+      rgba($primary-color, 0.03) 1px,
       transparent 1px,
       transparent 2px
     );
@@ -128,21 +136,28 @@ body {
 // Typography styles
 h1 {
   animation: text-flicker 5s infinite;
+  color: $text-color-1;
+  text-shadow: 0 0 10px rgba($text-color-2, 0.5);
 }
+
 h2 {
   animation: text-flicker 3s infinite;
+  color: $text-color-4;
+  text-shadow: 0 0 8px rgba($text-color-2, 0.4);
 }
+
 h3 {
   animation: text-flicker 3s infinite;
+  color: $text-color-5;
+  text-shadow: 0 0 6px rgba($text-color-3, 0.4);
 }
-h4 {
-  animation: text-flicker 7s infinite;
-}
-h5 {
-  animation: text-flicker 7s infinite;
-}
+
+h4,
+h5,
 h6 {
-  animation: text-flicker 9s infinite;
+  animation: text-flicker 7s infinite;
+  color: $text-color-5;
+  text-shadow: 0 0 4px rgba($text-color-4, 0.4);
 }
 
 h1,
@@ -155,7 +170,7 @@ h6 {
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-  @include neon-glow(rgba($primary-color, 0.3));
+  @include neon-glow($glow-color);
 }
 
 * {
@@ -163,17 +178,25 @@ h6 {
 }
 
 a:not(.mat-mdc-button) {
-  color: $primary-color;
+  color: $text-color-2;
   text-decoration: none;
   position: relative;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 4px rgba($text-color-2, 0.3);
+
+  &:hover {
+    color: $text-color-1;
+    @include neon-glow($glow-color);
+    text-shadow: 0 0 8px rgba($text-color-2, 0.6);
+  }
 
   &::before {
     content: attr(data-text);
     position: absolute;
     left: -2px;
-    text-shadow: 2px 0 $primary-color;
+    text-shadow: 2px 0 $text-color-2;
     top: 0;
-    color: $primary-color;
+    color: $text-color-2;
     background: $background-color;
     overflow: hidden;
     clip: rect(0, 900px, 0, 0);
@@ -229,11 +252,14 @@ a:not(.mat-mdc-button) {
 
 // Button overrides
 .mat-mdc-raised-button.mat-primary {
-  background-color: $primary-color !important;
+  background: linear-gradient(45deg, $text-color-4, $text-color-5) !important;
   font-family: $heading-font !important;
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
+  border: none;
+  box-shadow: 0 0 15px rgba($text-color-4, 0.3);
+  color: $text-color-1 !important;
 
   &::before {
     content: "";
@@ -245,14 +271,17 @@ a:not(.mat-mdc-button) {
     background: linear-gradient(
       90deg,
       transparent,
-      rgba(255, 255, 255, 0.2),
+      rgba(255, 255, 255, 0.4),
       transparent
     );
     animation: button-shine 3s infinite;
   }
 
   &:hover {
-    @include neon-glow(rgba($primary-color, 0.7));
+    background: linear-gradient(45deg, $text-color-3, $text-color-4) !important;
+    @include neon-glow($glow-color);
+    box-shadow: 0 0 20px rgba($text-color-4, 0.5);
+    transform: translateY(-2px);
   }
 }
 
@@ -262,18 +291,27 @@ a:not(.mat-mdc-button) {
 
 .accent-text {
   font-family: $accent-font;
+  color: $text-color-2;
+  @include neon-glow($glow-color);
+  text-shadow: 0 0 8px rgba($text-color-2, 0.4);
 }
 
 .mat-mdc-card {
-  // @include cyber-border;
-  background: rgba($background-color, 0.9) !important;
+  background: linear-gradient(
+    145deg,
+    rgba($background-color, 0.9),
+    rgba(#1a1a2e, 0.9)
+  ) !important;
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
+  border: 1px solid rgba($text-color-4, 0.2);
+  box-shadow: 0 5px 15px rgba($text-color-4, 0.1);
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0 10px rgba($primary-color, 0.3),
-      0 0 20px rgba($primary-color, 0.2), 0 0 30px rgba($primary-color, 0.1);
+    box-shadow: 0 0 20px rgba($text-color-4, 0.3),
+      0 0 30px rgba($text-color-3, 0.2), 0 0 40px rgba($text-color-2, 0.1);
+    border-color: rgba($text-color-3, 0.3);
   }
 }
 
@@ -281,10 +319,21 @@ a:not(.mat-mdc-button) {
 .mat-mdc-card-title {
   font-family: $heading-font !important;
   letter-spacing: 1px;
+  color: $text-color-5;
+  @include neon-glow($glow-color);
+  text-shadow: 0 0 8px rgba($text-color-2, 0.4);
 }
 
 .mat-mdc-menu-item {
   font-family: $body-font !important;
+  color: rgba($text-color-2, 0.9);
+  text-shadow: 0 0 4px rgba($text-color-2, 0.3);
+
+  &:hover {
+    background: rgba($text-color-4, 0.1);
+    color: $text-color-1;
+    text-shadow: 0 0 8px rgba($text-color-2, 0.6);
+  }
 }
 
 // Navigation
@@ -292,6 +341,14 @@ a:not(.mat-mdc-button) {
   font-family: $heading-font;
   letter-spacing: 1px;
   animation: text-flicker 10s infinite;
+  // color: $text-color-2;
+  // text-shadow: 0 0 4px rgba($text-color-2, 0.3);
+
+  &:hover {
+    color: $text-color-1;
+    @include neon-glow($glow-color);
+    text-shadow: 0 0 8px rgba($text-color-2, 0.6);
+  }
 }
 
 // Logo

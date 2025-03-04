@@ -43,12 +43,12 @@ export class ServicesComponent implements OnInit {
     {
       title: 'Web Hosting',
       description:
-        'Reliable, high-performance hosting solutions optimized for speed and scalability, perfect for motocross events and niche websites.',
+        'Reliable, high-performance hosting solutions optimized for speed and scalability, perfect for niche websites.',
     },
     {
       title: 'Web Development',
       description:
-        'Custom, motocross-inspired websites with responsive designs, tailored for riders, teams, and businesses across any industry.',
+        'Custom websites with responsive designs, tailored for teams and businesses across any industry.',
     },
     {
       title: 'Maintenance & Support',
@@ -65,7 +65,7 @@ export class ServicesComponent implements OnInit {
     {
       title: 'Personalized Content',
       description:
-        'Implement AI to deliver dynamic, personalized content for your motocross fans or customers.',
+        'Implement AI to deliver dynamic, personalized content for your fans or customers.',
     },
     {
       title: 'Automation Tools',

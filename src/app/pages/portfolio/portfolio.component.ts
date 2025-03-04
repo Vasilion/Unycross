@@ -36,35 +36,35 @@ export class PortfolioComponent implements OnInit {
       description:
         'A dynamic website for a motocross park, highlighting events and rider experiences.',
       url: 'https://martinmxpark.com',
-      image: 'assets/martin.PNG',
+      image: 'assets/martin.webp',
     },
     {
       title: 'Mecosta MX',
       description:
         'A motocross-focused website featuring tracks, events, and community engagement.',
       url: 'https://mecostamx.com',
-      image: 'assets/mecosta.PNG',
+      image: 'assets/mecosta.webp',
     },
     {
       title: 'United Steps',
       description:
         'A resource for suicide prevention and support, focusing on education and community outreach.',
       url: 'https://united-steps.org',
-      image: 'assets/us.png',
+      image: 'assets/us.webp',
     },
     {
       title: 'Rollin Brummette',
       description:
         'A personal portfolio showcasing creative projects and professional work.',
       url: 'https://rollinbrummette.com',
-      image: 'assets/rollin.PNG',
+      image: 'assets/rollin.webp',
     },
     {
       title: 'Kollar Piano Services',
       description:
         'A professional site for piano tuning and repair services, with a clean, user-friendly design.',
       url: 'https://kollarpianoservices.com',
-      image: 'assets/kpt.PNG',
+      image: 'assets/kpt.webp',
     },
   ];
 
@@ -72,7 +72,7 @@ export class PortfolioComponent implements OnInit {
     this.state = 'visible'; // Trigger animations on load
   }
 
-  openProject(url: string) {
-    window.open(url, '_blank');
-  }
+  // openProject(url: string) {
+  //   window.open(url, '_blank');
+  // }
 }

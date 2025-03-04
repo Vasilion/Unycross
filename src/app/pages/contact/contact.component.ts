@@ -5,11 +5,14 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+
 import {
   animate,
   state,
@@ -17,6 +20,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-contact',
@@ -28,6 +32,8 @@ import {
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    MatSnackBarModule,
   ],
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
@@ -45,29 +51,98 @@ import {
 })
 export class ContactComponent implements OnInit {
   state = 'visible';
+  loading = false;
   contactForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private snackBar: MatSnackBar // Inject MatSnackBar
+  ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      phone: [''],
+      phoneNumber: [''],
       message: ['', Validators.required],
     });
+
+    this.contactForm.get('phoneNumber')?.setValidators([
+      Validators.pattern('^[0-9]*$'), // Only digits
+      Validators.maxLength(10), // Limit to 10 digits
+    ]);
   }
 
   ngOnInit() {
-    this.state = 'visible'; // Trigger animations on load
+    this.state = 'visible';
   }
 
   onSubmit() {
     if (this.contactForm.valid) {
-      console.log('Form submitted:', this.contactForm.value);
-      // Here, you could add logic to send the form data (e.g., via HTTP to a backend)
-      alert('Thank you for your message! We’ll get back to you soon.');
-      this.contactForm.reset();
+      this.loading = true; // Show the loading spinner
+
+      const formData = {
+        name: this.contactForm.get('name')?.value,
+        email: this.contactForm.get('email')?.value,
+        phoneNumber: this.contactForm.get('phoneNumber')?.value || '',
+        message: this.contactForm.get('message')?.value,
+      };
+
+      this.http
+        .post(environment.strapiBaseUrl + '/contact/submit', formData)
+        .subscribe({
+          next: (response) => {
+            console.log('Success:', response);
+            this.snackBar.open(
+              'Thank you for your message! We’ll get back to you soon.',
+              'Close',
+              {
+                duration: 5000,
+                horizontalPosition: 'center',
+                verticalPosition: 'bottom', // Move to bottom
+                panelClass: ['success-snackbar'],
+              }
+            );
+            this.contactForm.reset();
+            this.loading = false; // Hide spinner
+          },
+          error: (error) => {
+            console.error('Error Details:', error);
+
+            // Extract and show the error message from the response
+            console.log('Error Details:', error);
+            const errorMessage =
+              error?.error?.error?.details?.error || 'Something went wrong.';
+
+            this.snackBar.open(errorMessage, 'Close', {
+              duration: 5000,
+              horizontalPosition: 'center',
+              verticalPosition: 'bottom',
+              panelClass: ['error-snackbar'],
+            });
+
+            this.loading = false; // Hide spinner
+          },
+        });
     } else {
-      alert('Please fill out all required fields correctly.');
+      this.snackBar.open(
+        'Please fill out all required fields correctly.',
+        'Close',
+        {
+          duration: 5000,
+          horizontalPosition: 'center',
+          verticalPosition: 'bottom', // Move to bottom
+        }
+      );
     }
+  }
+
+  onPhoneInput(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^0-9]/g, '');
+    if (value.length > 10) {
+      value = value.slice(0, 10); // Truncate to 10 digits
+    }
+    this.contactForm.get('phoneNumber')?.setValue(value, { emitEvent: false });
+    input.value = value; // Update the input field
   }
 }

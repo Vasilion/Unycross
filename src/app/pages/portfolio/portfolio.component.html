@@ -1,15 +1,12 @@
 <section class="portfolio">
   <div class="container">
     <h1 mat-headline-1 [@fadeInUp]="state">UnyX Portfolio</h1>
-    <p mat-body-1 [@fadeInUp]="state">
-      Explore our work in web development, specializing in motocross and beyond.
-    </p>
+    <p mat-body-1 [@fadeInUp]="state">Explore our work.</p>
     <div class="portfolio-grid">
       <mat-card
         class="project-card"
         *ngFor="let project of projects"
         [@fadeInUp]="state"
-        (click)="openProject(project.url)"
       >
         <img mat-card-image [src]="project.image" [alt]="project.title" />
         <mat-card-header>

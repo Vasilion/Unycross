@@ -3,14 +3,29 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a1a 0%, #2e1a47 100%);
+  background: #000;
   color: #ffffff;
   text-align: center;
   padding: 2rem;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -99999;
+    backdrop-filter: blur(1em) brightness(6);
+    background-image: radial-gradient(
+      circle at 50% 50%,
+      #0000 0,
+      #0000 2px,
+      hsl(0 0 4%) 2px
+    );
+    background-size: 8px 8px;
+  }
 
   h1 {
     font-size: 3rem;
-    color: #bb86fc;
     margin-bottom: 1rem;
     font-family: "Orbitron", sans-serif; // Futuristic headline
   }
@@ -38,7 +53,6 @@
 
 h2 {
   text-align: center;
-  color: #bb86fc;
   margin-bottom: 2rem;
   font-size: 2.5rem;
   font-family: "Orbitron", sans-serif; // Futuristic headline
@@ -63,12 +77,10 @@ h2 {
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0 10px 20px rgba(187, 134, 252, 0.2);
-    cursor: pointer;
   }
 
   mat-card-title,
   h3 {
-    color: #bb86fc;
     font-family: "Orbitron", sans-serif; // Futuristic titles
   }
 
@@ -104,4 +116,95 @@ h2 {
   .ai-features {
     grid-template-columns: 1fr;
   }
+}
+
+//animation
+.wrapper {
+  width: 200px;
+  height: 60px;
+  position: relative;
+  z-index: 1;
+  margin: 0 auto;
+}
+
+.circle {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  border-radius: 50%;
+  background-color: #ba68c8;
+  left: 15%;
+  transform-origin: 50%;
+  animation: circle7124 0.5s alternate infinite ease;
+}
+
+@keyframes circle7124 {
+  0% {
+    top: 60px;
+    height: 5px;
+    border-radius: 50px 50px 25px 25px;
+    transform: scaleX(1.7);
+  }
+
+  40% {
+    height: 20px;
+    border-radius: 50%;
+    transform: scaleX(1);
+  }
+
+  100% {
+    top: 0%;
+  }
+}
+
+.circle:nth-child(2) {
+  left: 45%;
+  animation-delay: 0.2s;
+}
+
+.circle:nth-child(3) {
+  left: auto;
+  right: 15%;
+  animation-delay: 0.3s;
+}
+
+.shadow {
+  width: 20px;
+  height: 4px;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.9);
+  position: absolute;
+  top: 62px;
+  transform-origin: 50%;
+  z-index: -1;
+  left: 15%;
+  filter: blur(1px);
+  animation: shadow046 0.5s alternate infinite ease;
+}
+
+@keyframes shadow046 {
+  0% {
+    transform: scaleX(1.5);
+  }
+
+  40% {
+    transform: scaleX(1);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scaleX(0.2);
+    opacity: 0.4;
+  }
+}
+
+.shadow:nth-child(4) {
+  left: 45%;
+  animation-delay: 0.2s;
+}
+
+.shadow:nth-child(5) {
+  left: auto;
+  right: 15%;
+  animation-delay: 0.3s;
 }

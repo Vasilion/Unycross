@@ -69,12 +69,6 @@
   <div class="container">
     <h2 mat-headline-2 [@fadeInUp]="state">Why you need a website</h2>
     <div class="gallery-grid">
-      <div class="gallery-item gallery-item-wide" [@fadeInUp]="state">
-        <img src="assets/benefits.png" alt="Web development process" />
-        <div class="overlay">
-          <span>Benefits</span>
-        </div>
-      </div>
       <div [@fadeInUp]="state">
         <mat-card class="testimonial-card gallery-card"
           >A business website is essential because it enhances visibility,
@@ -83,6 +77,13 @@
           and meeting consumer expectations in a digital-first world.</mat-card
         >
       </div>
+      <div class="gallery-item gallery-item-wide" [@fadeInUp]="state">
+        <img src="assets/benefits.png" alt="Web development process" />
+        <div class="overlay">
+          <span>Benefits</span>
+        </div>
+      </div>
+
       <div [@fadeInUp]="state">
         <mat-card class="testimonial-card gallery-card"
           >Owning a website is vital for overcoming competitive disadvantages,
@@ -111,7 +112,10 @@
     >
       <mat-card-content>
         <p>{{ testimonial.quote }}</p>
-        <p class="author">- {{ testimonial.author }}</p>
+        <div class="rating-author-row">
+          <div class="rating">★★★★★</div>
+          <p class="author">- {{ testimonial.author }}</p>
+        </div>
       </mat-card-content>
     </mat-card>
   </div>

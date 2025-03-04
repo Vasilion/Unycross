@@ -1,22 +1,5 @@
 <section class="about-hero">
   <div class="container">
-    <div class="hero-content">
-      <h1 mat-headline-1 [@fadeIn]="state">
-        Our Story: Speeding into the Future
-      </h1>
-      <p mat-body-1 [@fadeIn]="state">
-        Unycross LLC transforms digital landscapes for businesses with
-        cutting-edge web solutions, driven by speed and innovation.
-      </p>
-      <button
-        mat-raised-button
-        color="primary"
-        routerLink="/contact"
-        [@fadeIn]="state"
-      >
-        Learn More
-      </button>
-    </div>
     <div class="hero-image">
       <div class="hero-container">
         <div class="item" style="--i: 0"></div>
@@ -41,7 +24,21 @@
         <div class="item" style="--i: 19"></div>
         <div class="item" style="--i: 20"></div>
       </div>
-      <!-- Image area left empty as requested, no src or placeholder -->
+    </div>
+    <div class="hero-content">
+      <h1 mat-headline-1 [@fadeIn]="state">Our Story</h1>
+      <p mat-body-1 [@fadeIn]="state">
+        Unycross LLC transforms digital landscapes for businesses with
+        cutting-edge web solutions, driven by speed and innovation.
+      </p>
+      <button
+        mat-raised-button
+        color="primary"
+        routerLink="/contact"
+        [@fadeIn]="state"
+      >
+        Learn More
+      </button>
     </div>
   </div>
 </section>

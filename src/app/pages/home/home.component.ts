@@ -40,6 +40,7 @@ import {
 })
 export class HomeComponent implements OnInit {
   state = 'visible';
+  selectedImage: string | null = null; // Track the clicked image
   services = [
     {
       title: 'Custom Websites',
@@ -58,6 +59,11 @@ export class HomeComponent implements OnInit {
     },
   ];
   testimonials = [
+    {
+      quote:
+        'We worked with Unycross to update our website to a more modern, mobile friendly platform. The communication with Luke was great and they did a wonderful job as they tailored it to our business needs. We love the results with a built-in registration system and the user friendly calendar. We would highly recommend Luke Vasilion and everyone at Unycross!',
+      author: 'Martin Motocross Park',
+    },
     {
       quote:
         'We are extremely pleased with the website Luke Vasilion designed for our company. His creative input and attention to detail were fantastic. He was able to produce a quality website for us in a reasonable amount of time, giving our website the professional look we wanted to achieve in order to stand out above other piano technicians in our area.',
@@ -82,5 +88,21 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible'; // Trigger animations on load
+  }
+
+  openModal(imageSrc: string) {
+    this.selectedImage = imageSrc;
+    document.body.style.overflow = 'hidden'; // Prevent scrolling
+  }
+
+  closeModal(event: Event) {
+    // Close only if clicking the background or close button
+    if (
+      event.target === event.currentTarget ||
+      (event.target as HTMLElement).classList.contains('close-btn')
+    ) {
+      this.selectedImage = null;
+      document.body.style.overflow = 'auto'; // Restore scrolling
+    }
   }
 }

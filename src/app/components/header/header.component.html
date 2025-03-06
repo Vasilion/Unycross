@@ -21,11 +21,12 @@
       </div>
     </div>
 
-    <button class="hamburger" (click)="toggleMenu()">
+    <button class="hamburger" [class.open]="isMenuOpen" (click)="toggleMenu()">
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
       <span class="hamburger-line"></span>
     </button>
+
     <ul class="nav-links" [class.open]="isMenuOpen">
       <li>
         <a

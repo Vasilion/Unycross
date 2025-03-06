@@ -39,13 +39,6 @@ export class PortfolioComponent implements OnInit {
       image: 'assets/martin.webp',
     },
     {
-      title: 'Mecosta MX',
-      description:
-        'A motocross-focused website featuring tracks, events, and community engagement.',
-      url: 'https://mecostamx.com',
-      image: 'assets/mecosta.webp',
-    },
-    {
       title: 'United Steps',
       description:
         'A resource for suicide prevention and support, focusing on education and community outreach.',
@@ -65,6 +58,13 @@ export class PortfolioComponent implements OnInit {
         'A professional site for piano tuning and repair services, with a clean, user-friendly design.',
       url: 'https://kollarpianoservices.com',
       image: 'assets/kpt.webp',
+    },
+    {
+      title: 'Mecosta MX',
+      description:
+        'A motocross-focused website featuring tracks, events, and community engagement.',
+      url: 'https://mecostamx.com',
+      image: 'assets/mecosta.webp',
     },
   ];
 

@@ -1,5 +1,5 @@
 @mixin neon-glow($color) {
-  text-shadow: 0 0 7px $color, 0 0 10px $color, 0 0 21px $color;
+  text-shadow: 0 0 5px $color, 0 0 8px $color, 0 0 15px $color; // Toned down from 7/10/21px
 }
 
 header {
@@ -25,14 +25,15 @@ header {
   color: #ffffff;
   font-size: 2rem;
   font-weight: bold;
-  font-family: "Orbitron", sans-serif; // Futuristic logo
+  font-family: "Orbitron", sans-serif;
   cursor: pointer;
-  position: relative; // Add this
-  z-index: 2; // Add this to keep logo on top
+  position: relative;
+  z-index: 2;
+  animation: pulse 2s infinite;
 }
 
 .hamburger {
-  display: none; // Hidden by default on desktop
+  display: none;
   background: none;
   border: none;
   cursor: pointer;
@@ -46,34 +47,69 @@ header {
     margin: 5px 0;
     transition: all 0.3s ease;
   }
+
+  &.open {
+    .hamburger-line:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .hamburger-line:nth-child(2) {
+      opacity: 0;
+    }
+    .hamburger-line:nth-child(3) {
+      transform: rotate(-45deg) translate(7px, -7px);
+    }
+  }
 }
 
 .nav-links {
   list-style: none;
   display: flex;
   gap: 2rem;
-}
+  transition: transform 0.3s ease-in-out;
 
-.nav-links li a {
-  color: #ffffff;
-  text-decoration: none;
-  font-size: 1.1rem;
-  font-family: "Orbitron", sans-serif; // Futuristic navigation
-  transition: color 0.3s ease;
-}
+  li {
+    a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1.1rem;
+      font-family: "Orbitron", sans-serif;
+      transition: all 0.3s ease;
+      position: relative;
 
-.nav-links li a:hover,
-.nav-links li a.active {
-  color: #6b40a0;
+      // Subtle neon underline effect
+      &:after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: -5px;
+        left: 50%;
+        background-color: #6b40a0;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+        box-shadow: 0 0 5px rgba(#6b40a0, 0.5); // Subtle glow only on underline
+      }
+
+      &:hover:after,
+      &.active:after {
+        width: 100%;
+      }
+
+      &:hover,
+      &.active {
+        color: #6b40a0; // No text glow, just color change
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
   .hamburger {
-    display: block; // Show hamburger on mobile
+    display: block;
   }
 
   .nav-links {
-    display: none; // Hide by default on mobile
+    display: none;
     position: absolute;
     top: 100%;
     left: 0;
@@ -83,59 +119,42 @@ header {
     padding: 1rem;
     gap: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-  }
+    transform: translateX(100%);
 
-  .nav-links.open {
-    display: flex; // Show when menu is open
-  }
+    &.open {
+      display: flex;
+      transform: translateX(0);
+    }
 
-  .nav-links li {
-    width: 100%;
-    text-align: center;
-  }
+    li {
+      width: 100%;
+      text-align: center;
+    }
 
-  .nav-links li a {
-    display: block;
-    padding: 0.5rem;
-    font-size: 1.2rem; // Slightly larger for touch targets
-  }
-
-  // Hamburger animation
-  .hamburger.open .hamburger-line:nth-child(2) {
-    opacity: 0;
-  }
-
-  .hamburger.open .hamburger-line:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  .hamburger.open .hamburger-line:nth-child(3) {
-    transform: rotate(-45deg) translate(7px, -7px);
+    li a {
+      display: block;
+      padding: 0.5rem;
+      font-size: 1.2rem;
+    }
   }
 }
 
-//logo animation
+// Logo animation
 .logo-container {
   position: relative;
-  display: inline-block; // Contains the stacked elements
+  display: inline-block;
 }
 
 .semicircle,
 .semicircle div {
-  /*  Adjust the size of the entire animation here.
-      (Remove max size below to go above 300px.) */
   width: 85px;
   height: 85px;
-  /* Adjust the speed or timing function of the animation here. */
   animation: 6s rotate141 infinite linear;
   background-repeat: no-repeat;
   border-radius: 50%;
-  top: -25%; // Center vertically
+  top: -25%;
   margin-bottom: 5px;
-
-  // Center the element
   z-index: 1;
-
   position: absolute;
   overflow: hidden;
 }
@@ -163,8 +182,21 @@ header {
   background-size: 100% 200%;
 }
 
+// Animations
 @keyframes rotate141 {
   to {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
   }
 }

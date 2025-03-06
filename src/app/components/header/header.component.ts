@@ -17,5 +17,6 @@ export class HeaderComponent {
 
   closeMenu() {
     this.isMenuOpen = false;
+    window.scrollTo(0, 0);
   }
 }

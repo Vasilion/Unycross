@@ -57,7 +57,7 @@ export class HomeComponent implements OnInit {
     {
       title: 'Hosting',
       description:
-        '100% up-time. We leverage Amazons servers to guarantee your site or app never gos down.',
+        "100% up-time. We leverage Amazon's servers to guarantee your site or app never goes down.",
     },
   ];
   testimonials = [

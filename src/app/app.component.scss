@@ -73,6 +73,11 @@ main {
   transition: opacity 0.3s;
 }
 
+.tooltip.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
 .back-to-top:hover .tooltip {
   visibility: visible;
   opacity: 1;

@@ -12,6 +12,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 })
 export class AppComponent {
   title = 'unycross-llc';
+  tooltipVisible: boolean = false;
+
+  showTooltip() {
+    this.tooltipVisible = true;
+  }
+
+  hideTooltip() {
+    this.tooltipVisible = false;
+  }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });

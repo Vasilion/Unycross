@@ -477,7 +477,7 @@ export class CyberpunkBackground {
     // }
 
     // Add visibility change handler to fix canvas when returning to tab
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    // document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
   private handleTouchEnd = (): void => {
@@ -585,10 +585,10 @@ export class CyberpunkBackground {
     document.removeEventListener('touchmove', this.handleTouchMove);
     // window.removeEventListener('scroll', this.handleScroll);
     // window.removeEventListener('touchend', this.handleTouchEnd);
-    document.removeEventListener(
-      'visibilitychange',
-      this.handleVisibilityChange
-    );
+    // document.removeEventListener(
+    //   'visibilitychange',
+    //   this.handleVisibilityChange
+    // );
 
     // Dispose of THREE.js objects
     this.points.geometry.dispose();

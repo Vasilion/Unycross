@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { CyberpunkBackgroundService } from './shared/cyberpunk-background.service';
+
 @Component({
   selector: 'app-root',
   standalone: true,
@@ -10,8 +12,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
+  @ViewChild('bgContainer') bgContainer!: ElementRef;
   title = 'unycross-llc';
+
+  constructor(private cyberpunkService: CyberpunkBackgroundService) {}
+
+  ngAfterViewInit() {
+    this.cyberpunkService.initBackground(this.bgContainer.nativeElement);
+  }
 
   scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });

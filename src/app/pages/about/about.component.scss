@@ -1,9 +1,9 @@
 .about-hero {
-  height: 80vh;
+  height: 60vh;
   position: relative;
   display: flex;
   align-items: center;
-  background: #000;
+  // background: #000;
   color: #ffffff;
   overflow: hidden;
 
@@ -80,12 +80,16 @@
 .about-mission,
 .about-tech {
   padding: 4rem 2rem;
-  background: #121212;
+  // background: linear-gradient(
+  //   145deg,
+  //   rgba(#121212, 0.9),
+  //   rgba(#1a1a2e, 0.9)
+  // ) !important;
 }
 
 .team-section {
   padding: 4rem 2rem;
-  background: #1a1a1a;
+  // background: #1a1a1a;
 }
 
 .container {
@@ -116,7 +120,11 @@ p {
 .team-member {
   text-align: center;
   padding: 2rem;
-  background: #2e2e2e;
+  background: linear-gradient(
+    145deg,
+    rgba(#121212, 0.9),
+    rgba(#1a1a2e, 0.9)
+  ) !important;
   border-radius: 10px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 
@@ -154,7 +162,7 @@ p {
   }
 
   .role {
-    color: #9f5ed8;
+    color: #00d9ff;
     font-size: 1.1rem;
     margin-bottom: 1rem;
     font-family: "Orbitron", sans-serif;
@@ -251,7 +259,7 @@ p {
 }
 
 .social-icons a:hover {
-  color: #ffffff;
+  color: #00d9ff;
 }
 
 //animation

@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
 
 import {
   animate,
@@ -33,6 +34,7 @@ import { environment } from '../../../environments/environment';
     MatInputModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatIconModule,
     MatSnackBarModule,
   ],
   templateUrl: './contact.component.html',

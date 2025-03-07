@@ -1,13 +1,13 @@
 .hero {
   position: relative;
-  height: 80vh;
+  height: 60vh;
   display: flex;
   align-items: center;
   justify-content: center;
   color: #ffffff;
   text-align: center;
   padding: 2rem;
-  overflow: hidden;
+  // overflow: hidden;
 
   .hero-content {
     position: relative;
@@ -109,7 +109,7 @@
 }
 .services-teaser {
   padding: 4rem 2rem;
-  background: rgba(26, 26, 26, 0.8);
+  // background: rgba(26, 26, 26, 0.8);
 }
 
 .container {
@@ -132,7 +132,7 @@ h2 {
 .service-card {
   backdrop-filter: blur(10px);
   border: 1px solid rgba(107, 64, 160, 0.1);
-  background: rgba(46, 46, 46, 0.8);
+  // background: rgba(46, 46, 46, 0.8);
   color: #ffffff;
   padding: 1.5rem;
   border-radius: 10px;
@@ -150,7 +150,7 @@ mat-card-title {
 
 .testimonials {
   padding: 4rem 2rem;
-  background: rgba(18, 18, 18, 0.8);
+  // background: rgba(18, 18, 18, 0.8);
 }
 
 .testimonial-card {
@@ -224,18 +224,18 @@ h3 {
   transform-style: preserve-3d;
   transform: rotateX(-30deg);
   animation: animateD 8s linear infinite;
-  scale: 5;
+  scale: 3;
 }
 
 @media (max-width: 1200px) {
   .cube {
-    scale: 4;
+    scale: 2.5;
   }
 }
 
 @media (max-width: 992px) {
   .cube {
-    scale: 3;
+    scale: 2;
   }
 }
 
@@ -304,7 +304,7 @@ h3 {
   width: 65%;
   height: 65%;
   background: transparent;
-  border: 2px solid #6b40a0;
+  border: 2px solid #00d9ff;
   transform: rotateY(calc(90deg * var(--i))) translateZ(62px);
 }
 
@@ -342,18 +342,18 @@ h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #6b40a0;
+  background: #00d9ff;
   transform: rotateY(calc(90deg * var(--i))) translateZ(14px);
-  box-shadow: 0px 0px 7px #100222;
+  box-shadow: 0px 0px 7px #00d9ff;
 }
 
 .top3 {
   position: absolute;
   top: 0;
   left: 0;
-  background: #6b40a0;
+  background: #00d9ff;
   transform: rotateX(90deg) translateZ(14px);
-  box-shadow: 0px 0px 10px #6b40a0;
+  box-shadow: 0px 0px 10px #00d9ff;
 }
 
 @media (max-width: 768px) {
@@ -381,7 +381,7 @@ h3 {
 .hero-bg {
   position: relative;
   --c: rgb(212, 0, 255);
-  background-color: #000;
+  // background-color: #000;
   // background-image: radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
   //   radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
   //   radial-gradient(1.5px 1.5px at 150px 117.5px, var(--c) 100%, #0000 150%),
@@ -454,7 +454,7 @@ h3 {
 
 .photo-gallery {
   padding: 4rem 2rem;
-  background: rgba(18, 18, 18, 0.8);
+  // background: rgba(18, 18, 18, 0.8);
 
   h2 {
     text-align: center;

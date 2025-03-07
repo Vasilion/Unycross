@@ -3,13 +3,13 @@
 }
 
 header {
-  background: #1a1a1a;
+  // background: #1a1a1a;
   padding: 1rem 2rem;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 .navbar {
@@ -22,7 +22,7 @@ header {
 
 .logo {
   @include neon-glow(rgba(#542c86, 0.5));
-  color: #ffffff;
+  color: #00d9ff;
   font-size: 2rem;
   font-weight: bold;
   font-family: "Orbitron", sans-serif;
@@ -30,6 +30,8 @@ header {
   position: relative;
   z-index: 2;
   animation: pulse 2s infinite;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .hamburger {
@@ -37,6 +39,7 @@ header {
   background: none;
   border: none;
   cursor: pointer;
+  z-index: 10;
   padding: 0.5rem;
 
   .hamburger-line {
@@ -45,18 +48,22 @@ header {
     height: 3px;
     background: #ffffff;
     margin: 5px 0;
+    z-index: 10;
     transition: all 0.3s ease;
   }
 
   &.open {
     .hamburger-line:nth-child(1) {
       transform: rotate(45deg) translate(5px, 5px);
+      z-index: 10;
     }
     .hamburger-line:nth-child(2) {
       opacity: 0;
+      z-index: 10;
     }
     .hamburger-line:nth-child(3) {
       transform: rotate(-45deg) translate(7px, -7px);
+      z-index: 10;
     }
   }
 }
@@ -96,7 +103,7 @@ header {
 
       &:hover,
       &.active {
-        color: #6b40a0;
+        color: #00d9ff;
       }
     }
   }
@@ -110,10 +117,14 @@ header {
   .nav-links {
     display: none;
     position: absolute;
-    top: 80%;
+    top: -18%;
     left: 0;
     right: 0;
-    background: rgba(26, 26, 26, 0.658);
+    background: linear-gradient(
+      145deg,
+      rgba(#121212, 0.9),
+      rgba(#1a1a2e, 0.9)
+    ) !important;
     backdrop-filter: blur(10px);
     flex-direction: column;
     padding: 1rem;
@@ -165,6 +176,8 @@ header {
 .logo-container {
   position: relative;
   display: inline-block;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .semicircle,

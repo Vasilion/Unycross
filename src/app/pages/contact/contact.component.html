@@ -4,13 +4,13 @@
     <p mat-body-1 [@fadeInUp]="state">
       Contact us for web hosting, development, or AI solutions.
     </p>
-    <div class="loading">
+    <!-- <div class="loading">
       <div class="loading-box">
         <div class="WH color l1"></div>
         <div class="ball color"></div>
         <div class="WH color l2"></div>
       </div>
-    </div>
+    </div> -->
   </div>
 </section>
 
@@ -34,6 +34,21 @@
     </div>
     <mat-card class="form-card" [@fadeInUp]="state">
       <mat-card-content>
+        <div class="contact-info">
+          <div class="info-item">
+            <a href="tel:+15172047471" class="info-link">
+              <mat-icon>phone</mat-icon>
+              <span>517-204-7471</span>
+            </a>
+          </div>
+          <div class="info-item">
+            <a href="mailto:unycross@gmail.com" class="info-link">
+              <mat-icon>email</mat-icon>
+              <span>unycross&#64;gmail.com</span>
+            </a>
+          </div>
+        </div>
+
         <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
           <mat-form-field class="full-width">
             <mat-label>Name</mat-label>

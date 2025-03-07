@@ -107,7 +107,7 @@ $text-color-5: #ab47bc; // Vibrant purple
 
 // Global styles
 body {
-  background: $background-color;
+  // background: $background-color;
   color: $text-color-1;
   line-height: 1.6;
   margin: 0;
@@ -142,13 +142,13 @@ h1 {
 
 h2 {
   animation: text-flicker 3s infinite;
-  color: $text-color-4;
+  color: #00d9ff;
   text-shadow: 0 0 8px rgba($text-color-2, 0.4);
 }
 
 h3 {
   animation: text-flicker 3s infinite;
-  color: $text-color-5;
+  color: #00d9ff;
   text-shadow: 0 0 6px rgba($text-color-3, 0.4);
 }
 

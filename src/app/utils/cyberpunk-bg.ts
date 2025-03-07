@@ -441,18 +441,18 @@ export class CyberpunkBackground {
   private applyFixedCanvas(): void {
     if (!this.renderer || !this.renderer.domElement) return;
 
-    // Set canvas to fixed position covering viewport
     const canvas = this.renderer.domElement;
     canvas.style.position = 'fixed';
     canvas.style.top = '0';
     canvas.style.left = '0';
+    // Make canvas 20% taller than viewport to account for scroll
     canvas.style.width = '100vw';
-    canvas.style.height = '100vh';
+    canvas.style.height = '120vh'; // Increase height
     canvas.style.zIndex = '-1';
-    canvas.style.pointerEvents = 'none'; // Allow interactions with content below
+    canvas.style.pointerEvents = 'none';
 
-    // Force renderer to match viewport
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    // Force renderer to match this larger size
+    this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
   }
 
   private setupEvents(): void {
@@ -551,11 +551,11 @@ export class CyberpunkBackground {
   private handleScroll = (): void => {
     if (!this.isMobile) return;
 
-    // Track scroll direction
-    this.lastScrollY = window.scrollY;
-
     // Apply fixed canvas positioning
     this.applyFixedCanvas();
+
+    // Force render after scroll
+    this.renderer.render(this.scene, this.camera);
 
     // Clear any existing timeout
     if (this.scrollTimeout !== null) {
@@ -564,6 +564,7 @@ export class CyberpunkBackground {
 
     // Set a new timeout to ensure canvas is fixed after scrolling stops
     this.scrollTimeout = window.setTimeout(() => {
+      // Double-check the canvas position and size after scrolling stops
       this.applyFixedCanvas();
       this.renderer.render(this.scene, this.camera);
     }, 100);

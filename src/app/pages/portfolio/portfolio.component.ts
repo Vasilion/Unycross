@@ -69,10 +69,6 @@ export class PortfolioComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.state = 'visible'; // Trigger animations on load
+    this.state = 'visible';
   }
-
-  // openProject(url: string) {
-  //   window.open(url, '_blank');
-  // }
 }

@@ -2,8 +2,7 @@
   <div class="container">
     <h1 mat-headline-1 [@fadeInUp]="state">Get in Touch</h1>
     <p mat-body-1 [@fadeInUp]="state">
-      Let’s accelerate your digital journey—contact us for web hosting,
-      development, or AI solutions.
+      Contact us for web hosting, development, or AI solutions.
     </p>
     <div class="loading">
       <div class="loading-box">
@@ -113,15 +112,16 @@
               Message is required.
             </mat-error>
           </mat-form-field>
-
-          <button
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="contactForm.invalid"
-          >
-            Send Message
-          </button>
+          <div class="text-center">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              [disabled]="contactForm.invalid"
+            >
+              Send Message
+            </button>
+          </div>
         </form>
       </mat-card-content>
     </mat-card>

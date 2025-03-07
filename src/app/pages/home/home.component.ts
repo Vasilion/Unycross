@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule
+import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -40,7 +40,7 @@ import {
 })
 export class HomeComponent implements OnInit {
   state = 'visible';
-  selectedImage: string | null = null; // Track the clicked image
+  selectedImage: string | null = null;
   services = [
     {
       title: 'Custom Websites',
@@ -87,22 +87,21 @@ export class HomeComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.state = 'visible'; // Trigger animations on load
+    this.state = 'visible';
   }
 
   openModal(imageSrc: string) {
     this.selectedImage = imageSrc;
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    document.body.style.overflow = 'hidden';
   }
 
   closeModal(event: Event) {
-    // Close only if clicking the background or close button
     if (
       event.target === event.currentTarget ||
       (event.target as HTMLElement).classList.contains('close-btn')
     ) {
       this.selectedImage = null;
-      document.body.style.overflow = 'auto'; // Restore scrolling
+      document.body.style.overflow = 'auto';
     }
   }
 }

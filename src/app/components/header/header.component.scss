@@ -1,5 +1,5 @@
 @mixin neon-glow($color) {
-  text-shadow: 0 0 5px $color, 0 0 8px $color, 0 0 15px $color; // Toned down from 7/10/21px
+  text-shadow: 0 0 5px $color, 0 0 8px $color, 0 0 15px $color;
 }
 
 header {
@@ -76,7 +76,6 @@ header {
       transition: all 0.3s ease;
       position: relative;
 
-      // Subtle neon underline effect
       &:after {
         content: "";
         position: absolute;
@@ -87,7 +86,7 @@ header {
         background-color: #6b40a0;
         transition: all 0.3s ease;
         transform: translateX(-50%);
-        box-shadow: 0 0 5px rgba(#6b40a0, 0.5); // Subtle glow only on underline
+        box-shadow: 0 0 5px rgba(#6b40a0, 0.5);
       }
 
       &:hover:after,
@@ -97,7 +96,7 @@ header {
 
       &:hover,
       &.active {
-        color: #6b40a0; // No text glow, just color change
+        color: #6b40a0;
       }
     }
   }
@@ -111,31 +110,54 @@ header {
   .nav-links {
     display: none;
     position: absolute;
-    top: 100%;
+    top: 80%;
     left: 0;
     right: 0;
-    background: #1a1a1a;
+    background: rgba(26, 26, 26, 0.658);
+    backdrop-filter: blur(10px);
     flex-direction: column;
     padding: 1rem;
     gap: 1rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    transform: translateX(100%);
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 
     &.open {
       display: flex;
-      transform: translateX(0);
+      transform: translateY(0);
+      opacity: 1;
+      animation: slideIn 0.3s ease forwards;
     }
 
     li {
       width: 100%;
       text-align: center;
-    }
 
-    li a {
-      display: block;
-      padding: 0.5rem;
-      font-size: 1.2rem;
+      a {
+        display: block;
+        padding: 0.5rem;
+        font-size: 1.2rem;
+        color: #ffffff;
+        transition: all 0.3s ease;
+
+        &:hover {
+          color: #6b40a0;
+          text-shadow: 0 0 10px rgba(107, 64, 160, 0.5);
+        }
+      }
     }
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }
 

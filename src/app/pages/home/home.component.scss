@@ -98,6 +98,10 @@
   }
 }
 
+.btn-space {
+  margin-top: 2rem;
+}
+
 .your {
   color: #ba68c8;
   animation: text-flicker 4s infinite;
@@ -105,7 +109,7 @@
 }
 .services-teaser {
   padding: 4rem 2rem;
-  background: rgba(26, 26, 26, 0.8); // Made transparent
+  background: rgba(26, 26, 26, 0.8);
 }
 
 .container {
@@ -146,7 +150,7 @@ mat-card-title {
 
 .testimonials {
   padding: 4rem 2rem;
-  background: rgba(18, 18, 18, 0.8); // Made transparent
+  background: rgba(18, 18, 18, 0.8);
 }
 
 .testimonial-card {
@@ -173,13 +177,13 @@ mat-card-title {
   .rating-author-row {
     display: flex;
     align-items: center;
-    gap: 1rem; /* Adds space between rating and author */
+    gap: 1rem;
   }
 
   .rating {
-    color: #ffd700; /* Gold color for stars */
+    color: #ffd700;
     font-size: 1.2em;
-    margin: 0; /* Remove default margins */
+    margin: 0;
   }
 }
 
@@ -353,14 +357,12 @@ h3 {
 }
 
 @media (max-width: 768px) {
-  /* Adjust breakpoint as needed */
   .mobile-reverse {
     display: flex;
-    flex-direction: column-reverse; /* Reverses the order of flex items */
+    flex-direction: column-reverse;
   }
 }
 
-//hero bg
 .hero-bg::after {
   content: "";
   position: absolute;

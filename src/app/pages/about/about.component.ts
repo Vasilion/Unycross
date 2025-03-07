@@ -9,11 +9,12 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
   animations: [
@@ -41,6 +42,6 @@ export class AboutComponent implements OnInit {
   state = 'visible';
 
   ngOnInit() {
-    this.state = 'visible'; // Trigger animations on load
+    this.state = 'visible';
   }
 }

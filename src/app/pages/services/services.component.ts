@@ -9,11 +9,12 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss'],
   animations: [
@@ -75,6 +76,6 @@ export class ServicesComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.state = 'visible'; // Trigger animations on load
+    this.state = 'visible';
   }
 }

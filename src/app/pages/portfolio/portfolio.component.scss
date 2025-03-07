@@ -20,7 +20,7 @@
   p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    font-family: "Orbitron", sans-serif; // Futuristic body text
+    font-family: "Orbitron", sans-serif;
     text-align: center;
   }
 
@@ -50,17 +50,17 @@
 
     mat-card-header {
       display: flex;
-      justify-content: center; // Centers the title horizontally
+      justify-content: center;
     }
 
     mat-card-title {
-      font-family: "Orbitron", sans-serif; // Futuristic title
+      font-family: "Orbitron", sans-serif;
       text-align: center;
     }
 
     mat-card-content {
       padding: 1rem;
-      font-family: "Orbitron", sans-serif; // Futuristic description
+      font-family: "Orbitron", sans-serif;
     }
 
     mat-card-actions {
@@ -71,7 +71,7 @@
     a {
       background: #6b40a0;
       color: #ffffff;
-      font-family: "Orbitron", sans-serif; // Futuristic button text
+      font-family: "Orbitron", sans-serif;
 
       &:hover {
         background: #9f5ed8;

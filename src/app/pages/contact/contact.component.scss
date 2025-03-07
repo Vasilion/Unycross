@@ -27,12 +27,12 @@
   h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    font-family: "Orbitron", sans-serif; // Futuristic headline
+    font-family: "Orbitron", sans-serif;
   }
 
   p {
     font-size: 1.2rem;
-    font-family: "Orbitron", sans-serif; // Futuristic body text
+    font-family: "Orbitron", sans-serif;
   }
 }
 
@@ -60,25 +60,25 @@
 }
 
 mat-form-field {
-  font-family: "Orbitron", sans-serif; // Futuristic form labels and inputs
+  font-family: "Orbitron", sans-serif;
 }
 
 mat-label,
 input,
 textarea {
-  font-family: "Orbitron", sans-serif; // Futuristic text
+  font-family: "Orbitron", sans-serif;
   color: #ffffff;
 }
 
 mat-error {
-  font-family: "Orbitron", sans-serif; // Futuristic errors
+  font-family: "Orbitron", sans-serif;
   color: #ff4444;
 }
 
 button {
   padding: 1rem 3rem;
   font-size: 1.2rem;
-  font-family: "Orbitron", sans-serif; // Futuristic button text
+  font-family: "Orbitron", sans-serif;
   background: #bb86fc;
   color: #ffffff;
 
@@ -87,7 +87,8 @@ button {
   }
 
   &:disabled {
-    background: #4a4a4a;
+    background: #4a4a4a !important;
+    color: #8f8484 !important;
     cursor: not-allowed;
   }
 }
@@ -147,7 +148,6 @@ button {
   position: absolute;
   right: 32%;
   bottom: -11px;
-  /* change the back groung color on switching from light to dark mood */
   background: #e8e8e8;
   transform: translateZ(200px) rotate(var(--r));
   -webkit-animation: mask var(--duration) linear forwards infinite;
@@ -1144,12 +1144,12 @@ loading {
 }
 
 .success-snackbar {
-  background-color: #4caf50; // Green for success
+  background-color: #4caf50;
   color: white;
 }
 
 .error-snackbar {
-  background-color: #f44336; // Red for error
+  background-color: #f44336;
   color: white;
 }
 

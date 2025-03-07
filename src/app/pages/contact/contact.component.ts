@@ -57,7 +57,7 @@ export class ContactComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private snackBar: MatSnackBar // Inject MatSnackBar
+    private snackBar: MatSnackBar
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -66,10 +66,12 @@ export class ContactComponent implements OnInit {
       message: ['', Validators.required],
     });
 
-    this.contactForm.get('phoneNumber')?.setValidators([
-      Validators.pattern('^[0-9]*$'), // Only digits
-      Validators.maxLength(10), // Limit to 10 digits
-    ]);
+    this.contactForm
+      .get('phoneNumber')
+      ?.setValidators([
+        Validators.pattern('^[0-9]*$'),
+        Validators.maxLength(10),
+      ]);
   }
 
   ngOnInit() {
@@ -78,7 +80,7 @@ export class ContactComponent implements OnInit {
 
   onSubmit() {
     if (this.contactForm.valid) {
-      this.loading = true; // Show the loading spinner
+      this.loading = true;
 
       const formData = {
         name: this.contactForm.get('name')?.value,
@@ -98,17 +100,16 @@ export class ContactComponent implements OnInit {
               {
                 duration: 5000,
                 horizontalPosition: 'center',
-                verticalPosition: 'bottom', // Move to bottom
+                verticalPosition: 'bottom',
                 panelClass: ['success-snackbar'],
               }
             );
             this.contactForm.reset();
-            this.loading = false; // Hide spinner
+            this.loading = false;
           },
           error: (error) => {
             console.error('Error Details:', error);
 
-            // Extract and show the error message from the response
             console.log('Error Details:', error);
             const errorMessage =
               error?.error?.error?.details?.error || 'Something went wrong.';
@@ -120,7 +121,7 @@ export class ContactComponent implements OnInit {
               panelClass: ['error-snackbar'],
             });
 
-            this.loading = false; // Hide spinner
+            this.loading = false;
           },
         });
     } else {
@@ -130,7 +131,7 @@ export class ContactComponent implements OnInit {
         {
           duration: 5000,
           horizontalPosition: 'center',
-          verticalPosition: 'bottom', // Move to bottom
+          verticalPosition: 'bottom',
         }
       );
     }
@@ -140,9 +141,9 @@ export class ContactComponent implements OnInit {
     const input = event.target as HTMLInputElement;
     let value = input.value.replace(/[^0-9]/g, '');
     if (value.length > 10) {
-      value = value.slice(0, 10); // Truncate to 10 digits
+      value = value.slice(0, 10);
     }
     this.contactForm.get('phoneNumber')?.setValue(value, { emitEvent: false });
-    input.value = value; // Update the input field
+    input.value = value;
   }
 }

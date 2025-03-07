@@ -78,6 +78,10 @@ main {
   opacity: 1;
 }
 
+.back-to-top:focus {
+  outline: none;
+}
+
 @keyframes spinner {
   0% {
     transform: rotate(45deg) rotateX(-25deg) rotateY(25deg);

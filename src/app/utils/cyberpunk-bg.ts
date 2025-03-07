@@ -42,6 +42,9 @@ export class CyberpunkBackground {
   private readonly REFERENCE_WIDTH = 1920;
   private readonly REFERENCE_HEIGHT = 1080;
 
+  private lastScrollY: number = 0;
+  private scrollTimeout: number | null = null;
+
   constructor(container: HTMLElement) {
     this.container = container;
     this.scene = new THREE.Scene();
@@ -52,6 +55,9 @@ export class CyberpunkBackground {
 
     // Detect if on mobile
     this.isMobile = this.checkIfMobile();
+
+    // Store initial scroll position
+    this.lastScrollY = window.scrollY;
 
     // Add fog for depth and cyberpunk feel
     this.scene.fog = new THREE.FogExp2(0x000000, 0.002);
@@ -70,32 +76,14 @@ export class CyberpunkBackground {
       alpha: true,
     });
     this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.setClearColor(this.BACKGROUND_COLOR);
 
-    // FIX: Set renderer to cover full document height on mobile, not just viewport
+    // Make renderer canvas fixed and full-screen
     if (this.isMobile) {
-      // Get the full document height including scrollable area
-      const docHeight = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-      );
-      this.renderer.setSize(window.innerWidth, docHeight);
-
-      // Make the canvas fixed position to cover all content while scrolling
-      this.renderer.domElement.style.position = 'fixed';
-      this.renderer.domElement.style.top = '0';
-      this.renderer.domElement.style.left = '0';
-      this.renderer.domElement.style.width = '100%';
-      this.renderer.domElement.style.height = '100%';
-      this.renderer.domElement.style.zIndex = '-1'; // Behind content
-    } else {
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.applyFixedCanvas();
     }
 
-    this.renderer.setClearColor(this.BACKGROUND_COLOR);
     this.container.appendChild(this.renderer.domElement);
 
     this.initScene();
@@ -441,8 +429,31 @@ export class CyberpunkBackground {
     // Update lines for movement
     this.updateLines();
 
+    // If on mobile, make sure the fixed canvas is still properly positioned
+    if (this.isMobile && (this.time * 100) % 30 === 0) {
+      this.applyFixedCanvas();
+    }
+
     this.renderer.render(this.scene, this.camera);
   };
+
+  // Helper method to ensure canvas is fixed and covers the entire screen
+  private applyFixedCanvas(): void {
+    if (!this.renderer || !this.renderer.domElement) return;
+
+    // Set canvas to fixed position covering viewport
+    const canvas = this.renderer.domElement;
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100vw';
+    canvas.style.height = '100vh';
+    canvas.style.zIndex = '-1';
+    canvas.style.pointerEvents = 'none'; // Allow interactions with content below
+
+    // Force renderer to match viewport
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
+  }
 
   private setupEvents(): void {
     // Handle window resize
@@ -456,11 +467,40 @@ export class CyberpunkBackground {
       passive: true,
     });
 
-    // FIX: Add scroll event listener to ensure canvas covers viewport while scrolling
+    // Add scroll events with throttling for better performance
     if (this.isMobile) {
-      window.addEventListener('scroll', this.handleScroll);
+      window.addEventListener('scroll', this.handleScroll, { passive: true });
+      // Also refresh after any momentum scrolling has stopped
+      window.addEventListener('touchend', this.handleTouchEnd, {
+        passive: true,
+      });
     }
+
+    // Add visibility change handler to fix canvas when returning to tab
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
+
+  private handleTouchEnd = (): void => {
+    if (!this.isMobile) return;
+
+    // Apply fixed canvas immediately
+    this.applyFixedCanvas();
+
+    // And also after a delay to handle momentum scrolling
+    setTimeout(() => {
+      this.applyFixedCanvas();
+      this.renderer.render(this.scene, this.camera);
+    }, 500);
+  };
+
+  // Handle visibility changes (switching tabs, etc.)
+  private handleVisibilityChange = (): void => {
+    if (document.visibilityState === 'visible' && this.isMobile) {
+      // When returning to the tab, ensure canvas is properly fixed
+      this.applyFixedCanvas();
+      this.renderer.render(this.scene, this.camera);
+    }
+  };
 
   private handleResize = (): void => {
     // Check if device type has changed
@@ -484,15 +524,9 @@ export class CyberpunkBackground {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
 
-    // FIX: Update renderer size to always cover full document on mobile
+    // Apply fixed canvas for mobile
     if (this.isMobile) {
-      // Update the fixed position styling
-      this.renderer.domElement.style.position = 'fixed';
-      this.renderer.domElement.style.top = '0';
-      this.renderer.domElement.style.left = '0';
-      this.renderer.domElement.style.width = '100%';
-      this.renderer.domElement.style.height = '100%';
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.applyFixedCanvas();
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
@@ -515,23 +549,45 @@ export class CyberpunkBackground {
   };
 
   private handleScroll = (): void => {
-    if (this.isMobile) {
-      // Ensure canvas stays fixed in viewport while scrolling
-      this.renderer.domElement.style.position = 'fixed';
-      this.renderer.domElement.style.top = '0';
-      this.renderer.domElement.style.left = '0';
+    if (!this.isMobile) return;
+
+    // Track scroll direction
+    this.lastScrollY = window.scrollY;
+
+    // Apply fixed canvas positioning
+    this.applyFixedCanvas();
+
+    // Clear any existing timeout
+    if (this.scrollTimeout !== null) {
+      window.clearTimeout(this.scrollTimeout);
     }
+
+    // Set a new timeout to ensure canvas is fixed after scrolling stops
+    this.scrollTimeout = window.setTimeout(() => {
+      this.applyFixedCanvas();
+      this.renderer.render(this.scene, this.camera);
+    }, 100);
   };
 
   // Public methods for external control
   public dispose(): void {
     cancelAnimationFrame(this.animationFrame);
 
+    // Clear timeout if any
+    if (this.scrollTimeout !== null) {
+      window.clearTimeout(this.scrollTimeout);
+    }
+
     // Cleanup event listeners
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
     window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('touchend', this.handleTouchEnd);
+    document.removeEventListener(
+      'visibilitychange',
+      this.handleVisibilityChange
+    );
 
     // Dispose of THREE.js objects
     this.points.geometry.dispose();

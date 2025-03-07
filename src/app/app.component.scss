@@ -83,8 +83,21 @@ main {
   opacity: 1;
 }
 
-.back-to-top:focus {
+.back-to-top:focus,
+.back-to-top:active {
+  -webkit-tap-highlight-color: transparent;
   outline: none;
+}
+
+@media screen and (max-width: 768px) {
+  .tooltip {
+    display: none !important;
+  }
+
+  .back-to-top:hover .tooltip,
+  .back-to-top .tooltip.visible {
+    display: none !important;
+  }
 }
 
 @keyframes spinner {

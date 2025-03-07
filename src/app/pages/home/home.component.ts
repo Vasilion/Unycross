@@ -10,6 +10,7 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { NavigationService } from '../../shared/navigation.service';
 
 @Component({
   selector: 'app-home',
@@ -41,6 +42,7 @@ import {
 export class HomeComponent implements OnInit {
   state = 'visible';
   selectedImage: string | null = null;
+  constructor(private navigationService: NavigationService) {}
   services = [
     {
       title: 'Custom Websites',
@@ -103,5 +105,9 @@ export class HomeComponent implements OnInit {
       this.selectedImage = null;
       document.body.style.overflow = 'auto';
     }
+  }
+
+  navAndScroll() {
+    this.navigationService.scrollToTop('/contact');
   }
 }

@@ -155,7 +155,7 @@
         mat-raised-button
         color="primary"
         class="cta"
-        routerLink="/contact"
+        (click)="navAndScroll()"
         [@fadeIn]="state"
       >
         Take the Next Step

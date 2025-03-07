@@ -37,7 +37,7 @@
         mat-raised-button
         color="primary"
         class="cta btn-space"
-        routerLink="/contact"
+        (click)="navAndScroll()"
         [@fadeIn]="state"
       >
         Get Service
@@ -71,7 +71,7 @@
       mat-raised-button
       color="primary"
       class="cta btn-space"
-      routerLink="/contact"
+      (click)="navAndScroll()"
       [@fadeIn]="state"
     >
       Join the Future

@@ -10,6 +10,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { RouterLink } from '@angular/router';
+import { NavigationService } from '../../shared/navigation.service';
 
 @Component({
   selector: 'app-about',
@@ -40,8 +41,13 @@ import { RouterLink } from '@angular/router';
 })
 export class AboutComponent implements OnInit {
   state = 'visible';
+  constructor(private navigationService: NavigationService) {}
 
   ngOnInit() {
     this.state = 'visible';
+  }
+
+  navAndScroll() {
+    this.navigationService.scrollToTop('/contact');
   }
 }

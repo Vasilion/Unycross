@@ -10,6 +10,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { RouterLink } from '@angular/router';
+import { NavigationService } from '../../shared/navigation.service';
 
 @Component({
   selector: 'app-services',
@@ -40,6 +41,7 @@ import { RouterLink } from '@angular/router';
 })
 export class ServicesComponent implements OnInit {
   state = 'visible';
+  constructor(private navigationService: NavigationService) {}
   services = [
     {
       title: 'Web Hosting',
@@ -77,5 +79,9 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+  }
+
+  navAndScroll() {
+    this.navigationService.scrollToTop('/contact');
   }
 }

@@ -430,9 +430,9 @@ export class CyberpunkBackground {
     this.updateLines();
 
     // If on mobile, make sure the fixed canvas is still properly positioned
-    if (this.isMobile && (this.time * 100) % 30 === 0) {
-      this.applyFixedCanvas();
-    }
+    // if (this.isMobile && (this.time * 100) % 30 === 0) {
+    //   this.applyFixedCanvas();
+    // }
 
     this.renderer.render(this.scene, this.camera);
   };

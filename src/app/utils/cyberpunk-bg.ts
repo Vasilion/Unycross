@@ -468,13 +468,13 @@ export class CyberpunkBackground {
     });
 
     // Add scroll events with throttling for better performance
-    if (this.isMobile) {
-      window.addEventListener('scroll', this.handleScroll, { passive: true });
-      // Also refresh after any momentum scrolling has stopped
-      window.addEventListener('touchend', this.handleTouchEnd, {
-        passive: true,
-      });
-    }
+    // if (this.isMobile) {
+    //   window.addEventListener('scroll', this.handleScroll, { passive: true });
+    //   // Also refresh after any momentum scrolling has stopped
+    //   window.addEventListener('touchend', this.handleTouchEnd, {
+    //     passive: true,
+    //   });
+    // }
 
     // Add visibility change handler to fix canvas when returning to tab
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
@@ -583,7 +583,7 @@ export class CyberpunkBackground {
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
-    window.removeEventListener('scroll', this.handleScroll);
+    // window.removeEventListener('scroll', this.handleScroll);
     window.removeEventListener('touchend', this.handleTouchEnd);
     document.removeEventListener(
       'visibilitychange',

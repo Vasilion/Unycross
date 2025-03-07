@@ -463,9 +463,9 @@ export class CyberpunkBackground {
     document.addEventListener('mousemove', this.handleMouseMove);
 
     // Touch events for mobile
-    document.addEventListener('touchmove', this.handleTouchMove, {
-      passive: true,
-    });
+    // document.addEventListener('touchmove', this.handleTouchMove, {
+    //   passive: true,
+    // });
 
     // Add scroll events with throttling for better performance
     // if (this.isMobile) {
@@ -584,7 +584,7 @@ export class CyberpunkBackground {
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
     // window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('touchend', this.handleTouchEnd);
+    // window.removeEventListener('touchend', this.handleTouchEnd);
     document.removeEventListener(
       'visibilitychange',
       this.handleVisibilityChange

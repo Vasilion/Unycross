@@ -3,13 +3,25 @@
 }
 
 header {
-  // background: #1a1a1a;
+  // background: linear-gradient(
+  //   145deg,
+  //   rgba(#121212, 0.9),
+  //   rgba(#1a1a2e, 0.9)
+  // ) !important;
+
   padding: 1rem 2rem;
   position: fixed;
   width: 100%;
   top: 0;
   z-index: 1000;
-  // box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  opacity: 1;
+  transition: opacity 0.3s ease, background 0.3s ease; /* Add transition for background */
+}
+
+header.scrolled {
+  backdrop-filter: blur(4px);
+  background-color: #0000009c;
+  opacity: 1; /* Full opacity when scrolled */
 }
 
 .navbar {
@@ -120,11 +132,7 @@ header {
     top: -18%;
     left: 0;
     right: 0;
-    background: linear-gradient(
-      145deg,
-      rgba(#121212, 0.9),
-      rgba(#1a1a2e, 0.9)
-    ) !important;
+    background-color: #000000ee;
     backdrop-filter: blur(10px);
     flex-direction: column;
     padding: 1rem;

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -43,6 +43,17 @@ export class HomeComponent implements OnInit {
   state = 'visible';
   selectedImage: string | null = null;
   constructor(private navigationService: NavigationService) {}
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    const header = document.querySelector('header');
+    if (header) {
+      if (window.scrollY > 0) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    }
+  }
   services = [
     {
       title: 'Custom Websites',

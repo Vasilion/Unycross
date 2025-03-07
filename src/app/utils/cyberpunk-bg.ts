@@ -70,7 +70,31 @@ export class CyberpunkBackground {
       alpha: true,
     });
     this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // FIX: Set renderer to cover full document height on mobile, not just viewport
+    if (this.isMobile) {
+      // Get the full document height including scrollable area
+      const docHeight = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+      );
+      this.renderer.setSize(window.innerWidth, docHeight);
+
+      // Make the canvas fixed position to cover all content while scrolling
+      this.renderer.domElement.style.position = 'fixed';
+      this.renderer.domElement.style.top = '0';
+      this.renderer.domElement.style.left = '0';
+      this.renderer.domElement.style.width = '100%';
+      this.renderer.domElement.style.height = '100%';
+      this.renderer.domElement.style.zIndex = '-1'; // Behind content
+    } else {
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
     this.renderer.setClearColor(this.BACKGROUND_COLOR);
     this.container.appendChild(this.renderer.domElement);
 
@@ -431,6 +455,11 @@ export class CyberpunkBackground {
     document.addEventListener('touchmove', this.handleTouchMove, {
       passive: true,
     });
+
+    // FIX: Add scroll event listener to ensure canvas covers viewport while scrolling
+    if (this.isMobile) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
   }
 
   private handleResize = (): void => {
@@ -454,7 +483,19 @@ export class CyberpunkBackground {
 
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+    // FIX: Update renderer size to always cover full document on mobile
+    if (this.isMobile) {
+      // Update the fixed position styling
+      this.renderer.domElement.style.position = 'fixed';
+      this.renderer.domElement.style.top = '0';
+      this.renderer.domElement.style.left = '0';
+      this.renderer.domElement.style.width = '100%';
+      this.renderer.domElement.style.height = '100%';
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    } else {
+      this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
   };
 
   private handleMouseMove = (event: MouseEvent): void => {
@@ -473,6 +514,15 @@ export class CyberpunkBackground {
     }
   };
 
+  private handleScroll = (): void => {
+    if (this.isMobile) {
+      // Ensure canvas stays fixed in viewport while scrolling
+      this.renderer.domElement.style.position = 'fixed';
+      this.renderer.domElement.style.top = '0';
+      this.renderer.domElement.style.left = '0';
+    }
+  };
+
   // Public methods for external control
   public dispose(): void {
     cancelAnimationFrame(this.animationFrame);
@@ -481,6 +531,7 @@ export class CyberpunkBackground {
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('scroll', this.handleScroll);
 
     // Dispose of THREE.js objects
     this.points.geometry.dispose();

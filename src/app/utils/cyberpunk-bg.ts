@@ -45,6 +45,7 @@ export class CyberpunkBackground {
       this.container = document.getElementById(this.containerId) as HTMLElement;
     }
 
+    // Get actual viewport dimensions including potential scroll overflow
     this.width = window.innerWidth;
     this.height = window.innerHeight;
     this.stormColor = new THREE.Color('#0066cc');
@@ -113,7 +114,7 @@ export class CyberpunkBackground {
     this.camera.position.y = 10;
     this.camera.lookAt(0, 0, 0);
 
-    // Create renderer
+    // Create renderer with oversized canvas to prevent white flashing
     this.renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
     this.renderer.setSize(this.width, this.height);
 
@@ -121,9 +122,12 @@ export class CyberpunkBackground {
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
-    this.renderer.domElement.style.width = '100%';
-    this.renderer.domElement.style.height = '100%';
+    this.renderer.domElement.style.width = '100vw'; // Use viewport units
+    this.renderer.domElement.style.height = '100vh'; // Use viewport units
     this.renderer.domElement.style.zIndex = '-1';
+    // Expand canvas beyond viewport to handle momentum scrolling
+    this.renderer.domElement.style.transform = 'scale(1.2)'; // Scale up to prevent white edges
+    this.renderer.domElement.style.transformOrigin = 'center';
 
     this.container.appendChild(this.renderer.domElement);
 
@@ -409,18 +413,34 @@ export class CyberpunkBackground {
   }
 
   private onWindowResize(): void {
+    // Update dimensions and scale
     this.width = window.innerWidth;
     this.height = window.innerHeight;
+
+    // Set a buffer size slightly larger than the viewport
+    const bufferWidth = this.width * 1.2;
+    const bufferHeight = this.height * 1.2;
 
     this.camera.aspect = this.width / this.height;
     this.camera.updateProjectionMatrix();
 
-    this.renderer.setSize(this.width, this.height);
+    this.renderer.setSize(bufferWidth, bufferHeight);
+
+    // Center the oversized canvas
+    this.renderer.domElement.style.position = 'fixed';
+    this.renderer.domElement.style.top = '50%';
+    this.renderer.domElement.style.left = '50%';
+    this.renderer.domElement.style.transform =
+      'translate(-50%, -50%) scale(1.2)';
   }
 
   private onWindowScroll(): void {
-    // Handle scroll events to ensure background covers entire visible area
-    // No additional code needed since we've set the renderer to fixed position
+    // For mobile scrolling, ensure the canvas is always visible
+    // by making sure it stays centered regardless of scroll position
+    this.renderer.domElement.style.top = '50%';
+    this.renderer.domElement.style.left = '50%';
+    this.renderer.domElement.style.transform =
+      'translate(-50%, -50%) scale(1.2)';
   }
 
   private onMouseMove(event: MouseEvent): void {

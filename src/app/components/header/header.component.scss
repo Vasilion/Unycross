@@ -35,7 +35,7 @@ header.scrolled {
 .logo {
   @include neon-glow(rgba(#542c86, 0.5));
   color: #00d9ff;
-  font-size: 2rem;
+  font-size: 1.75rem;
   font-weight: bold;
   font-family: "Orbitron", sans-serif;
   cursor: pointer;
@@ -195,11 +195,12 @@ header.scrolled {
   animation: 6s rotate141 infinite linear;
   background-repeat: no-repeat;
   border-radius: 50%;
-  top: -25%;
+  top: -34%;
   margin-bottom: 5px;
   z-index: 1;
   position: absolute;
   overflow: hidden;
+  scale: 0.65;
 }
 
 .semicircle div {

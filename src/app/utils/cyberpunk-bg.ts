@@ -15,9 +15,9 @@ export class CyberpunkBackground {
   private pointColors: Float32Array;
   private time: number = 0;
   private isMobile: boolean = false;
+  private isAnimating: boolean = true;
   private originalWidth: number;
   private originalHeight: number;
-  private canvasInitialized: boolean = false;
 
   // Configuration - using only purple and cyan colors
   private readonly MAIN_COLOR = 0xab47bc; // Main purple color (#ab47bc)
@@ -69,25 +69,25 @@ export class CyberpunkBackground {
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
       alpha: true,
+      powerPreference: 'high-performance',
     });
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
 
-    // Set the renderer size once, including extra height for mobile
+    // IMPORTANT: Set the renderer size with extra buffer for mobile scrolling
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.5);
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     this.renderer.setClearColor(this.BACKGROUND_COLOR);
 
-    // Make renderer canvas fixed and full-screen for mobile
+    // Fix the canvas position immediately for mobile
     if (this.isMobile) {
       this.applyFixedCanvas();
     }
 
     this.container.appendChild(this.renderer.domElement);
-    this.canvasInitialized = true;
 
     this.initScene();
     this.setupEvents();
@@ -225,6 +225,8 @@ export class CyberpunkBackground {
   }
 
   private updateLines(): void {
+    if (!this.isAnimating) return;
+
     const positions = this.points.geometry.attributes['position'].array;
     const linePositions: number[] = [];
     const actualPointCount = this.isMobile
@@ -340,6 +342,8 @@ export class CyberpunkBackground {
   }
 
   private animate = (): void => {
+    if (!this.isAnimating) return;
+
     this.animationFrame = requestAnimationFrame(this.animate);
     this.time += this.PULSE_SPEED;
 
@@ -439,14 +443,23 @@ export class CyberpunkBackground {
     if (!this.renderer || !this.renderer.domElement) return;
 
     const canvas = this.renderer.domElement;
+
+    // Set fixed position with high z-index to ensure it stays below content but above background
     canvas.style.position = 'fixed';
     canvas.style.top = '0';
     canvas.style.left = '0';
-    // Make canvas 20% taller than viewport to account for scroll
     canvas.style.width = '100vw';
-    canvas.style.height = '120vh'; // Increase height
+    canvas.style.height = '150vh'; // Make it 50% taller than viewport
     canvas.style.zIndex = '-1';
     canvas.style.pointerEvents = 'none';
+
+    // Set important to override any other styling that might interfere
+    canvas.style.setProperty('position', 'fixed', 'important');
+    canvas.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
+    canvas.style.setProperty('backface-visibility', 'hidden', 'important');
+
+    // Force hardware acceleration for smoother performance
+    canvas.style.setProperty('will-change', 'transform', 'important');
   }
 
   private setupEvents(): void {
@@ -461,10 +474,67 @@ export class CyberpunkBackground {
       passive: true,
     });
 
-    // We explicitly don't listen to scroll events to prevent re-rendering on scroll
+    // Pause animation during scroll for mobile to prevent jank
+    if (this.isMobile) {
+      // Use passive listeners for better performance
+      window.addEventListener('scroll', this.handleScrollStart, {
+        passive: true,
+      });
+      // We'll resume animation after scroll stops
+      window.addEventListener('scrollend', this.handleScrollEnd, {
+        passive: true,
+      });
+
+      // Fallback for browsers not supporting scrollend
+      window.addEventListener(
+        'touchend',
+        () => {
+          setTimeout(this.handleScrollEnd, 200);
+        },
+        { passive: true }
+      );
+    }
+
+    // Pause on visibility change (tab change, etc)
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
+  private handleScrollStart = (): void => {
+    if (!this.isMobile) return;
+
+    // Pause animation during scroll
+    this.isAnimating = false;
+  };
+
+  private handleScrollEnd = (): void => {
+    if (!this.isMobile) return;
+
+    // Resume animation after scroll
+    this.isAnimating = true;
+
+    // Restart animation loop if it was stopped
+    if (!this.animationFrame) {
+      this.animate();
+    }
+  };
+
+  private handleVisibilityChange = (): void => {
+    this.isAnimating = !document.hidden;
+
+    // Restart animation when tab becomes visible again
+    if (document.hidden) {
+      cancelAnimationFrame(this.animationFrame);
+      this.animationFrame = 0;
+    } else if (!this.animationFrame) {
+      this.animate();
+    }
+  };
+
   private handleResize = (): void => {
+    // Pause animation during resize
+    const wasAnimating = this.isAnimating;
+    this.isAnimating = false;
+
     // Check if device type has changed
     const wasMobile = this.isMobile;
     this.isMobile = this.checkIfMobile();
@@ -488,10 +558,16 @@ export class CyberpunkBackground {
 
     // Resize renderer according to device type
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.5);
       this.applyFixedCanvas();
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    // Resume animation
+    this.isAnimating = wasAnimating;
+    if (wasAnimating && !this.animationFrame) {
+      this.animate();
     }
   };
 
@@ -502,29 +578,33 @@ export class CyberpunkBackground {
   };
 
   private handleTouchMove = (event: TouchEvent): void => {
+    // Only process if not scrolling to avoid interfering with scroll
     if (event.touches.length > 0) {
       // Convert touch position to normalized coordinates (-1 to 1)
       this.targetMouseX =
         (event.touches[0].clientX / window.innerWidth) * 2 - 1;
       this.targetMouseY =
         -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-
-      // Prevent default to avoid scroll interference on some devices
-      // Only if the canvas was already initialized
-      if (this.canvasInitialized) {
-        event.preventDefault();
-      }
     }
   };
 
   // Public methods for external control
   public dispose(): void {
+    // Stop animation
+    this.isAnimating = false;
     cancelAnimationFrame(this.animationFrame);
+    this.animationFrame = 0;
 
     // Cleanup event listeners
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('scroll', this.handleScrollStart);
+    window.removeEventListener('scrollend', this.handleScrollEnd);
+    document.removeEventListener(
+      'visibilitychange',
+      this.handleVisibilityChange
+    );
 
     // Dispose of THREE.js objects
     this.points.geometry.dispose();

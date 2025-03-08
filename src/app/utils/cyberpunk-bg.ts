@@ -75,7 +75,7 @@ export class CyberpunkBackground {
 
     // IMPORTANT: Set the renderer size with extra buffer for mobile scrolling
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.5);
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 2); // Increased from 1.5 to 2
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
@@ -449,7 +449,7 @@ export class CyberpunkBackground {
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.width = '100vw';
-    canvas.style.height = '150vh'; // Make it 50% taller than viewport
+    canvas.style.height = '200vh'; // Increased from 150vh to 200vh
     canvas.style.zIndex = '-1';
     canvas.style.pointerEvents = 'none';
 
@@ -558,7 +558,7 @@ export class CyberpunkBackground {
 
     // Resize renderer according to device type
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.5);
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 2); // Increased from 1.5 to 2
       this.applyFixedCanvas();
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);

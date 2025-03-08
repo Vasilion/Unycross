@@ -73,19 +73,19 @@ export class CyberpunkBackground {
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
 
-    // IMPORTANT: Set the renderer size - much larger for mobile to cover all scroll areas
+    // Set renderer size - more reasonable size for mobile to prevent distortion
+    // while still preventing white screen issues
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 5); // Make it 5x the viewport height
+      // Using 120vh instead of 200vh to prevent excessive distortion
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     this.renderer.setClearColor(this.BACKGROUND_COLOR);
 
-    // Fix the canvas position immediately for mobile
-    if (this.isMobile) {
-      this.applyFixedCanvas();
-    }
+    // Fix the canvas position immediately
+    this.applyFixedCanvas();
 
     this.container.appendChild(this.renderer.domElement);
 
@@ -449,7 +449,7 @@ export class CyberpunkBackground {
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.width = '100vw';
-    canvas.style.height = '500vh'; // Make it 5x the viewport height
+    canvas.style.height = '120vh'; // Reduced from 200vh to 120vh
     canvas.style.zIndex = '-1';
     canvas.style.pointerEvents = 'none';
 
@@ -474,27 +474,9 @@ export class CyberpunkBackground {
       passive: true,
     });
 
+    // Pause on visibility change (tab change, etc)
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
-
-  private handleScrollStart = (): void => {
-    if (!this.isMobile) return;
-
-    // Pause animation during scroll
-    this.isAnimating = false;
-  };
-
-  private handleScrollEnd = (): void => {
-    if (!this.isMobile) return;
-
-    // Resume animation after scroll
-    this.isAnimating = true;
-
-    // Restart animation loop if it was stopped
-    if (!this.animationFrame) {
-      this.animate();
-    }
-  };
 
   private handleVisibilityChange = (): void => {
     this.isAnimating = !document.hidden;
@@ -536,11 +518,13 @@ export class CyberpunkBackground {
 
     // Resize renderer according to device type
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 5); // Make it 5x the viewport height
-      this.applyFixedCanvas();
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
+
+    // Always reapply fixed canvas settings
+    this.applyFixedCanvas();
 
     // Resume animation
     this.isAnimating = wasAnimating;
@@ -556,7 +540,6 @@ export class CyberpunkBackground {
   };
 
   private handleTouchMove = (event: TouchEvent): void => {
-    // Only process if not scrolling to avoid interfering with scroll
     if (event.touches.length > 0) {
       // Convert touch position to normalized coordinates (-1 to 1)
       this.targetMouseX =
@@ -577,8 +560,6 @@ export class CyberpunkBackground {
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
-    window.removeEventListener('scroll', this.handleScrollStart);
-    window.removeEventListener('scrollend', this.handleScrollEnd);
     document.removeEventListener(
       'visibilitychange',
       this.handleVisibilityChange

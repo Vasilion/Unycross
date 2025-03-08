@@ -16,6 +16,7 @@ export class CyberpunkBackground {
   private stormColor: THREE.Color;
   private accentColor: THREE.Color;
   private purpleColor: THREE.Color;
+  private brighterPurpleColor: THREE.Color;
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -49,6 +50,7 @@ export class CyberpunkBackground {
     this.stormColor = new THREE.Color('#0066cc');
     this.accentColor = new THREE.Color('#00ccff');
     this.purpleColor = new THREE.Color('#592388');
+    this.brighterPurpleColor = new THREE.Color('#ce93d8'); // Updated rain color
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('#000000'); // Pure black background
@@ -114,12 +116,22 @@ export class CyberpunkBackground {
     // Create renderer
     this.renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
     this.renderer.setSize(this.width, this.height);
+
+    // Set renderer to maintain full height with scrolling
+    this.renderer.domElement.style.position = 'fixed';
+    this.renderer.domElement.style.top = '0';
+    this.renderer.domElement.style.left = '0';
+    this.renderer.domElement.style.width = '100%';
+    this.renderer.domElement.style.height = '100%';
+    this.renderer.domElement.style.zIndex = '-1';
+
     this.container.appendChild(this.renderer.domElement);
 
     // Add event listeners
     window.addEventListener('resize', this.onWindowResize.bind(this));
     window.addEventListener('mousemove', this.onMouseMove.bind(this));
     window.addEventListener('touchmove', this.onTouchMove.bind(this));
+    window.addEventListener('scroll', this.onWindowScroll.bind(this));
 
     // Create elements
     this.createStars();
@@ -236,67 +248,19 @@ export class CyberpunkBackground {
   }
 
   private createRain(): void {
-    // Create purple acidic rain effect with teardrop shapes
-    const rainCount = 3000; // Increased rain count for better coverage
+    // Create purple rain with the same particle style as the storm particles
+    const rainCount = 2000; // Reduced rain count (from 3000 to 2000)
     const rainGeometry = new THREE.BufferGeometry();
 
-    // Use a sprite material with a raindrop texture
-    const rainMaterial = new THREE.ShaderMaterial({
-      uniforms: {
-        time: { value: 0 },
-      },
-      vertexShader: `
-        attribute float size;
-        attribute vec3 velocity;
-        varying float vSize;
-        
-        void main() {
-          vSize = size;
-          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-          gl_PointSize = size * (300.0 / -mvPosition.z);
-          gl_Position = projectionMatrix * mvPosition;
-        }
-      `,
-      fragmentShader: `
-        varying float vSize;
-        uniform float time;
-        
-        float drawRaindrop(vec2 uv) {
-          // Transform UV to center the raindrop
-          vec2 center = vec2(0.5, 0.5);
-          vec2 p = uv - center;
-          
-          // Draw a teardrop shape
-          float d = length(p);
-          
-          // Create a teardrop shape by modifying a circle
-          // Make the bottom part elongated
-          float teardrop = smoothstep(0.5, 0.4, d + 0.2 * p.y);
-          
-          return teardrop;
-        }
-        
-        void main() {
-          vec2 uv = gl_PointCoord;
-          float drop = drawRaindrop(uv);
-          
-          // Purple color for acid rain effect
-          vec3 color = vec3(0.35, 0.14, 0.53); // Purple
-          
-          // Add some shimmer
-          float brightness = 0.6 + 0.4 * sin(time * 2.0 + vSize * 10.0);
-          color *= brightness;
-          
-          // Set the final color with transparency
-          gl_FragColor = vec4(color, drop * 0.7);
-          
-          // Discard pixels outside the raindrop
-          if (drop < 0.01) discard;
-        }
-      `,
+    // Use the same point material type as the particles, but with purple color
+    const rainMaterial = new THREE.PointsMaterial({
+      color: this.brighterPurpleColor,
+      size: 0.8, // Slightly larger than storm particles
       transparent: true,
-      depthWrite: false,
       blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+      depthWrite: false,
+      map: this.particleTexture, // Use the same circular texture
     });
 
     const positions = new Float32Array(rainCount * 3);
@@ -306,17 +270,17 @@ export class CyberpunkBackground {
     for (let i = 0; i < rainCount; i++) {
       const i3 = i * 3;
       // Distribute rain across the entire canvas with wider spread
-      positions[i3] = (Math.random() - 0.5) * 400; // Doubled width spread
+      positions[i3] = (Math.random() - 0.5) * 400; // Wide x-spread
       positions[i3 + 1] = Math.random() * 300 - 50; // Higher start position
       positions[i3 + 2] = Math.random() * 400 - 400; // Wider and deeper depth range
 
-      // Rain falling velocity - much slower
+      // Rain falling velocity - maintaining slower speed
       velocities[i3] = (Math.random() - 0.5) * 0.1; // Reduced sideways drift
-      velocities[i3 + 1] = -0.8 - Math.random() * 1.2; // Slower downward speed (60% slower)
+      velocities[i3 + 1] = -0.8 - Math.random() * 1.2; // Downward speed
       velocities[i3 + 2] = (Math.random() - 0.5) * 0.1; // Reduced depth movement
 
-      // Varied droplet sizes
-      sizes[i] = Math.random() * 2.5 + 2; // Slightly larger sizes for better visibility
+      // Size variation - match storm particles but slightly larger
+      sizes[i] = Math.random() * 2 + 0.5;
     }
 
     rainGeometry.setAttribute(
@@ -341,11 +305,12 @@ export class CyberpunkBackground {
 
     // Animate storm particles
     if (this.particles) {
-      const positions =
-        this.particles.mesh.geometry.attributes['position'].array;
-      const velocities =
-        this.particles.mesh.geometry.attributes['velocity'].array;
-      const sizes = this.particles.mesh.geometry.attributes['size'].array;
+      const positions = this.particles.mesh.geometry.attributes['position']
+        .array as Float32Array;
+      const velocities = this.particles.mesh.geometry.attributes['velocity']
+        .array as Float32Array;
+      const sizes = this.particles.mesh.geometry.attributes['size']
+        .array as Float32Array;
 
       for (let i = 0; i < positions.length; i += 3) {
         // Update positions based on velocity (with slower movement)
@@ -384,8 +349,11 @@ export class CyberpunkBackground {
 
     // Animate rain
     if (this.rain) {
-      const positions = this.rain.geometry.attributes['position'].array;
-      const velocities = this.rain.geometry.attributes['velocity'].array;
+      const positions = this.rain.geometry.attributes['position']
+        .array as Float32Array;
+      const velocities = this.rain.geometry.attributes['velocity']
+        .array as Float32Array;
+      const sizes = this.rain.geometry.attributes['size'].array as Float32Array;
 
       for (let i = 0; i < positions.length; i += 3) {
         // Update rain drop positions
@@ -401,14 +369,22 @@ export class CyberpunkBackground {
 
           // Vary the falling speed slightly, but keep it slow
           velocities[i + 1] = -0.8 - Math.random() * 1.2; // Slower rain
+
+          // Update sizes for some variation
+          const index = i / 3;
+          sizes[index] = Math.random() * 2 + 0.5;
         }
       }
 
       this.rain.geometry.attributes['position'].needsUpdate = true;
+      this.rain.geometry.attributes['size'].needsUpdate = true;
 
-      // Update time uniform for rain shader
-      if (this.rain.material instanceof THREE.ShaderMaterial) {
-        this.rain.material.uniforms['time'].value = elapsedTime;
+      // Make rain shimmer similarly to stars
+      const sizesArray = sizes;
+      for (let i = 0; i < sizesArray.length; i++) {
+        sizesArray[i] =
+          (Math.sin(elapsedTime * 1.3 + i) * 0.2 + 1) *
+          (Math.random() * 0.5 + 0.75);
       }
     }
 
@@ -417,9 +393,12 @@ export class CyberpunkBackground {
       this.stars.rotation.z += delta * 0.003; // Even slower rotation
 
       // Make stars twinkle (less dramatic)
-      const sizes = this.stars.geometry.attributes['size'];
+      const sizes = this.stars.geometry.attributes[
+        'size'
+      ] as THREE.BufferAttribute;
+      const sizesArray = sizes.array as Float32Array;
       for (let i = 0; i < sizes.count; i++) {
-        sizes.array[i] =
+        sizesArray[i] =
           (Math.sin(elapsedTime * 1.5 + i) * 0.3 + 1) * Math.random();
       }
       sizes.needsUpdate = true;
@@ -437,6 +416,11 @@ export class CyberpunkBackground {
     this.camera.updateProjectionMatrix();
 
     this.renderer.setSize(this.width, this.height);
+  }
+
+  private onWindowScroll(): void {
+    // Handle scroll events to ensure background covers entire visible area
+    // No additional code needed since we've set the renderer to fixed position
   }
 
   private onMouseMove(event: MouseEvent): void {

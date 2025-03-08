@@ -18,6 +18,9 @@ export class CyberpunkBackground {
   private isAnimating: boolean = true;
   private originalWidth: number;
   private originalHeight: number;
+  private lastScrollY: number = 0;
+  private isScrolling: boolean = false;
+  private scrollTimeout: number | null = null;
 
   // Configuration - using only purple and cyan colors
   private readonly MAIN_COLOR = 0xab47bc; // Main purple color (#ab47bc)
@@ -38,6 +41,7 @@ export class CyberpunkBackground {
   private readonly DISTRIBUTION_FACTOR = 0.45;
   private readonly PULSE_SPEED = 0.001;
   private readonly GLOW_INTENSITY = 0.6;
+  private readonly SCROLL_SMOOTHING_FACTOR = 0.02; // Lower value for smoother transition
 
   // Reference dimensions for consistent scaling
   private readonly REFERENCE_WIDTH = 1920;
@@ -345,18 +349,28 @@ export class CyberpunkBackground {
     if (!this.isAnimating) return;
 
     this.animationFrame = requestAnimationFrame(this.animate);
-    this.time += this.PULSE_SPEED;
 
-    // Smooth mouse movement
-    this.mouseX += (this.targetMouseX - this.mouseX) * 0.05;
-    this.mouseY += (this.targetMouseY - this.mouseY) * 0.05;
+    // Slow down time progression during scrolling for smoother transitions
+    const timeIncrement = this.isScrolling
+      ? this.PULSE_SPEED * 0.5
+      : this.PULSE_SPEED;
+    this.time += timeIncrement;
+
+    // Smooth mouse movement - reduce factor while scrolling
+    const smoothingFactor = this.isScrolling ? 0.02 : 0.05;
+    this.mouseX += (this.targetMouseX - this.mouseX) * smoothingFactor;
+    this.mouseY += (this.targetMouseY - this.mouseY) * smoothingFactor;
 
     // Reduce mouse effect on mobile for less chaotic movement
     const mouseFactor = this.isMobile ? 0.1 : 0.2;
+    // Further reduce rotation during scrolling
+    const scrollAdjustedFactor = this.isScrolling
+      ? mouseFactor * 0.5
+      : mouseFactor;
 
     // Rotate scene based on mouse position
-    this.scene.rotation.x = this.mouseY * mouseFactor;
-    this.scene.rotation.y = this.mouseX * mouseFactor;
+    this.scene.rotation.x = this.mouseY * scrollAdjustedFactor;
+    this.scene.rotation.y = this.mouseX * scrollAdjustedFactor;
 
     const positions = this.points.geometry.attributes['position'].array;
     const colors = this.points.geometry.attributes['color'].array;
@@ -369,12 +383,19 @@ export class CyberpunkBackground {
       const i3 = i * 3;
 
       // Scale movement based on device to keep animation consistent
+      // Reduce movement during scrolling
       const movementScale = this.isMobile ? 0.05 : 0.1;
+      const scrollAdjustedMovement = this.isScrolling
+        ? movementScale * 0.3
+        : movementScale;
 
       // Subtle sine wave movement
-      positions[i3] += Math.sin(this.time * 10 + i * 0.1) * movementScale;
-      positions[i3 + 1] += Math.cos(this.time * 8 + i * 0.1) * movementScale;
-      positions[i3 + 2] += Math.cos(this.time * 9 + i * 0.1) * movementScale;
+      positions[i3] +=
+        Math.sin(this.time * 10 + i * 0.1) * scrollAdjustedMovement;
+      positions[i3 + 1] +=
+        Math.cos(this.time * 8 + i * 0.1) * scrollAdjustedMovement;
+      positions[i3 + 2] +=
+        Math.cos(this.time * 9 + i * 0.1) * scrollAdjustedMovement;
 
       // Keep points within bounds - using reference dimensions for consistency
       const boundX = this.REFERENCE_WIDTH * this.DISTRIBUTION_FACTOR;
@@ -432,8 +453,10 @@ export class CyberpunkBackground {
     this.points.geometry.attributes['position'].needsUpdate = true;
     this.points.geometry.attributes['color'].needsUpdate = true;
 
-    // Update lines for movement
-    this.updateLines();
+    // Update lines for movement - skip updates during scrolling for better performance
+    if (!this.isScrolling || Math.random() > 0.7) {
+      this.updateLines();
+    }
 
     this.renderer.render(this.scene, this.camera);
   };
@@ -474,9 +497,31 @@ export class CyberpunkBackground {
       passive: true,
     });
 
+    // Scroll event handling to prevent jumps
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+
     // Pause on visibility change (tab change, etc)
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
+
+  private handleScroll = (): void => {
+    // Mark that we're currently scrolling
+    this.isScrolling = true;
+
+    // Save current scroll position
+    this.lastScrollY = window.scrollY;
+
+    // Clear any existing timeout
+    if (this.scrollTimeout !== null) {
+      window.clearTimeout(this.scrollTimeout);
+    }
+
+    // Set a timeout to detect when scrolling stops
+    this.scrollTimeout = window.setTimeout(() => {
+      this.isScrolling = false;
+      this.scrollTimeout = null;
+    }, 100); // 100ms after scrolling stops
+  };
 
   private handleVisibilityChange = (): void => {
     this.isAnimating = !document.hidden;
@@ -541,6 +586,11 @@ export class CyberpunkBackground {
 
   private handleTouchMove = (event: TouchEvent): void => {
     if (event.touches.length > 0) {
+      // During scrolling, adjust touch responsiveness to prevent jumping
+      if (this.isScrolling) {
+        return; // Ignore touch input during scrolling
+      }
+
       // Convert touch position to normalized coordinates (-1 to 1)
       this.targetMouseX =
         (event.touches[0].clientX / window.innerWidth) * 2 - 1;
@@ -556,10 +606,17 @@ export class CyberpunkBackground {
     cancelAnimationFrame(this.animationFrame);
     this.animationFrame = 0;
 
+    // Clear any pending scroll timeout
+    if (this.scrollTimeout !== null) {
+      window.clearTimeout(this.scrollTimeout);
+      this.scrollTimeout = null;
+    }
+
     // Cleanup event listeners
     window.removeEventListener('resize', this.handleResize);
     document.removeEventListener('mousemove', this.handleMouseMove);
     document.removeEventListener('touchmove', this.handleTouchMove);
+    window.removeEventListener('scroll', this.handleScroll);
     document.removeEventListener(
       'visibilitychange',
       this.handleVisibilityChange

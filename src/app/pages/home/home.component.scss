@@ -304,7 +304,7 @@ h3 {
   width: 65%;
   height: 65%;
   background: transparent;
-  border: 2px solid #00d9ff;
+  border: 2px solid #00d9ff34;
   transform: rotateY(calc(90deg * var(--i))) translateZ(62px);
 }
 
@@ -342,18 +342,18 @@ h3 {
   left: 0;
   width: 100%;
   height: 100%;
-  background: #00d9ff;
+  background: #00d9ff73;
   transform: rotateY(calc(90deg * var(--i))) translateZ(14px);
-  box-shadow: 0px 0px 7px #00d9ff;
+  box-shadow: 0px 0px 7px #00d9ff73;
 }
 
 .top3 {
   position: absolute;
   top: 0;
   left: 0;
-  background: #00d9ff;
+  background: #00d9ff73;
   transform: rotateX(90deg) translateZ(14px);
-  box-shadow: 0px 0px 10px #00d9ff;
+  box-shadow: 0px 0px 10px #00d9ff73;
 }
 
 @media (max-width: 768px) {

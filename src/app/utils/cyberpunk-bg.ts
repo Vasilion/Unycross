@@ -1,638 +1,464 @@
 import * as THREE from 'three';
 
+// Define the types for userData to avoid index signature errors
+interface ParticleData {
+  timeOffset: number;
+  width: number;
+  height: number;
+  zPos: number;
+}
+
 export class CyberpunkBackground {
+  private containerId: string;
+  private container: HTMLElement;
+  private width: number;
+  private height: number;
+  private stormColor: THREE.Color;
+  private accentColor: THREE.Color;
+  private purpleColor: THREE.Color;
+
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
-  private container: HTMLElement;
-  private points: THREE.Points;
-  private lines: THREE.LineSegments;
-  private animationFrame: number;
-  private mouseX: number = 0;
-  private mouseY: number = 0;
-  private targetMouseX: number = 0;
-  private targetMouseY: number = 0;
-  private pointColors: Float32Array;
-  private time: number = 0;
-  private isMobile: boolean = false;
-  private isAnimating: boolean = true;
-  private originalWidth: number;
-  private originalHeight: number;
-  private lastScrollY: number = 0;
-  private isScrolling: boolean = false;
-  private scrollTimeout: number | null = null;
+  private particles: {
+    mesh: THREE.Points;
+    positions: Float32Array;
+    velocities: Float32Array;
+    sizes: Float32Array;
+  };
+  private rain: THREE.Points;
+  private stars: THREE.Points;
+  private clock: THREE.Clock;
+  private mouse: THREE.Vector2;
+  private particleTexture: THREE.Texture;
 
-  // Configuration - using only purple and cyan colors
-  private readonly MAIN_COLOR = 0xab47bc; // Main purple color (#ab47bc)
-  private readonly ACCENT_COLOR = 0x00ffff; // Cyberpunk cyan accent (#00ffff)
-  private readonly LINE_COLOR = 0xce93d8; // Light purple for lines
-  private readonly BACKGROUND_COLOR = 0x000000; // Deep black background
-  private readonly POINT_SIZE = 3.5;
-  private readonly POINT_COUNT = 150;
-  private readonly MOBILE_POINT_COUNT = 100; // Fewer points on mobile
-  private readonly LINE_OPACITY = 0.7;
-  private readonly LINE_WIDTH = 1;
-  private readonly MAX_DISTANCE = 70;
-  private readonly MOBILE_MAX_DISTANCE = 90; // Adjusted for mobile
-  private readonly DEPTH = 200;
-  private readonly MOUSE_MOVE_FACTOR = 0.02;
-  private readonly MAX_CONNECTIONS_PER_NODE = 6;
-  private readonly MOBILE_MAX_CONNECTIONS_PER_NODE = 4; // Fewer connections on mobile
-  private readonly DISTRIBUTION_FACTOR = 0.45;
-  private readonly PULSE_SPEED = 0.001;
-  private readonly GLOW_INTENSITY = 0.6;
-  private readonly SCROLL_SMOOTHING_FACTOR = 0.02; // Lower value for smoother transition
-
-  // Reference dimensions for consistent scaling
-  private readonly REFERENCE_WIDTH = 1920;
-  private readonly REFERENCE_HEIGHT = 1080;
-
-  constructor(container: HTMLElement) {
-    this.container = container;
-    this.scene = new THREE.Scene();
-
-    // Store original dimensions
-    this.originalWidth = window.innerWidth;
-    this.originalHeight = window.innerHeight;
-
-    // Detect if on mobile
-    this.isMobile = this.checkIfMobile();
-
-    // Add fog for depth and cyberpunk feel
-    this.scene.fog = new THREE.FogExp2(0x000000, 0.002);
-
-    // Setup camera with wider field of view for cinematic effect
-    this.camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      1,
-      5000
-    );
-
-    // Setup renderer with appropriate sizing
-    this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
-      alpha: true,
-      powerPreference: 'high-performance',
-    });
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
-
-    // Set renderer size - more reasonable size for mobile to prevent distortion
-    // while still preventing white screen issues
-    if (this.isMobile) {
-      // Using 120vh instead of 200vh to prevent excessive distortion
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
+  constructor(container?: string | HTMLElement) {
+    if (typeof container === 'string') {
+      this.containerId = container;
+      this.container = document.getElementById(this.containerId) as HTMLElement;
+    } else if (container instanceof HTMLElement) {
+      this.container = container;
+      this.containerId = container.id || 'bgContainer';
     } else {
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
+      this.containerId = 'bgContainer';
+      this.container = document.getElementById(this.containerId) as HTMLElement;
     }
 
-    this.renderer.setClearColor(this.BACKGROUND_COLOR);
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    this.stormColor = new THREE.Color('#0066cc');
+    this.accentColor = new THREE.Color('#00ccff');
+    this.purpleColor = new THREE.Color('#592388');
 
-    // Fix the canvas position immediately
-    this.applyFixedCanvas();
+    this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color('#000000'); // Pure black background
+    this.camera = new THREE.PerspectiveCamera(
+      60, // Reduced FOV for less intensity
+      this.width / this.height,
+      0.1,
+      1000
+    );
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.clock = new THREE.Clock();
+    this.mouse = new THREE.Vector2();
 
-    this.container.appendChild(this.renderer.domElement);
+    // Create a circular particle texture
+    this.createParticleTexture();
 
-    this.initScene();
-    this.setupEvents();
-    this.animate();
+    this.init();
   }
 
-  private checkIfMobile(): boolean {
-    return window.innerWidth < 768;
-  }
-
-  // Get scaled value to maintain desktop-like proportions on mobile
-  private getScaledValue(value: number): number {
-    if (!this.isMobile) return value;
-
-    // Use a fixed reference size rather than actual window dimensions
-    const scaleFactor = Math.min(
-      this.REFERENCE_WIDTH / this.REFERENCE_HEIGHT,
-      window.innerWidth / window.innerHeight
-    );
-
-    return value * scaleFactor;
-  }
-
-  private initScene(): void {
-    // Position the camera for better perspective
-    this.camera.position.z = this.DEPTH;
-
-    // Adjust camera field of view to maintain the same look on mobile
-    if (this.isMobile) {
-      // Use a wider FOV on mobile to simulate being further back
-      this.camera.fov = 85;
-      this.camera.updateProjectionMatrix();
-    }
-
-    // Create points (nodes) with color attribute for animation
-    const pointGeometry = new THREE.BufferGeometry();
-    const actualPointCount = this.isMobile
-      ? this.MOBILE_POINT_COUNT
-      : this.POINT_COUNT;
-    const pointPositions = new Float32Array(actualPointCount * 3);
-    this.pointColors = new Float32Array(actualPointCount * 3);
-
-    // Calculate distribution space - use reference size for consistency
-    const spaceWidth = this.REFERENCE_WIDTH * this.DISTRIBUTION_FACTOR;
-    const spaceHeight = this.REFERENCE_HEIGHT * this.DISTRIBUTION_FACTOR;
-    const spaceDepth = this.DEPTH * 0.3;
-
-    // Distribute points in 3D space
-    for (let i = 0; i < actualPointCount; i++) {
-      const i3 = i * 3;
-
-      // Strategic distribution using fixed reference values for consistent look
-      pointPositions[i3] = (Math.random() - 0.5) * spaceWidth;
-      pointPositions[i3 + 1] = (Math.random() - 0.5) * spaceHeight;
-      pointPositions[i3 + 2] = (Math.random() - 0.5) * spaceDepth;
-
-      // Initialize all points with the main purple color
-      const color = new THREE.Color(this.MAIN_COLOR);
-      this.pointColors[i3] = color.r;
-      this.pointColors[i3 + 1] = color.g;
-      this.pointColors[i3 + 2] = color.b;
-    }
-
-    pointGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(pointPositions, 3)
-    );
-
-    pointGeometry.setAttribute(
-      'color',
-      new THREE.BufferAttribute(this.pointColors, 3)
-    );
-
-    // Create circular points with vertex colors for cyberpunk glow
-    const pointMaterial = new THREE.PointsMaterial({
-      size: this.isMobile
-        ? this.getScaledValue(this.POINT_SIZE)
-        : this.POINT_SIZE,
-      vertexColors: true, // Use vertex colors
-      transparent: true,
-      opacity: 0.85,
-      sizeAttenuation: true,
-      map: this.createGlowTexture(), // Use glow texture instead of plain circle
-      blending: THREE.AdditiveBlending, // Add cyberpunk glow effect
-      depthTest: false, // Make sure glow is visible
-      alphaTest: 0.1,
-    });
-
-    this.points = new THREE.Points(pointGeometry, pointMaterial);
-    this.scene.add(this.points);
-
-    // Create glowing cyberpunk lines
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: this.LINE_COLOR,
-      transparent: true,
-      opacity: this.LINE_OPACITY,
-      linewidth: this.LINE_WIDTH,
-      blending: THREE.AdditiveBlending, // Enhance glow
-      fog: true, // Lines are affected by fog
-    });
-
-    this.lines = new THREE.LineSegments(
-      new THREE.BufferGeometry(),
-      lineMaterial
-    );
-    this.scene.add(this.lines);
-
-    // Initial line update
-    this.updateLines();
-  }
-
-  // Create a glow texture for points
-  private createGlowTexture(): THREE.Texture {
+  private createParticleTexture(): void {
+    // Create a canvas to draw the particle texture
     const canvas = document.createElement('canvas');
     canvas.width = 64;
     canvas.height = 64;
-
     const context = canvas.getContext('2d');
+
     if (context) {
-      // Create radial gradient for glow effect - using white for base glow
-      // The actual color will come from the vertex colors
-      const gradient = context.createRadialGradient(32, 32, 0, 32, 32, 32);
+      // Draw a white circle with soft edges
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = canvas.width / 2;
+
+      // Create a radial gradient
+      const gradient = context.createRadialGradient(
+        centerX,
+        centerY,
+        0,
+        centerX,
+        centerY,
+        radius
+      );
       gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-      gradient.addColorStop(0.3, 'rgba(255, 255, 255, 0.8)');
-      gradient.addColorStop(0.7, 'rgba(255, 255, 255, 0.3)');
+      gradient.addColorStop(0.5, 'rgba(255, 255, 255, 0.5)');
       gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
 
+      // Draw the circle
       context.fillStyle = gradient;
-      context.fillRect(0, 0, 64, 64);
-    }
+      context.beginPath();
+      context.arc(centerX, centerY, radius, 0, Math.PI * 2);
+      context.fill();
 
-    const texture = new THREE.Texture(canvas);
-    texture.needsUpdate = true;
-    return texture;
+      // Create texture from canvas
+      this.particleTexture = new THREE.CanvasTexture(canvas);
+    }
   }
 
-  private updateLines(): void {
-    if (!this.isAnimating) return;
+  private init(): void {
+    // Create camera
+    this.camera.position.z = 50;
+    this.camera.position.y = 10;
+    this.camera.lookAt(0, 0, 0);
 
-    const positions = this.points.geometry.attributes['position'].array;
-    const linePositions: number[] = [];
-    const actualPointCount = this.isMobile
-      ? this.MOBILE_POINT_COUNT
-      : this.POINT_COUNT;
-    const maxDistance = this.isMobile
-      ? this.MOBILE_MAX_DISTANCE
-      : this.MAX_DISTANCE;
-    const maxConnectionsPerNode = this.isMobile
-      ? this.MOBILE_MAX_CONNECTIONS_PER_NODE
-      : this.MAX_CONNECTIONS_PER_NODE;
+    // Create renderer
+    this.renderer.setPixelRatio(window.devicePixelRatio > 1 ? 2 : 1);
+    this.renderer.setSize(this.width, this.height);
+    this.container.appendChild(this.renderer.domElement);
 
-    // Interface for node connections
-    interface NodeConnection {
-      index: number;
-      distance: number;
-    }
+    // Add event listeners
+    window.addEventListener('resize', this.onWindowResize.bind(this));
+    window.addEventListener('mousemove', this.onMouseMove.bind(this));
+    window.addEventListener('touchmove', this.onTouchMove.bind(this));
 
-    // Store all node connections
-    const allConnections: { [index: number]: NodeConnection[] } = {};
+    // Create elements
+    this.createStars();
+    this.createStormParticles();
+    this.createRain();
 
-    // First pass: calculate all distances between nodes
-    for (let i = 0; i < actualPointCount; i++) {
-      const i3 = i * 3;
-      const x1 = positions[i3];
-      const y1 = positions[i3 + 1];
-      const z1 = positions[i3 + 2];
-
-      allConnections[i] = [];
-
-      for (let j = 0; j < actualPointCount; j++) {
-        if (i === j) continue; // Skip self
-
-        const j3 = j * 3;
-        const x2 = positions[j3];
-        const y2 = positions[j3 + 1];
-        const z2 = positions[j3 + 2];
-
-        const dx = x2 - x1;
-        const dy = y2 - y1;
-        const dz = z2 - z1;
-        const distance = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-        // Only consider connections within MAX_DISTANCE
-        if (distance < maxDistance) {
-          allConnections[i].push({
-            index: j,
-            distance: distance,
-          });
-        }
-      }
-
-      // Sort connections by distance (closest first)
-      allConnections[i].sort((a, b) => a.distance - b.distance);
-    }
-
-    // Second pass: create connections
-    const processedConnections = new Set<string>();
-
-    for (let i = 0; i < actualPointCount; i++) {
-      const i3 = i * 3;
-      const x1 = positions[i3];
-      const y1 = positions[i3 + 1];
-      const z1 = positions[i3 + 2];
-
-      // Get the closest nodes
-      const connections = allConnections[i];
-      let connectionsAdded = 0;
-
-      // Add connections to the closest nodes
-      for (const connection of connections) {
-        if (connectionsAdded >= maxConnectionsPerNode) break;
-
-        const j = connection.index;
-        // Create a unique key for this connection (using the smaller index first)
-        const connectionKey = i < j ? `${i}-${j}` : `${j}-${i}`;
-
-        // Check if we've already processed this connection
-        if (!processedConnections.has(connectionKey)) {
-          const j3 = j * 3;
-
-          // Add the line points
-          linePositions.push(x1, y1, z1);
-          linePositions.push(
-            positions[j3],
-            positions[j3 + 1],
-            positions[j3 + 2]
-          );
-
-          processedConnections.add(connectionKey);
-          connectionsAdded++;
-        }
-      }
-
-      // Ensure every node has at least one connection
-      if (connectionsAdded === 0 && connections.length > 0) {
-        const j = connections[0].index;
-        const j3 = j * 3;
-
-        linePositions.push(x1, y1, z1);
-        linePositions.push(positions[j3], positions[j3 + 1], positions[j3 + 2]);
-      }
-    }
-
-    // Update the line geometry
-    this.lines.geometry.dispose();
-    const lineGeometry = new THREE.BufferGeometry();
-    lineGeometry.setAttribute(
-      'position',
-      new THREE.Float32BufferAttribute(linePositions, 3)
-    );
-    this.lines.geometry = lineGeometry;
+    // Start animation loop
+    this.animate();
   }
 
-  private animate = (): void => {
-    if (!this.isAnimating) return;
-
-    this.animationFrame = requestAnimationFrame(this.animate);
-
-    // Slow down time progression during scrolling for smoother transitions
-    const timeIncrement = this.isScrolling
-      ? this.PULSE_SPEED * 0.5
-      : this.PULSE_SPEED;
-    this.time += timeIncrement;
-
-    // Smooth mouse movement - reduce factor while scrolling
-    const smoothingFactor = this.isScrolling ? 0.02 : 0.05;
-    this.mouseX += (this.targetMouseX - this.mouseX) * smoothingFactor;
-    this.mouseY += (this.targetMouseY - this.mouseY) * smoothingFactor;
-
-    // Reduce mouse effect on mobile for less chaotic movement
-    const mouseFactor = this.isMobile ? 0.1 : 0.2;
-    // Further reduce rotation during scrolling
-    const scrollAdjustedFactor = this.isScrolling
-      ? mouseFactor * 0.5
-      : mouseFactor;
-
-    // Rotate scene based on mouse position
-    this.scene.rotation.x = this.mouseY * scrollAdjustedFactor;
-    this.scene.rotation.y = this.mouseX * scrollAdjustedFactor;
-
-    const positions = this.points.geometry.attributes['position'].array;
-    const colors = this.points.geometry.attributes['color'].array;
-    const actualPointCount = this.isMobile
-      ? this.MOBILE_POINT_COUNT
-      : this.POINT_COUNT;
-
-    // Cyberpunk color cycling using only purple and cyan
-    for (let i = 0; i < actualPointCount; i++) {
-      const i3 = i * 3;
-
-      // Scale movement based on device to keep animation consistent
-      // Reduce movement during scrolling
-      const movementScale = this.isMobile ? 0.05 : 0.1;
-      const scrollAdjustedMovement = this.isScrolling
-        ? movementScale * 0.3
-        : movementScale;
-
-      // Subtle sine wave movement
-      positions[i3] +=
-        Math.sin(this.time * 10 + i * 0.1) * scrollAdjustedMovement;
-      positions[i3 + 1] +=
-        Math.cos(this.time * 8 + i * 0.1) * scrollAdjustedMovement;
-      positions[i3 + 2] +=
-        Math.cos(this.time * 9 + i * 0.1) * scrollAdjustedMovement;
-
-      // Keep points within bounds - using reference dimensions for consistency
-      const boundX = this.REFERENCE_WIDTH * this.DISTRIBUTION_FACTOR;
-      const boundY = this.REFERENCE_HEIGHT * this.DISTRIBUTION_FACTOR;
-      const boundZ = this.DEPTH * 0.25;
-
-      if (Math.abs(positions[i3]) > boundX) {
-        positions[i3] = Math.sign(positions[i3]) * boundX;
-      }
-      if (Math.abs(positions[i3 + 1]) > boundY) {
-        positions[i3 + 1] = Math.sign(positions[i3 + 1]) * boundY;
-      }
-      if (Math.abs(positions[i3 + 2]) > boundZ) {
-        positions[i3 + 2] = Math.sign(positions[i3 + 2]) * boundZ;
-      }
-
-      // Cyberpunk color pulsing - using ONLY purple and cyan
-      const pulseVal = Math.sin(this.time * 3 + i * 0.2) * 0.5 + 0.5;
-
-      // Every 7th node gets the accent cyan color
-      if (i % 7 === 0) {
-        const purpleColor = new THREE.Color(this.MAIN_COLOR);
-        const cyanColor = new THREE.Color(this.ACCENT_COLOR);
-
-        // Lerp between purple and cyan
-        const mixedColor = purpleColor
-          .clone()
-          .lerp(cyanColor, pulseVal * this.GLOW_INTENSITY);
-
-        colors[i3] = mixedColor.r;
-        colors[i3 + 1] = mixedColor.g;
-        colors[i3 + 2] = mixedColor.b;
-      } else {
-        // Regular nodes pulse with the main purple color at different brightness
-        const color = new THREE.Color(this.MAIN_COLOR);
-        const brightness = 0.8 + pulseVal * 0.4; // Pulse brightness
-
-        colors[i3] = color.r * brightness;
-        colors[i3 + 1] = color.g * brightness;
-        colors[i3 + 2] = color.b * brightness;
-      }
-    }
-
-    // Update material properties for pulsing effect on lines
-    const linePulse = Math.sin(this.time * 4) * 0.2 + 0.8;
-    (this.lines.material as THREE.LineBasicMaterial).opacity =
-      this.LINE_OPACITY * linePulse;
-
-    // Line color alternates between purple and lighter purple - no other colors
-    if (Math.floor(this.time * 10) % 20 === 0) {
-      const lineColor = Math.random() > 0.5 ? this.LINE_COLOR : this.MAIN_COLOR;
-      (this.lines.material as THREE.LineBasicMaterial).color.set(lineColor);
-    }
-
-    this.points.geometry.attributes['position'].needsUpdate = true;
-    this.points.geometry.attributes['color'].needsUpdate = true;
-
-    // Update lines for movement - skip updates during scrolling for better performance
-    if (!this.isScrolling || Math.random() > 0.7) {
-      this.updateLines();
-    }
-
-    this.renderer.render(this.scene, this.camera);
-  };
-
-  // Helper method to ensure canvas is fixed and covers the entire screen
-  private applyFixedCanvas(): void {
-    if (!this.renderer || !this.renderer.domElement) return;
-
-    const canvas = this.renderer.domElement;
-
-    // Set fixed position with high z-index to ensure it stays below content but above background
-    canvas.style.position = 'fixed';
-    canvas.style.top = '0';
-    canvas.style.left = '0';
-    canvas.style.width = '100vw';
-    canvas.style.height = '120vh'; // Reduced from 200vh to 120vh
-    canvas.style.zIndex = '-1';
-    canvas.style.pointerEvents = 'none';
-
-    // Set important to override any other styling that might interfere
-    canvas.style.setProperty('position', 'fixed', 'important');
-    canvas.style.setProperty('transform', 'translate3d(0,0,0)', 'important');
-    canvas.style.setProperty('backface-visibility', 'hidden', 'important');
-
-    // Force hardware acceleration for smoother performance
-    canvas.style.setProperty('will-change', 'transform', 'important');
-  }
-
-  private setupEvents(): void {
-    // Handle window resize
-    window.addEventListener('resize', this.handleResize);
-
-    // Mouse movement tracking
-    document.addEventListener('mousemove', this.handleMouseMove);
-
-    // Touch movement for mobile
-    document.addEventListener('touchmove', this.handleTouchMove, {
-      passive: true,
+  private createStars(): void {
+    const starCount = 800; // Reduced star count
+    const starGeometry = new THREE.BufferGeometry();
+    const starMaterial = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 0.5,
+      transparent: true,
+      opacity: 0.6, // Reduced opacity
+      map: this.particleTexture, // Use the circular texture
     });
 
-    // Scroll event handling to prevent jumps
-    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    const positions = new Float32Array(starCount * 3);
+    const sizes = new Float32Array(starCount);
 
-    // Pause on visibility change (tab change, etc)
-    document.addEventListener('visibilitychange', this.handleVisibilityChange);
+    for (let i = 0; i < starCount; i++) {
+      const i3 = i * 3;
+      positions[i3] = (Math.random() - 0.5) * 2000;
+      positions[i3 + 1] = (Math.random() - 0.5) * 1000;
+      positions[i3 + 2] = (Math.random() - 0.5) * 2000 - 500;
+
+      sizes[i] = Math.random() * 1.5; // Reduced size variation
+    }
+
+    starGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(positions, 3)
+    );
+    starGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    this.stars = new THREE.Points(starGeometry, starMaterial);
+    this.scene.add(this.stars);
   }
 
-  private handleScroll = (): void => {
-    // Mark that we're currently scrolling
-    this.isScrolling = true;
+  private createStormParticles(): void {
+    const particleCount = 1000; // Reduced particle count
+    const particleGeometry = new THREE.BufferGeometry();
 
-    // Save current scroll position
-    this.lastScrollY = window.scrollY;
+    // Create a custom point material with a storm particle texture using the circular texture
+    const particleMaterial = new THREE.PointsMaterial({
+      color: this.stormColor,
+      size: 0.6, // Smaller particles
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      sizeAttenuation: true,
+      depthWrite: false,
+      map: this.particleTexture, // Use the circular texture
+    });
 
-    // Clear any existing timeout
-    if (this.scrollTimeout !== null) {
-      window.clearTimeout(this.scrollTimeout);
+    const positions = new Float32Array(particleCount * 3);
+    const velocities = new Float32Array(particleCount * 3);
+    const sizes = new Float32Array(particleCount);
+    const colors = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount; i++) {
+      // Position - create a tunnel effect
+      const i3 = i * 3;
+      const radius = 20 + Math.random() * 30;
+      const theta = Math.random() * Math.PI * 2;
+      const phi = Math.random() * Math.PI;
+
+      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
+      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
+      positions[i3 + 2] = -100 - Math.random() * 500; // Depth of the tunnel
+
+      // Velocity - particles moving toward the camera (MUCH slower)
+      velocities[i3] = (Math.random() - 0.5) * 0.05; // Reduced horizontal drift
+      velocities[i3 + 1] = (Math.random() - 0.5) * 0.05; // Reduced vertical drift
+      velocities[i3 + 2] = 0.3 + Math.random() * 1; // Significantly slower forward speed
+
+      // Size variation
+      sizes[i] = Math.random() * 1.5 + 0.3; // Smaller size range
+
+      // Colors - blend between storm color and accent color
+      const blend = Math.random();
+      colors[i3] = this.stormColor.r * (1 - blend) + this.accentColor.r * blend;
+      colors[i3 + 1] =
+        this.stormColor.g * (1 - blend) + this.accentColor.g * blend;
+      colors[i3 + 2] =
+        this.stormColor.b * (1 - blend) + this.accentColor.b * blend;
     }
 
-    // Set a timeout to detect when scrolling stops
-    this.scrollTimeout = window.setTimeout(() => {
-      this.isScrolling = false;
-      this.scrollTimeout = null;
-    }, 100); // 100ms after scrolling stops
-  };
-
-  private handleVisibilityChange = (): void => {
-    this.isAnimating = !document.hidden;
-
-    // Restart animation when tab becomes visible again
-    if (document.hidden) {
-      cancelAnimationFrame(this.animationFrame);
-      this.animationFrame = 0;
-    } else if (!this.animationFrame) {
-      this.animate();
-    }
-  };
-
-  private handleResize = (): void => {
-    // Pause animation during resize
-    const wasAnimating = this.isAnimating;
-    this.isAnimating = false;
-
-    // Check if device type has changed
-    const wasMobile = this.isMobile;
-    this.isMobile = this.checkIfMobile();
-
-    // If device type changed (e.g. rotation), reinitialize scene
-    if (wasMobile !== this.isMobile) {
-      // Clean up old scene
-      this.scene.remove(this.points);
-      this.scene.remove(this.lines);
-      this.points.geometry.dispose();
-      (this.points.material as THREE.PointsMaterial).dispose();
-      this.lines.geometry.dispose();
-      (this.lines.material as THREE.LineBasicMaterial).dispose();
-
-      // Reinitialize with new settings
-      this.initScene();
-    }
-
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-
-    // Resize renderer according to device type
-    if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 1.2);
-    } else {
-      this.renderer.setSize(window.innerWidth, window.innerHeight);
-    }
-
-    // Always reapply fixed canvas settings
-    this.applyFixedCanvas();
-
-    // Resume animation
-    this.isAnimating = wasAnimating;
-    if (wasAnimating && !this.animationFrame) {
-      this.animate();
-    }
-  };
-
-  private handleMouseMove = (event: MouseEvent): void => {
-    // Convert mouse position to normalized coordinates (-1 to 1)
-    this.targetMouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    this.targetMouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-  };
-
-  private handleTouchMove = (event: TouchEvent): void => {
-    if (event.touches.length > 0) {
-      // During scrolling, adjust touch responsiveness to prevent jumping
-      if (this.isScrolling) {
-        return; // Ignore touch input during scrolling
-      }
-
-      // Convert touch position to normalized coordinates (-1 to 1)
-      this.targetMouseX =
-        (event.touches[0].clientX / window.innerWidth) * 2 - 1;
-      this.targetMouseY =
-        -(event.touches[0].clientY / window.innerHeight) * 2 + 1;
-    }
-  };
-
-  // Public methods for external control
-  public dispose(): void {
-    // Stop animation
-    this.isAnimating = false;
-    cancelAnimationFrame(this.animationFrame);
-    this.animationFrame = 0;
-
-    // Clear any pending scroll timeout
-    if (this.scrollTimeout !== null) {
-      window.clearTimeout(this.scrollTimeout);
-      this.scrollTimeout = null;
-    }
-
-    // Cleanup event listeners
-    window.removeEventListener('resize', this.handleResize);
-    document.removeEventListener('mousemove', this.handleMouseMove);
-    document.removeEventListener('touchmove', this.handleTouchMove);
-    window.removeEventListener('scroll', this.handleScroll);
-    document.removeEventListener(
-      'visibilitychange',
-      this.handleVisibilityChange
+    particleGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(positions, 3)
+    );
+    particleGeometry.setAttribute(
+      'velocity',
+      new THREE.BufferAttribute(velocities, 3)
+    );
+    particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+    particleGeometry.setAttribute(
+      'color',
+      new THREE.BufferAttribute(colors, 3)
     );
 
-    // Dispose of THREE.js objects
-    this.points.geometry.dispose();
-    (this.points.material as THREE.PointsMaterial).dispose();
-    this.lines.geometry.dispose();
-    (this.lines.material as THREE.LineBasicMaterial).dispose();
+    this.particles = {
+      mesh: new THREE.Points(particleGeometry, particleMaterial),
+      positions,
+      velocities,
+      sizes,
+    };
 
-    // Remove from DOM
-    if (this.container && this.renderer.domElement) {
-      this.container.removeChild(this.renderer.domElement);
+    this.scene.add(this.particles.mesh);
+  }
+
+  private createRain(): void {
+    // Create purple acidic rain effect with teardrop shapes
+    const rainCount = 3000; // Increased rain count for better coverage
+    const rainGeometry = new THREE.BufferGeometry();
+
+    // Use a sprite material with a raindrop texture
+    const rainMaterial = new THREE.ShaderMaterial({
+      uniforms: {
+        time: { value: 0 },
+      },
+      vertexShader: `
+        attribute float size;
+        attribute vec3 velocity;
+        varying float vSize;
+        
+        void main() {
+          vSize = size;
+          vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+          gl_PointSize = size * (300.0 / -mvPosition.z);
+          gl_Position = projectionMatrix * mvPosition;
+        }
+      `,
+      fragmentShader: `
+        varying float vSize;
+        uniform float time;
+        
+        float drawRaindrop(vec2 uv) {
+          // Transform UV to center the raindrop
+          vec2 center = vec2(0.5, 0.5);
+          vec2 p = uv - center;
+          
+          // Draw a teardrop shape
+          float d = length(p);
+          
+          // Create a teardrop shape by modifying a circle
+          // Make the bottom part elongated
+          float teardrop = smoothstep(0.5, 0.4, d + 0.2 * p.y);
+          
+          return teardrop;
+        }
+        
+        void main() {
+          vec2 uv = gl_PointCoord;
+          float drop = drawRaindrop(uv);
+          
+          // Purple color for acid rain effect
+          vec3 color = vec3(0.35, 0.14, 0.53); // Purple
+          
+          // Add some shimmer
+          float brightness = 0.6 + 0.4 * sin(time * 2.0 + vSize * 10.0);
+          color *= brightness;
+          
+          // Set the final color with transparency
+          gl_FragColor = vec4(color, drop * 0.7);
+          
+          // Discard pixels outside the raindrop
+          if (drop < 0.01) discard;
+        }
+      `,
+      transparent: true,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
+    });
+
+    const positions = new Float32Array(rainCount * 3);
+    const velocities = new Float32Array(rainCount * 3);
+    const sizes = new Float32Array(rainCount);
+
+    for (let i = 0; i < rainCount; i++) {
+      const i3 = i * 3;
+      // Distribute rain across the entire canvas with wider spread
+      positions[i3] = (Math.random() - 0.5) * 400; // Doubled width spread
+      positions[i3 + 1] = Math.random() * 300 - 50; // Higher start position
+      positions[i3 + 2] = Math.random() * 400 - 400; // Wider and deeper depth range
+
+      // Rain falling velocity - much slower
+      velocities[i3] = (Math.random() - 0.5) * 0.1; // Reduced sideways drift
+      velocities[i3 + 1] = -0.8 - Math.random() * 1.2; // Slower downward speed (60% slower)
+      velocities[i3 + 2] = (Math.random() - 0.5) * 0.1; // Reduced depth movement
+
+      // Varied droplet sizes
+      sizes[i] = Math.random() * 2.5 + 2; // Slightly larger sizes for better visibility
     }
 
-    this.renderer.dispose();
+    rainGeometry.setAttribute(
+      'position',
+      new THREE.BufferAttribute(positions, 3)
+    );
+    rainGeometry.setAttribute(
+      'velocity',
+      new THREE.BufferAttribute(velocities, 3)
+    );
+    rainGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+    this.rain = new THREE.Points(rainGeometry, rainMaterial);
+    this.scene.add(this.rain);
+  }
+
+  private animate(): void {
+    requestAnimationFrame(this.animate.bind(this));
+
+    const delta = this.clock.getDelta();
+    const elapsedTime = this.clock.getElapsedTime();
+
+    // Animate storm particles
+    if (this.particles) {
+      const positions =
+        this.particles.mesh.geometry.attributes['position'].array;
+      const velocities =
+        this.particles.mesh.geometry.attributes['velocity'].array;
+      const sizes = this.particles.mesh.geometry.attributes['size'].array;
+
+      for (let i = 0; i < positions.length; i += 3) {
+        // Update positions based on velocity (with slower movement)
+        positions[i] += velocities[i] * 0.5; // 50% slower horizontal movement
+        positions[i + 1] += velocities[i + 1] * 0.5; // 50% slower vertical movement
+        positions[i + 2] += velocities[i + 2] * 0.5; // 50% slower forward movement
+
+        // Reset particles that move too close to the camera
+        if (positions[i + 2] > 50) {
+          // Reset to far away and slightly randomize the position
+          const radius = 20 + Math.random() * 30;
+          const theta = Math.random() * Math.PI * 2;
+          const phi = Math.random() * Math.PI;
+
+          positions[i] = radius * Math.sin(phi) * Math.cos(theta);
+          positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
+          positions[i + 2] = -600;
+
+          // Significantly reduce the velocity for slower movement
+          velocities[i] = (Math.random() - 0.5) * 0.05; // Further reduced velocity
+          velocities[i + 1] = (Math.random() - 0.5) * 0.05; // Further reduced velocity
+          velocities[i + 2] = 0.3 + Math.random() * 1; // Much slower forward movement
+
+          // Update size
+          const index = i / 3;
+          sizes[index] = Math.random() * 1.5 + 0.3; // Smaller size
+        }
+      }
+
+      this.particles.mesh.geometry.attributes['position'].needsUpdate = true;
+      this.particles.mesh.geometry.attributes['size'].needsUpdate = true;
+
+      // Rotate the particle system much slower for a more subtle effect
+      this.particles.mesh.rotation.z += delta * 0.01; // Even slower rotation
+    }
+
+    // Animate rain
+    if (this.rain) {
+      const positions = this.rain.geometry.attributes['position'].array;
+      const velocities = this.rain.geometry.attributes['velocity'].array;
+
+      for (let i = 0; i < positions.length; i += 3) {
+        // Update rain drop positions
+        positions[i] += velocities[i];
+        positions[i + 1] += velocities[i + 1];
+        positions[i + 2] += velocities[i + 2];
+
+        // Reset rain drops that fall below the view
+        if (positions[i + 1] < -100) {
+          positions[i] = (Math.random() - 0.5) * 400; // Wider x-spread
+          positions[i + 1] = 150 + Math.random() * 50; // Reset higher
+          positions[i + 2] = Math.random() * 400 - 400; // Wider z-spread
+
+          // Vary the falling speed slightly, but keep it slow
+          velocities[i + 1] = -0.8 - Math.random() * 1.2; // Slower rain
+        }
+      }
+
+      this.rain.geometry.attributes['position'].needsUpdate = true;
+
+      // Update time uniform for rain shader
+      if (this.rain.material instanceof THREE.ShaderMaterial) {
+        this.rain.material.uniforms['time'].value = elapsedTime;
+      }
+    }
+
+    // Animate stars
+    if (this.stars) {
+      this.stars.rotation.z += delta * 0.003; // Even slower rotation
+
+      // Make stars twinkle (less dramatic)
+      const sizes = this.stars.geometry.attributes['size'];
+      for (let i = 0; i < sizes.count; i++) {
+        sizes.array[i] =
+          (Math.sin(elapsedTime * 1.5 + i) * 0.3 + 1) * Math.random();
+      }
+      sizes.needsUpdate = true;
+    }
+
+    // Render scene
+    this.renderer.render(this.scene, this.camera);
+  }
+
+  private onWindowResize(): void {
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+
+    this.camera.aspect = this.width / this.height;
+    this.camera.updateProjectionMatrix();
+
+    this.renderer.setSize(this.width, this.height);
+  }
+
+  private onMouseMove(event: MouseEvent): void {
+    this.mouse.x = (event.clientX / this.width) * 2 - 1;
+    this.mouse.y = -(event.clientY / this.height) * 2 + 1;
+
+    // Subtle camera movement (reduced)
+    this.camera.position.x = this.mouse.x * 3; // Reduced movement
+    this.camera.position.y = this.mouse.y * 3 + 10; // Reduced movement
+    this.camera.lookAt(0, 0, 0);
+  }
+
+  private onTouchMove(event: TouchEvent): void {
+    if (event.touches.length > 0) {
+      const touch = event.touches[0];
+      this.mouse.x = (touch.clientX / this.width) * 2 - 1;
+      this.mouse.y = -(touch.clientY / this.height) * 2 + 1;
+
+      // Subtle camera movement (reduced)
+      this.camera.position.x = this.mouse.x * 3; // Reduced movement
+      this.camera.position.y = this.mouse.y * 3 + 10; // Reduced movement
+      this.camera.lookAt(0, 0, 0);
+    }
   }
 }

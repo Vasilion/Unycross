@@ -1,0 +1,34 @@
+im building a portfolio type website and have threejs as a background. My sites main theme colors are '#00d9ff' and '#6b40a0'. Generate me a unique threejs background using these colors. Key word, UNIQUE, I dont want something someone else has.
+
+
+HTML
+
+  <div
+    #bgContainer
+    style="
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    "
+  ></div>
+
+  CSS
+
+  :host {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100vh;
+}
+
+JS 
+
+import * as THREE from 'three';
+
+export class CyberpunkBackground {}
+
+
+feel free to make changes as needed to the html or css, but u should just need to change the 3js code really. Make sure it works on mobile, so the canvas needs to be large enough to account for that so I dont get the white screen bug. I dont want any scrolling affects, and i want the behavior to be the same on mobile and desktop realtively.

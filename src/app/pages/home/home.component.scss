@@ -369,13 +369,13 @@ h3 {
   inset: 0;
   z-index: -99999;
   backdrop-filter: blur(1em) brightness(6);
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    #0000 0,
-    #0000 2px,
-    hsl(0 0 4%) 2px
-  );
-  background-size: 8px 8px;
+  // background-image: radial-gradient(
+  //   circle at 50% 50%,
+  //   #0000 0,
+  //   #0000 2px,
+  //   hsl(0 0 4%) 2px
+  // );
+  // background-size: 8px 8px;
 }
 
 .hero-bg {

@@ -73,9 +73,9 @@ export class CyberpunkBackground {
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Limit pixel ratio for performance
 
-    // IMPORTANT: Set the renderer size with extra buffer for mobile scrolling
+    // IMPORTANT: Set the renderer size - much larger for mobile to cover all scroll areas
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 2); // Increased from 1.5 to 2
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 5); // Make it 5x the viewport height
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
     }
@@ -449,7 +449,7 @@ export class CyberpunkBackground {
     canvas.style.top = '0';
     canvas.style.left = '0';
     canvas.style.width = '100vw';
-    canvas.style.height = '200vh'; // Increased from 150vh to 200vh
+    canvas.style.height = '500vh'; // Make it 5x the viewport height
     canvas.style.zIndex = '-1';
     canvas.style.pointerEvents = 'none';
 
@@ -474,28 +474,6 @@ export class CyberpunkBackground {
       passive: true,
     });
 
-    // Pause animation during scroll for mobile to prevent jank
-    if (this.isMobile) {
-      // Use passive listeners for better performance
-      window.addEventListener('scroll', this.handleScrollStart, {
-        passive: true,
-      });
-      // We'll resume animation after scroll stops
-      window.addEventListener('scrollend', this.handleScrollEnd, {
-        passive: true,
-      });
-
-      // Fallback for browsers not supporting scrollend
-      window.addEventListener(
-        'touchend',
-        () => {
-          setTimeout(this.handleScrollEnd, 200);
-        },
-        { passive: true }
-      );
-    }
-
-    // Pause on visibility change (tab change, etc)
     document.addEventListener('visibilitychange', this.handleVisibilityChange);
   }
 
@@ -558,7 +536,7 @@ export class CyberpunkBackground {
 
     // Resize renderer according to device type
     if (this.isMobile) {
-      this.renderer.setSize(window.innerWidth, window.innerHeight * 2); // Increased from 1.5 to 2
+      this.renderer.setSize(window.innerWidth, window.innerHeight * 5); // Make it 5x the viewport height
       this.applyFixedCanvas();
     } else {
       this.renderer.setSize(window.innerWidth, window.innerHeight);

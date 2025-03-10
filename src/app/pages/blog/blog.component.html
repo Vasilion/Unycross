@@ -1,0 +1,16 @@
+<div class="container">
+  <h1>Luke's Insights</h1>
+  <div class="blog-cards">
+    <mat-card
+      class="card"
+      *ngFor="let post of blogPosts"
+      (click)="navigateToPost(post.id)"
+    >
+      <img [src]="post.image" class="card-image" />
+      <div class="card-content">
+        <h2>{{ post.title }}</h2>
+        <p>{{ post.description }}</p>
+      </div>
+    </mat-card>
+  </div>
+</div>

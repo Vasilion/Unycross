@@ -1,0 +1,30 @@
+// Center the blog post content and add padding
+.container {
+  max-width: 1200px; // Match the max width of other sections
+  margin: 0 auto; // Center the container
+  padding: 2rem; // Add padding for spacing
+  text-align: left; // Align text to the left for better readability
+}
+
+h1 {
+  font-size: 2.5rem; // Adjust heading size
+  margin-bottom: 1.5rem; // Space below the heading
+}
+
+h2 {
+  font-size: 2rem; // Size for subheadings
+  margin-top: 1.5rem; // Space above subheadings
+  margin-bottom: 1rem; // Space below subheadings
+}
+
+p {
+  font-size: 1.2rem; // Adjust font size for content
+  line-height: 1.6; // Improve readability
+  margin-bottom: 1.5rem; // Space below paragraphs
+}
+
+img {
+  max-width: 100%; // Make images responsive
+  height: auto; // Maintain aspect ratio
+  margin: 1rem 0; // Space around images
+}

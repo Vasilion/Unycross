@@ -21,7 +21,7 @@ main {
 }
 
 .mobile-arrow {
-  display: none;
+  display: block;
   color: #00d9ff;
   font-size: 24px;
   font-weight: bold;
@@ -118,10 +118,6 @@ main {
 }
 
 @media screen and (max-width: 768px) {
-  .mobile-arrow {
-    display: block;
-  }
-
   .tooltip {
     display: none !important;
   }

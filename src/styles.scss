@@ -304,7 +304,7 @@ a:not(.mat-mdc-button) {
   backdrop-filter: blur(4px);
   background-color: #00000021 !important;
   transition: all 0.3s ease;
-  border: 1px solid rgba($text-color-4, 0.2);
+  border: 3px solid rgba($text-color-4, 0.2);
   box-shadow: 0 5px 15px rgba($text-color-4, 0.1);
 
   &:hover {

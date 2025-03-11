@@ -30,6 +30,7 @@ export class BlogComponent {
   constructor(private router: Router) {}
 
   navigateToPost(postId: number) {
+    window.scrollTo({ top: 0, behavior: 'auto' });
     this.router.navigate(['/blog', postId]);
   }
 }

@@ -1,4 +1,22 @@
 <div class="container">
+  <button
+    mat-button
+    color="accent"
+    class="back-btn"
+    (click)="navAndScroll('/blog')"
+  >
+    <mat-icon>arrow_back</mat-icon> Back to Insights
+  </button>
   <h1>{{ post.title }}</h1>
   <div [innerHTML]="post.content"></div>
+</div>
+<div class="text-center">
+  <button
+    mat-raised-button
+    color="primary"
+    class="cta btn-space"
+    (click)="navAndScroll('/contact')"
+  >
+    Contact Us
+  </button>
 </div>

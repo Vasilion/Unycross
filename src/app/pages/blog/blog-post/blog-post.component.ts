@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { whyEverySmallBusinessNeedsaWebsiteIn2025 } from './posts/whyEverySmallBusinessNeedsaWebsiteIn2025';
 import { howAWebsiteCanIncreasLeadsForYourSmallBusiness } from './posts/howAWebsiteCanIncreasLeadsForYourSmallBusiness';
+import { NavigationService } from '../../../shared/navigation.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-blog-post',
   templateUrl: './blog-post.component.html',
   styleUrls: ['./blog-post.component.scss'],
   standalone: true,
+  imports: [MatButtonModule, MatIcon],
 })
 export class BlogPostComponent implements OnInit {
   postId: number;
@@ -25,7 +29,10 @@ export class BlogPostComponent implements OnInit {
     },
   ];
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private navService: NavigationService
+  ) {}
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
@@ -49,5 +56,9 @@ export class BlogPostComponent implements OnInit {
     } else {
       console.error(`Post with ID ${postId} not found`);
     }
+  }
+
+  navAndScroll(route: string) {
+    this.navService.scrollToTop(route);
   }
 }

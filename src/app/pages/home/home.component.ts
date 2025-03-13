@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -39,25 +39,28 @@ import { NavigationService } from '../../shared/navigation.service';
     ]),
   ],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   state = 'visible';
   selectedImage: string | null = null;
+  private observer: IntersectionObserver | null = null;
+
   constructor(private navigationService: NavigationService) {}
+
   services = [
     {
-      title: 'Custom Websites',
+      title: 'Stand Out with Custom Design',
       description:
-        'Unique designs tailored for any business. We offer a wide range of services to help you create a website that is perfect for your business.',
+        'DIY platforms trap you in cookie-cutter templates that blend into the crowd. With 13 years of expertise, we build bespoke websites that showcase your brand’s personality and vision.',
     },
     {
-      title: 'Custom Solutions',
+      title: 'Grow Without Limits',
       description:
-        'One of a kind solutions for any niche, precision guaranteed.',
+        'DIY platforms often struggle to scale as your business grows. Our custom solutions, backed over a decade of development experience, ensure your website adapts seamlessly to increased traffic and new features.',
     },
     {
-      title: 'Hosting',
+      title: 'Secure, Supported, and Affordable',
       description:
-        "100% up-time. We leverage Amazon's servers to guarantee your site or app never goes down.",
+        'DIY platforms can lack robust security and support. With our competitive pricing and expertise, you get a fast, secure website plus dedicated support—value that grows with you.',
     },
   ];
   testimonials = [
@@ -90,24 +93,89 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const observer = new IntersectionObserver(
+    //     (entries) => {
+    //       entries.forEach((entry) => {
+    //         if (entry.isIntersecting) {
+    //           startAnimation();
+    //           observer.unobserve(entry.target);
+    //         }
+    //       });
+    //     },
+    //     { threshold: 0.2 }
+    //   );
+
+    //   observer.observe(document.querySelector('.benefits-container'));
+
+    //   function startAnimation() {
+    //     const bars = document.querySelectorAll('.bar-container');
+
+    //     bars.forEach((bar, index) => {
+    //       setTimeout(() => {
+    //         bar.classList.add('animate');
+
+    //         setTimeout(() => {
+    //           const value = bar.getAttribute('data-value');
+    //           const barEl = bar.querySelector('.bar') as HTMLElement;
+    //           if (barEl) {
+    //             barEl.style.width = value + '%';
+    //           }
+    //         }, 300);
+    //       }, index * 200);
+    //     });
+    //   }
+    // });
   }
 
-  openModal(imageSrc: string) {
-    this.selectedImage = imageSrc;
-    document.body.style.overflow = 'hidden';
+  ngAfterViewInit() {
+    this.setupIntersectionObserver();
   }
 
-  closeModal(event: Event) {
-    if (
-      event.target === event.currentTarget ||
-      (event.target as HTMLElement).classList.contains('close-btn')
-    ) {
-      this.selectedImage = null;
-      document.body.style.overflow = 'auto';
+  ngOnDestroy() {
+    if (this.observer) {
+      this.observer.disconnect();
     }
   }
 
-  navAndScroll() {
-    this.navigationService.scrollToTop('/contact');
+  private setupIntersectionObserver() {
+    const benefitsContainer = document.querySelector('.benefits-container');
+    if (!benefitsContainer) return;
+
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            this.startAnimation();
+            this.observer?.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+
+    this.observer.observe(benefitsContainer);
+  }
+
+  private startAnimation() {
+    const bars = document.querySelectorAll('.bar-container');
+    bars.forEach((bar, index) => {
+      setTimeout(() => {
+        bar.classList.add('animate');
+
+        setTimeout(() => {
+          const value = bar.getAttribute('data-value');
+          const barEl = bar.querySelector('.bar') as HTMLElement;
+          if (barEl) {
+            barEl.style.width = `${value}%`;
+          }
+        }, 300);
+      }, index * 200);
+    });
+  }
+
+  navAndScroll(route: string) {
+    this.navigationService.scrollToTop(route);
   }
 }

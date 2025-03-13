@@ -16,7 +16,12 @@
           <p>{{ project.description }}</p>
         </mat-card-content>
         <mat-card-actions>
-          <a mat-button color="primary" [href]="project.url" target="_blank"
+          <a
+            mat-raised-button
+            color="primary"
+            class="cta btn-space"
+            [href]="project.url"
+            target="_blank"
             >Visit Site</a
           >
         </mat-card-actions>

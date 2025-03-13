@@ -46,34 +46,34 @@ export class ServicesComponent implements OnInit {
     {
       title: 'Web Hosting',
       description:
-        'Reliable, high-performance hosting solutions optimized for speed and scalability, perfect for niche websites.',
+        'With 13 years of hands-on experience, I provide high-performance hosting optimized for speed and reliability. Tailored to your niche, my solutions ditch the generic setups of DIY platforms for a custom-built foundation that scales with you.',
     },
     {
       title: 'Web Development',
       description:
-        'Custom websites with responsive designs, tailored for teams and businesses across any industry.',
+        'I build more than websites—I create digital solutions. Drawing on over a decade of coding expertise, I deliver responsive, custom designs that match your team’s vision, leaving one-size-fits-all templates in the dust.',
     },
     {
       title: 'Maintenance & Support',
       description:
-        'Ongoing support and updates to keep your site running smoothly, with 24/7 assistance for peak performance.',
+        'Your site deserves relentless care. I offer proactive updates and 24/7 support to keep it running at peak performance—no shortcuts, just dependable service you can count on.',
     },
   ];
   aiFeatures = [
     {
       title: 'AI-Powered Analytics',
       description:
-        'Gain insights with AI-driven analytics to optimize your site’s performance and user engagement.',
+        'Leveraging AI, I turn raw data into sharp, actionable strategies. My analytics boost your site’s performance and engagement, giving you an edge over standard tools.',
     },
     {
       title: 'Personalized Content',
       description:
-        'Implement AI to deliver dynamic, personalized content for your fans or customers.',
+        'With AI and a decade-plus of web expertise, I craft content that adapts to each visitor. It’s dynamic, precise, and built to connect—because generic pages don’t cut it for your audience.',
     },
     {
       title: 'Automation Tools',
       description:
-        'Streamline operations with AI automation for scheduling, chatbots, and more, enhancing user experience.',
+        'I use AI to streamline your operations, from smart chatbots to seamless scheduling. My tools cut the busywork and elevate your site’s user experience.',
     },
   ];
 

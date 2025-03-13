@@ -34,35 +34,35 @@ export class PortfolioComponent implements OnInit {
     {
       title: 'Martin MX Park',
       description:
-        'A dynamic website for a motocross park, highlighting events and rider experiences.',
+        'One of the most iconic and popular motocross tracks in the world.',
       url: 'https://martinmxpark.com',
       image: 'assets/martin.webp',
     },
     {
       title: 'United Steps',
       description:
-        'A resource for suicide prevention and support, focusing on education and community outreach.',
+        'A resource for suicide prevention and support. Based out of Michigan',
       url: 'https://united-steps.org',
       image: 'assets/us.webp',
     },
     {
       title: 'Rollin Brummette',
       description:
-        'A personal portfolio showcasing creative projects and professional work.',
+        'A musician fan membership platform for a rising country music artist.',
       url: 'https://rollinbrummette.com',
       image: 'assets/rollin.webp',
     },
     {
       title: 'Kollar Piano Services',
       description:
-        'A professional site for piano tuning and repair services, with a clean, user-friendly design.',
+        'A professional site for piano tuning and repair services, in Lansing, MI.',
       url: 'https://kollarpianoservices.com',
       image: 'assets/kpt.webp',
     },
     {
       title: 'Mecosta MX',
       description:
-        'A motocross-focused website featuring tracks, events, and community engagement.',
+        'A motocross track that looks like something out of a video game. Located in Mecosta, MI',
       url: 'https://mecostamx.com',
       image: 'assets/mecosta.webp',
     },

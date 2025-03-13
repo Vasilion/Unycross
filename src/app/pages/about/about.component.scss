@@ -1,5 +1,5 @@
 .about-hero {
-  height: 60vh;
+  // height: 60vh;
   position: relative;
   display: flex;
   align-items: center;
@@ -88,13 +88,19 @@
 }
 
 .team-section {
-  padding: 4rem 2rem;
+  padding: 0rem 2rem;
   // background: #1a1a1a;
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+hr {
+  background-color: #00d9ff;
+  border-color: #00d9ff;
+  color: #00d9ff;
 }
 
 h2 {
@@ -176,7 +182,7 @@ p {
 
 @media (max-width: 768px) {
   .about-hero {
-    height: 60vh;
+    // height: 60vh;
     flex-direction: column;
     padding: 1rem;
     text-align: center;
@@ -213,7 +219,7 @@ p {
   }
 
   .team-section {
-    padding: 2rem 1rem;
+    padding: 0rem 1rem;
   }
 
   .team-grid {

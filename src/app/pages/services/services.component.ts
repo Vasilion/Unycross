@@ -46,12 +46,12 @@ export class ServicesComponent implements OnInit {
     {
       title: 'Web Hosting',
       description:
-        'With 13 years of hands-on experience, I provide high-performance hosting optimized for speed and reliability. Tailored to your niche, my solutions ditch the generic setups of DIY platforms for a custom-built foundation that scales with you.',
+        'With 13 years of hands-on experience, I provide high performance hosting optimized for speed and reliability. Tailored to your niche, my solutions ditch the generic setups of DIY platforms for a custom built foundation that scales with you.',
     },
     {
       title: 'Web Development',
       description:
-        'I build more than websites—I create digital solutions. Drawing on over a decade of coding expertise, I deliver responsive, custom designs that match your team’s vision, leaving one-size-fits-all templates in the dust.',
+        'I build more than websites I create digital solutions. Drawing on over a decade of coding expertise, I deliver responsive, custom designs that match your team’s vision, leaving one size fits all templates in the dust.',
     },
     {
       title: 'Maintenance & Support',
@@ -68,7 +68,7 @@ export class ServicesComponent implements OnInit {
     {
       title: 'Personalized Content',
       description:
-        'With AI and a decade-plus of web expertise, I craft content that adapts to each visitor. It’s dynamic, precise, and built to connect—because generic pages don’t cut it for your audience.',
+        'With AI and a decade plus of web expertise, I craft content that adapts to each visitor. It’s dynamic, precise, and built to connect because generic pages don’t cut it for your audience.',
     },
     {
       title: 'Automation Tools',

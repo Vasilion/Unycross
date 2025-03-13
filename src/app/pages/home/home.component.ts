@@ -50,7 +50,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       title: 'Stand Out with Custom Design',
       description:
-        'DIY platforms trap you in cookie-cutter templates that blend into the crowd. With 13 years of expertise, we build bespoke websites that showcase your brand’s personality and vision.',
+        'DIY platforms trap you in cookie-cutter templates that blend into the crowd. With 13 years of expertise, I build bespoke websites that showcase your brand’s personality and vision.',
     },
     {
       title: 'Grow Without Limits',

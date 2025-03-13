@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       title: 'Grow Without Limits',
       description:
-        'DIY platforms often struggle to scale as your business grows. Our custom solutions, backed over a decade of development experience, ensure your website adapts seamlessly to increased traffic and new features.',
+        'DIY platforms often struggle to scale as your business grows. Unyx custom solutions, backed by over a decade of development experience, ensure your website adapts seamlessly to increased traffic and new features.',
     },
     {
       title: 'Secure, Supported, and Affordable',

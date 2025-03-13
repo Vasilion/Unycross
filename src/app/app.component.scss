@@ -21,8 +21,9 @@ main {
 }
 
 .mobile-arrow {
+  margin-bottom: -12px;
   display: block;
-  color: #00d9ff;
+  color: #00d9ff79;
   font-size: 24px;
   font-weight: bold;
   animation: strobe 1.5s infinite;
@@ -39,10 +40,10 @@ main {
 }
 
 .spinner {
-  scale: 0.4;
+  scale: 0.3;
   width: 70.4px;
   height: 70.4px;
-  --clr: #00d9ff;
+  --clr: #00d9ff79;
   --clr-alpha: rgba(0, 0, 0, 0.808);
   animation: spinner 1.6s infinite ease;
   transform-style: preserve-3d;

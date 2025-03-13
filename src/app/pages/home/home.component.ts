@@ -60,7 +60,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     {
       title: 'Secure, Supported, and Affordable',
       description:
-        'DIY platforms can lack robust security and support. With our competitive pricing and expertise, you get a fast, secure website plus dedicated support—value that grows with you.',
+        'DIY platforms can lack robust security and support. With our competitive pricing and expertise, you get a fast, secure website plus dedicated support value that grows with you.',
     },
   ];
   testimonials = [

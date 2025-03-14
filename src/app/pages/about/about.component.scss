@@ -1,5 +1,5 @@
 .about-hero {
-  // height: 60vh;
+  height: 80vh;
   position: relative;
   display: flex;
   align-items: center;
@@ -88,6 +88,7 @@
 }
 
 .team-section {
+  margin-top: 15vh;
   padding: 0rem 2rem;
   // background: #1a1a1a;
 }
@@ -182,10 +183,11 @@ p {
 
 @media (max-width: 768px) {
   .about-hero {
-    // height: 60vh;
+    height: 80vh;
     flex-direction: column;
     padding: 1rem;
     text-align: center;
+    justify-content: center;
 
     .hero-content {
       max-width: 100%;

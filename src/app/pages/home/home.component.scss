@@ -1,6 +1,6 @@
 .hero {
   position: relative;
-  height: 60vh;
+  height: 80vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -47,7 +47,9 @@
   animation: text-flicker 4s infinite;
   font-weight: bold;
 }
+
 .services-teaser {
+  margin-top: 15vh;
   padding: 0rem 2rem;
   // background: rgba(26, 26, 26, 0.8);
 }

@@ -1,4 +1,4 @@
-<h1 style="color: #ab47bc;">Unycross</h1>
+<h1 style="color: red;">Unycross</h1>
 
 Welcome to the GitHub repository for [Unycross](https://www.unycross.com/), my personal portfolio site! This project showcases my skills, creativity, and passion for building meaningful digital experiences with Angular. Whether you're here to explore the code, collaborate, or just say hi, I’m glad you stopped by.
 

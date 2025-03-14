@@ -1,27 +1,25 @@
-# Unycross LLC
+# Unycross
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.1.4.
+Welcome to the GitHub repository for [Unycross](https://www.unycross.com/), my personal portfolio site! This project showcases my skills, creativity, and passion for building meaningful digital experiences with Angular. Whether you're here to explore the code, collaborate, or just say hi, I’m glad you stopped by.
 
-## Development server
+## About Unycross
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Unycross is a sleek, modern portfolio site designed to highlight my work as a [Web Developer]. Built with Angular 18, it emphasizes animation and services to help show clients what I can do for them. It’s a living project that grows as I take on new challenges and refine my craft.
 
-## Code scaffolding
+- **Live Site:** [unycross.com](https://www.unycross.com/)
+- **GitHub Repo:** [github.com/Vasilion/Unycross](https://github.com/Vasilion/Unycross)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Features
 
-## Build
+- **Responsive Design:** Looks great on any device, from mobile to desktop.
+- **Fast Load Times:** Optimized for speed and user satisfaction.
+- **Custom Styling:** Unique visuals that reflect my personal brand.
+- **Interactive Elements:** ThreeJs animations and interactivity to enhance the experience.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Tech Stack
 
-## Running unit tests
+- **Frontend:** HTML, SCSS, TypeScript, Javascript, Angular
+- **Hosting:** AWS Amplify
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

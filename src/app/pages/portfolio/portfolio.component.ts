@@ -39,12 +39,6 @@ export class PortfolioComponent implements OnInit {
       image: 'assets/martin.webp',
     },
     {
-      title: 'PIP-DEX 3000',
-      description: 'A Fallout 3 pipboy inspired pokedex.',
-      url: 'https://main.d2gixauk72uxbl.amplifyapp.com',
-      image: 'assets/pipdex.webp',
-    },
-    {
       title: 'United Steps',
       description:
         'A resource for suicide prevention and support. Based out of Michigan',

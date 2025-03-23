@@ -28,7 +28,6 @@ import {
     ]),
   ],
 })
-// force build amplify
 export class PortfolioComponent implements OnInit {
   state = 'visible';
   projects = [

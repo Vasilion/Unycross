@@ -6,6 +6,7 @@ import { ContactComponent } from './pages/contact/contact.component';
 import { PortfolioComponent } from './pages/portfolio/portfolio.component';
 import { BlogComponent } from './pages/blog/blog.component';
 import { BlogPostComponent } from './pages/blog/blog-post/blog-post.component';
+import { FinancialAdvisingComponent } from './pages/financial-advising/financial-advising.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   { path: 'blog', component: BlogComponent },
   { path: 'blog/:id', component: BlogPostComponent },
+  { path: 'financial-advising', component: FinancialAdvisingComponent },
   { path: '**', redirectTo: '' },
 ];

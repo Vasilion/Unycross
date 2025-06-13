@@ -1,0 +1,190 @@
+<div class="financial-advising-container" [@fadeIn]="state">
+  <section class="hero-section">
+    <h1 [@fadeInUp]="state">Financial Advising</h1>
+    <p [@fadeInUp]="state" class="subtitle">
+      Your journey to financial success starts with a personalized plan. I'll
+      analyze your current situation, understand your goals, and create a
+      tailored strategy to help you achieve them efficiently.
+    </p>
+  </section>
+
+  <section class="story-section" [@fadeInUp]="state">
+    <div class="story-content">
+      <h2>The Moment Everything Changed</h2>
+      <div class="story-text">
+        <p class="story-intro">
+          There's a moment, just one, when everything shifts—not because the
+          world changes, but because you do.
+        </p>
+
+        <p>
+          Mine came at 25, not in some dramatic crisis, but in the quiet grip of
+          a realization I couldn't unsee:
+        </p>
+
+        <p class="story-highlight">
+          I was going to spend the rest of my life working a job I hated.
+        </p>
+
+        <p>
+          Not for a season. Not as a stepping stone. But forever—unless
+          something changed. It was a regular weekday, the kind where the
+          morning commute feels like a sentence. I remember sitting in the
+          parking lot before clocking in, engine off, hands on the wheel. The
+          kind of silence that presses down on you. I wasn't burned out. I was
+          numb. The kind of numb that whispers, "This is it. Get used to it."
+        </p>
+
+        <p>But I couldn't. I wouldn't.</p>
+
+        <p>
+          That moment—lonely, heavy, and almost too quiet—became the pivot point
+          of my life.
+        </p>
+
+        <p>
+          From there, I made a decision. Not a resolution. Not a hope. A
+          decision—to understand money, to rewire my relationship with it, and
+          to engineer a future that didn't feel like a treadmill. I was done
+          grinding without direction. My wife and I deserved better.
+        </p>
+
+        <p>
+          I threw myself into it: economic cycles, market behavior, political
+          policy, global trends. I didn't want to be rich just for the sake of
+          wealth—I wanted freedom. I wanted to stop trading time for dollars and
+          start building something with leverage and intention.
+        </p>
+
+        <p>And slowly, the gears began to turn.</p>
+
+        <p>
+          Year by year, piece by piece, the numbers began to shift. From red to
+          black. From flat to compounding. What felt impossible at 24 became
+          undeniable by 30. A seven-figure net worth. Built not from luck or
+          inheritance, but from clarity, discipline, and a plan that saw past
+          the noise.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing-section" [@fadeInUp]="state">
+    <div class="pricing-container">
+      <h2>Investment in Your Future</h2>
+      <p class="pricing-subtitle">
+        Choose the path that aligns with your financial goals
+      </p>
+
+      <div class="pricing-grid">
+        <mat-card class="pricing-card basic">
+          <div class="card-glow"></div>
+          <mat-card-header>
+            <mat-card-title>Basic Financial Plan</mat-card-title>
+            <div class="price">
+              <span class="amount">$500</span>
+              <!-- <span class="period">one-time</span> -->
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Comprehensive Financial Analysis</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Personalized Debt Management Strategy</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Custom Investment Plan</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">One-time Detailed Consultation</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Written Financial Roadmap</span>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="navAndScroll()">
+              Get Started
+            </button>
+          </mat-card-actions>
+        </mat-card>
+
+        <mat-card class="pricing-card dynamic">
+          <div class="card-glow"></div>
+          <mat-card-header>
+            <mat-card-title>Dynamic Financial Partnership</mat-card-title>
+            <div class="price">
+              <span class="amount">Hourly Rate</span>
+              <!-- <span class="period">ongoing support</span> -->
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Ongoing Financial Guidance</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Regular Strategy Adjustments</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Market Opportunity Analysis</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Continuous Portfolio Optimization</span>
+              </li>
+              <li>
+                <span class="icon">→</span>
+                <span class="text">Priority Access to Financial Insights</span>
+              </li>
+            </ul>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-raised-button color="primary" (click)="navAndScroll()">
+              Contact for Rate
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+  </section>
+
+  <section class="services-section">
+    <div class="services-grid">
+      <mat-card
+        *ngFor="let service of services"
+        [@fadeInUp]="state"
+        class="service-card"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ service.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ service.description }}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </section>
+
+  <section class="cta-section" [@fadeInUp]="state">
+    <h2>Ready to Transform Your Financial Future?</h2>
+    <p>
+      Let's discuss your goals and create a personalized plan to help you
+      achieve them
+    </p>
+    <button mat-raised-button color="primary" (click)="navAndScroll()">
+      Get Started
+    </button>
+  </section>
+</div>

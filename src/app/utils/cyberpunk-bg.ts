@@ -15,8 +15,8 @@ export class CyberpunkBackground {
   private height: number;
   private stormColor: THREE.Color;
   private accentColor: THREE.Color;
-  private purpleColor: THREE.Color;
-  private brighterPurpleColor: THREE.Color;
+  // private purpleColor: THREE.Color;
+  // private brighterPurpleColor: THREE.Color;
 
   private scene: THREE.Scene;
   private camera: THREE.PerspectiveCamera;
@@ -27,7 +27,7 @@ export class CyberpunkBackground {
     velocities: Float32Array;
     sizes: Float32Array;
   };
-  private rain: THREE.Points;
+  // private rain: THREE.Points;
   private stars: THREE.Points;
   private clock: THREE.Clock;
   private mouse: THREE.Vector2;
@@ -50,13 +50,13 @@ export class CyberpunkBackground {
     this.height = window.innerHeight;
     this.stormColor = new THREE.Color('#0066cc');
     this.accentColor = new THREE.Color('#00ccff');
-    this.purpleColor = new THREE.Color('#592388');
-    this.brighterPurpleColor = new THREE.Color('#ce93d8'); // Updated rain color
+    // this.purpleColor = new THREE.Color('#592388');
+    // this.brighterPurpleColor = new THREE.Color('#ce93d8');
 
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('#000000'); // Pure black background
     this.camera = new THREE.PerspectiveCamera(
-      60, // Reduced FOV for less intensity
+      60,
       this.width / this.height,
       0.1,
       1000
@@ -122,11 +122,10 @@ export class CyberpunkBackground {
     this.renderer.domElement.style.position = 'fixed';
     this.renderer.domElement.style.top = '0';
     this.renderer.domElement.style.left = '0';
-    this.renderer.domElement.style.width = '100vw'; // Use viewport units
-    this.renderer.domElement.style.height = '100vh'; // Use viewport units
+    this.renderer.domElement.style.width = '100vw';
+    this.renderer.domElement.style.height = '100vh';
     this.renderer.domElement.style.zIndex = '-1';
-    // Expand canvas beyond viewport to handle momentum scrolling
-    this.renderer.domElement.style.transform = 'scale(1.2)'; // Scale up to prevent white edges
+    this.renderer.domElement.style.transform = 'scale(1.2)';
     this.renderer.domElement.style.transformOrigin = 'center';
 
     this.container.appendChild(this.renderer.domElement);
@@ -140,7 +139,7 @@ export class CyberpunkBackground {
     // Create elements
     this.createStars();
     this.createStormParticles();
-    this.createRain();
+    // this.createRain();
 
     // Start animation loop
     this.animate();
@@ -251,56 +250,6 @@ export class CyberpunkBackground {
     this.scene.add(this.particles.mesh);
   }
 
-  private createRain(): void {
-    // Create purple rain with the same particle style as the storm particles
-    const rainCount = 2000; // Reduced rain count (from 3000 to 2000)
-    const rainGeometry = new THREE.BufferGeometry();
-
-    // Use the same point material type as the particles, but with purple color
-    const rainMaterial = new THREE.PointsMaterial({
-      color: this.brighterPurpleColor,
-      size: 0.8, // Slightly larger than storm particles
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      sizeAttenuation: true,
-      depthWrite: false,
-      map: this.particleTexture, // Use the same circular texture
-    });
-
-    const positions = new Float32Array(rainCount * 3);
-    const velocities = new Float32Array(rainCount * 3);
-    const sizes = new Float32Array(rainCount);
-
-    for (let i = 0; i < rainCount; i++) {
-      const i3 = i * 3;
-      // Distribute rain across the entire canvas with wider spread
-      positions[i3] = (Math.random() - 0.5) * 400; // Wide x-spread
-      positions[i3 + 1] = Math.random() * 300 - 50; // Higher start position
-      positions[i3 + 2] = Math.random() * 400 - 400; // Wider and deeper depth range
-
-      // Rain falling velocity - maintaining slower speed
-      velocities[i3] = (Math.random() - 0.5) * 0.1; // Reduced sideways drift
-      velocities[i3 + 1] = -0.8 - Math.random() * 1.2; // Downward speed
-      velocities[i3 + 2] = (Math.random() - 0.5) * 0.1; // Reduced depth movement
-
-      // Size variation - match storm particles but slightly larger
-      sizes[i] = Math.random() * 2 + 0.5;
-    }
-
-    rainGeometry.setAttribute(
-      'position',
-      new THREE.BufferAttribute(positions, 3)
-    );
-    rainGeometry.setAttribute(
-      'velocity',
-      new THREE.BufferAttribute(velocities, 3)
-    );
-    rainGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-
-    this.rain = new THREE.Points(rainGeometry, rainMaterial);
-    this.scene.add(this.rain);
-  }
-
   private animate(): void {
     requestAnimationFrame(this.animate.bind(this));
 
@@ -317,14 +266,11 @@ export class CyberpunkBackground {
         .array as Float32Array;
 
       for (let i = 0; i < positions.length; i += 3) {
-        // Update positions based on velocity (with slower movement)
-        positions[i] += velocities[i] * 0.5; // 50% slower horizontal movement
-        positions[i + 1] += velocities[i + 1] * 0.5; // 50% slower vertical movement
-        positions[i + 2] += velocities[i + 2] * 0.5; // 50% slower forward movement
+        positions[i] += velocities[i] * 0.5;
+        positions[i + 1] += velocities[i + 1] * 0.5;
+        positions[i + 2] += velocities[i + 2] * 0.5;
 
-        // Reset particles that move too close to the camera
         if (positions[i + 2] > 50) {
-          // Reset to far away and slightly randomize the position
           const radius = 20 + Math.random() * 30;
           const theta = Math.random() * Math.PI * 2;
           const phi = Math.random() * Math.PI;
@@ -333,24 +279,22 @@ export class CyberpunkBackground {
           positions[i + 1] = radius * Math.sin(phi) * Math.sin(theta);
           positions[i + 2] = -600;
 
-          // Significantly reduce the velocity for slower movement
-          velocities[i] = (Math.random() - 0.5) * 0.05; // Further reduced velocity
-          velocities[i + 1] = (Math.random() - 0.5) * 0.05; // Further reduced velocity
-          velocities[i + 2] = 0.3 + Math.random() * 1; // Much slower forward movement
+          velocities[i] = (Math.random() - 0.5) * 0.05;
+          velocities[i + 1] = (Math.random() - 0.5) * 0.05;
+          velocities[i + 2] = 0.3 + Math.random() * 1;
 
-          // Update size
           const index = i / 3;
-          sizes[index] = Math.random() * 1.5 + 0.3; // Smaller size
+          sizes[index] = Math.random() * 1.5 + 0.3;
         }
       }
 
       this.particles.mesh.geometry.attributes['position'].needsUpdate = true;
       this.particles.mesh.geometry.attributes['size'].needsUpdate = true;
 
-      // Rotate the particle system much slower for a more subtle effect
-      this.particles.mesh.rotation.z += delta * 0.01; // Even slower rotation
+      this.particles.mesh.rotation.z += delta * 0.01;
     }
 
+    /*
     // Animate rain
     if (this.rain) {
       const positions = this.rain.geometry.attributes['position']
@@ -360,21 +304,17 @@ export class CyberpunkBackground {
       const sizes = this.rain.geometry.attributes['size'].array as Float32Array;
 
       for (let i = 0; i < positions.length; i += 3) {
-        // Update rain drop positions
         positions[i] += velocities[i];
         positions[i + 1] += velocities[i + 1];
         positions[i + 2] += velocities[i + 2];
 
-        // Reset rain drops that fall below the view
         if (positions[i + 1] < -100) {
-          positions[i] = (Math.random() - 0.5) * 400; // Wider x-spread
-          positions[i + 1] = 150 + Math.random() * 50; // Reset higher
-          positions[i + 2] = Math.random() * 400 - 400; // Wider z-spread
+          positions[i] = (Math.random() - 0.5) * 400;
+          positions[i + 1] = 150 + Math.random() * 50;
+          positions[i + 2] = Math.random() * 400 - 400;
 
-          // Vary the falling speed slightly, but keep it slow
-          velocities[i + 1] = -0.8 - Math.random() * 1.2; // Slower rain
+          velocities[i + 1] = -0.8 - Math.random() * 1.2;
 
-          // Update sizes for some variation
           const index = i / 3;
           sizes[index] = Math.random() * 2 + 0.5;
         }
@@ -383,7 +323,6 @@ export class CyberpunkBackground {
       this.rain.geometry.attributes['position'].needsUpdate = true;
       this.rain.geometry.attributes['size'].needsUpdate = true;
 
-      // Make rain shimmer similarly to stars
       const sizesArray = sizes;
       for (let i = 0; i < sizesArray.length; i++) {
         sizesArray[i] =
@@ -391,12 +330,12 @@ export class CyberpunkBackground {
           (Math.random() * 0.5 + 0.75);
       }
     }
+    */
 
     // Animate stars
     if (this.stars) {
-      this.stars.rotation.z += delta * 0.003; // Even slower rotation
+      this.stars.rotation.z += delta * 0.003;
 
-      // Make stars twinkle (less dramatic)
       const sizes = this.stars.geometry.attributes[
         'size'
       ] as THREE.BufferAttribute;

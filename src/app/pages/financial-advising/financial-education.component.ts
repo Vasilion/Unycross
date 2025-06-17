@@ -13,11 +13,11 @@ import { RouterLink } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
 
 @Component({
-  selector: 'app-financial-advising',
+  selector: 'app-financial-education',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
-  templateUrl: './financial-advising.component.html',
-  styleUrls: ['./financial-advising.component.scss'],
+  templateUrl: './financial-education.component.html',
+  styleUrls: ['./financial-education.component.scss'],
   animations: [
     trigger('fadeIn', [
       state('void', style({ opacity: 0, transform: 'translateY(20px)' })),
@@ -39,23 +39,23 @@ import { NavigationService } from '../../shared/navigation.service';
     ]),
   ],
 })
-export class FinancialAdvisingComponent implements OnInit {
+export class FinancialEducationComponent implements OnInit {
   state = 'visible';
   services = [
     {
-      title: 'Investment Planning',
+      title: 'Investment Education',
       description:
-        "Strategic investment solutions tailored to your financial goals and risk tolerance. We'll help you build a diversified portfolio aligned with your objectives.",
+        "Learn how to build and manage a diversified investment portfolio. We'll teach you the fundamentals of investing and help you understand how to align your investments with your goals.",
     },
     {
-      title: 'Retirement Planning',
+      title: 'Retirement Planning Education',
       description:
-        "Comprehensive retirement strategies to ensure your financial security in your golden years. We'll create a roadmap to help you achieve the retirement lifestyle you envision.",
+        'Master the art of retirement planning through our comprehensive educational resources. Learn how to create and maintain a sustainable retirement strategy that works for your lifestyle.',
     },
     {
-      title: 'Debt Management',
+      title: 'Financial Literacy',
       description:
-        "Personalized debt paydown strategies to help you eliminate debt efficiently while maintaining financial stability. We'll create a plan that fits your unique situation.",
+        "Develop essential financial skills through our educational programs. From budgeting to debt management, we'll help you build a strong foundation for financial success.",
     },
   ];
 
@@ -67,5 +67,13 @@ export class FinancialAdvisingComponent implements OnInit {
 
   navAndScroll() {
     this.navigationService.scrollToTop('/contact');
+  }
+
+  goToStandard() {
+    window.open('https://buy.stripe.com/00weVedj2e610a3fPa4Ja00', '_blank');
+  }
+
+  goToPro() {
+    window.open('https://buy.stripe.com/cNi6oIen6ge9e0T9qM4Ja01', '_blank');
   }
 }

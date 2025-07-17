@@ -649,23 +649,9 @@
         padding: 0 20px 20px;
         position: relative;
         z-index: 1;
-
         button {
-          width: 80%;
-          padding: 15px 0;
-          font-size: 1.2em;
-          font-weight: 600;
-          text-transform: uppercase;
-          border-radius: 8px;
-          background-color: #673ab7;
-          color: white;
-          transition: background-color 0.3s ease-in-out,
-            transform 0.2s ease-in-out;
-
-          &:hover {
-            background-color: #7b1fa2;
-            transform: translateY(-3px);
-          }
+          // Remove custom width, padding, font-size, background, border-radius, etc.
+          // Let it inherit the .cta-section button style
         }
       }
     }

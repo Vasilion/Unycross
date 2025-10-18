@@ -70,10 +70,10 @@ export class FinancialEducationComponent implements OnInit {
   }
 
   goToStandard() {
-    window.open('https://buy.stripe.com/00weVedj2e610a3fPa4Ja00', '_blank');
+    window.open('https://mee6.xyz/en/m/1384673721599397948', '_blank');
   }
 
   goToPro() {
-    window.open('https://buy.stripe.com/cNi6oIen6ge9e0T9qM4Ja01', '_blank');
+    window.open('https://mee6.xyz/en/m/1384673721599397948', '_blank');
   }
 }

@@ -9,13 +9,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { RouterLink } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-services',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, MatCardModule],
   templateUrl: './services.component.html',
   styleUrls: ['./services.component.scss'],
   animations: [
@@ -41,22 +41,85 @@ import { NavigationService } from '../../shared/navigation.service';
 })
 export class ServicesComponent implements OnInit {
   state = 'visible';
-  constructor(private navigationService: NavigationService) {}
-  services = [
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService
+  ) {}
+  customDevelopmentTiers = [
     {
-      title: 'Web Hosting',
-      description:
-        'With 13 years of hands-on experience, I provide high performance hosting optimized for speed and reliability. Tailored to your niche, my solutions ditch the generic setups of DIY platforms for a custom built foundation that scales with you.',
+      name: 'Basic',
+      price: 'Starting at $2,500',
+      tagline: 'A fast, professional launch for lean teams.',
+      features: [
+        'Custom design + build',
+        'Mobile-first, conversion-focused layout',
+        'On-page SEO fundamentals',
+        'Performance baseline optimization',
+        'Handoff or optional ongoing care',
+      ],
     },
     {
-      title: 'Web Development',
-      description:
-        'I build more than websites I create digital solutions. Drawing on over a decade of coding expertise, I deliver responsive, custom designs that match your team’s vision, leaving one size fits all templates in the dust.',
+      name: 'Growth',
+      price: 'Starting at $7,500',
+      tagline: 'For businesses that need more leads and integrations.',
+      features: [
+        'Everything in Basic',
+        'Content architecture and UX refinement',
+        'Advanced forms, tracking, and lead flow',
+        'Integrations (CRM, email, scheduling)',
+        'Launch support + iteration plan',
+      ],
     },
     {
-      title: 'Maintenance & Support',
-      description:
-        'Your site deserves relentless care. I offer proactive updates and 24/7 support to keep it running at peak performance—no shortcuts, just dependable service you can count on.',
+      name: 'Enterprise',
+      price: 'Custom Quote',
+      tagline: 'Complex builds, high traffic, and strict requirements.',
+      features: [
+        'Everything in Growth',
+        'Custom app features and workflows',
+        'Security and performance hardening',
+        'Accessibility-first approach',
+        'Ongoing roadmap and priority delivery',
+      ],
+    },
+  ];
+
+  managedHostingTiers = [
+    {
+      name: 'Basic',
+      price: '$149/mo',
+      tagline: 'Peace of mind for small business sites.',
+      features: [
+        'Managed hosting + monitoring',
+        'SSL, backups, and uptime checks',
+        'Core updates (monthly)',
+        'Basic security hardening',
+        'Email support',
+      ],
+    },
+    {
+      name: 'Growth',
+      price: '$349/mo',
+      tagline: 'Priority support and proactive performance.',
+      features: [
+        'Everything in Basic',
+        'Performance tuning and audits',
+        'Staging environment for updates',
+        'Enhanced security + vulnerability checks',
+        'Priority support',
+      ],
+    },
+    {
+      name: 'Enterprise',
+      price: 'Custom',
+      tagline: 'For critical sites that can’t go down.',
+      features: [
+        'Everything in Growth',
+        'Advanced monitoring and alerting',
+        'Custom SLAs and maintenance windows',
+        'Incident response support',
+        'Ongoing optimization roadmap',
+      ],
     },
   ];
   aiFeatures = [
@@ -79,6 +142,13 @@ export class ServicesComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+
+    this.seo.update({
+      title:
+        'Custom Websites, Managed Hosting & Maintenance | Unycross Grand Rapids',
+      description:
+        'Senior-level custom web development, managed hosting, and ongoing maintenance for businesses in Grand Rapids, Cedar Springs, and West Michigan.',
+    });
   }
 
   navAndScroll() {

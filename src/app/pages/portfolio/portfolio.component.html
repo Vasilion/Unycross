@@ -1,11 +1,14 @@
 <section class="portfolio">
   <div class="container">
-    <h1 mat-headline-1 [@fadeInUp]="state">UnyX Portfolio</h1>
-    <p mat-body-1 [@fadeInUp]="state">Explore our work.</p>
+    <h1 mat-headline-1 [@fadeInUp]="state">Case Studies</h1>
+    <p mat-body-1 [@fadeInUp]="state">
+      Real projects, real builds. Here’s how custom development and long-term
+      support translate into better user experience and business outcomes.
+    </p>
     <div class="portfolio-grid">
       <mat-card
         class="project-card"
-        *ngFor="let project of projects"
+        *ngFor="let project of caseStudies"
         [@fadeInUp]="state"
       >
         <img mat-card-image [src]="project.image" [alt]="project.title" />
@@ -13,7 +16,21 @@
           <mat-card-title>{{ project.title }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ project.description }}</p>
+          <p>{{ project.summary }}</p>
+          <div class="case-study-grid">
+            <div class="case-block">
+              <h3>The Challenge</h3>
+              <p>{{ project.challenge }}</p>
+            </div>
+            <div class="case-block">
+              <h3>The Custom Solution</h3>
+              <p>{{ project.solution }}</p>
+            </div>
+            <div class="case-block">
+              <h3>The Business Result</h3>
+              <p>{{ project.result }}</p>
+            </div>
+          </div>
         </mat-card-content>
         <mat-card-actions>
           <a
@@ -26,6 +43,17 @@
           >
         </mat-card-actions>
       </mat-card>
+    </div>
+    <div class="text-center portfolio-cta">
+      <button
+        mat-raised-button
+        color="primary"
+        class="cta btn-space"
+        routerLink="/contact"
+        [@fadeInUp]="state"
+      >
+        Let’s Discuss Your Project
+      </button>
     </div>
   </div>
 </section>

@@ -12,6 +12,14 @@ export const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'about', component: AboutComponent },
   { path: 'services', component: ServicesComponent },
+  {
+    path: 'custom-web-development-grand-rapids',
+    component: ServicesComponent,
+  },
+  {
+    path: 'managed-hosting-grand-rapids',
+    component: ServicesComponent,
+  },
   { path: 'portfolio', component: PortfolioComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'blog', component: BlogComponent },

@@ -11,6 +11,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -44,7 +45,10 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   selectedImage: string | null = null;
   private observer: IntersectionObserver | null = null;
 
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService
+  ) {}
 
   services = [
     {
@@ -93,6 +97,12 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit() {
     this.state = 'visible';
+
+    this.seo.update({
+      title: 'Custom Web Development & Managed Hosting in Grand Rapids | Unycross',
+      description:
+        'Custom websites, managed hosting, and ongoing maintenance for businesses in Grand Rapids, Cedar Springs, and West Michigan.',
+    });
 
     // document.addEventListener('DOMContentLoaded', () => {
     //   const observer = new IntersectionObserver(

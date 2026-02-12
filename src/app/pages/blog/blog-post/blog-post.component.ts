@@ -5,6 +5,7 @@ import { howAWebsiteCanIncreasLeadsForYourSmallBusiness } from './posts/howAWebs
 import { NavigationService } from '../../../shared/navigation.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { SeoService } from '../../../shared/seo.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -31,7 +32,8 @@ export class BlogPostComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private navService: NavigationService
+    private navService: NavigationService,
+    private seo: SeoService
   ) {}
 
   ngOnInit() {
@@ -53,6 +55,12 @@ export class BlogPostComponent implements OnInit {
         content: post.content,
       };
       console.log('Post content loaded successfully');
+
+      this.seo.update({
+        title: `${post.title} | Unycross`,
+        description:
+          'Insights on custom web development, managed hosting, and digital strategy for West Michigan businesses.',
+      });
     } else {
       console.error(`Post with ID ${postId} not found`);
     }

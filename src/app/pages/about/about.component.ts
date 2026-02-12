@@ -9,13 +9,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { RouterLink } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-about',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatCardModule, RouterLink],
+  imports: [CommonModule, MatButtonModule, MatCardModule],
   templateUrl: './about.component.html',
   styleUrls: ['./about.component.scss'],
   animations: [
@@ -41,10 +41,19 @@ import { NavigationService } from '../../shared/navigation.service';
 })
 export class AboutComponent implements OnInit {
   state = 'visible';
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService
+  ) {}
 
   ngOnInit() {
     this.state = 'visible';
+
+    this.seo.update({
+      title: 'About Unycross | Senior Web Developer in West Michigan',
+      description:
+        'Learn about Unycross, founded by a senior web developer for the State of Michigan Senate, delivering custom web development and managed hosting for West Michigan businesses.',
+    });
   }
 
   navAndScroll() {

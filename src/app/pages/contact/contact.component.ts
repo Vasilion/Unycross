@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,6 +23,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { environment } from '../../../environments/environment';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -32,6 +34,7 @@ import { environment } from '../../../environments/environment';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
     MatIconModule,
@@ -59,12 +62,17 @@ export class ContactComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private seo: SeoService
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: [''],
+      projectType: [''],
+      budget: [''],
+      timeline: [''],
+      source: [''],
       message: ['', Validators.required],
     });
 
@@ -78,6 +86,12 @@ export class ContactComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+
+    this.seo.update({
+      title: 'Book a Web Development Consultation | Unycross',
+      description:
+        'Request a consultation to discuss custom web development, managed hosting, and maintenance for your business in Grand Rapids, Cedar Springs, and West Michigan.',
+    });
   }
 
   onSubmit() {
@@ -88,7 +102,7 @@ export class ContactComponent implements OnInit {
         name: this.contactForm.get('name')?.value,
         email: this.contactForm.get('email')?.value,
         phoneNumber: this.contactForm.get('phoneNumber')?.value || '',
-        message: this.contactForm.get('message')?.value,
+        message: this.buildMessage(),
       };
 
       this.http
@@ -147,5 +161,24 @@ export class ContactComponent implements OnInit {
     }
     this.contactForm.get('phoneNumber')?.setValue(value, { emitEvent: false });
     input.value = value;
+  }
+
+  private buildMessage() {
+    const message = this.contactForm.get('message')?.value || '';
+    const projectType = this.contactForm.get('projectType')?.value || '';
+    const budget = this.contactForm.get('budget')?.value || '';
+    const timeline = this.contactForm.get('timeline')?.value || '';
+    const source = this.contactForm.get('source')?.value || '';
+
+    const detailsLines = [
+      projectType ? `Project type: ${projectType}` : '',
+      budget ? `Budget: ${budget}` : '',
+      timeline ? `Timeline: ${timeline}` : '',
+      source ? `Source: ${source}` : '',
+    ].filter(Boolean);
+
+    if (detailsLines.length === 0) return message;
+
+    return `${message}\n\n---\n${detailsLines.join('\n')}`;
   }
 }

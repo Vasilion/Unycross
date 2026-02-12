@@ -54,6 +54,41 @@
   // background: rgba(26, 26, 26, 0.8);
 }
 
+.lead-magnet {
+  margin-top: 12vh;
+  padding: 0rem 2rem;
+  text-align: center;
+}
+
+.audit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.audit-card {
+  backdrop-filter: blur(10px);
+  border: 3px solid rgba(107, 64, 160, 0.1);
+  color: #ffffff;
+  padding: 1.5rem;
+  border-radius: 10px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+}
+
+.audit-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(187, 134, 252, 0.2);
+}
+
+.audit-card ul {
+  margin: 1rem 0 0;
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.5rem;
+}
+
 .container {
   max-width: 1200px;
   margin: 0 auto;
@@ -167,6 +202,10 @@ h3 {
     font-size: 2rem;
   }
   .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .audit-grid {
     grid-template-columns: 1fr;
   }
 }

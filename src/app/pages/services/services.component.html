@@ -1,37 +1,107 @@
 <section class="services-hero">
   <div class="container">
-    <h1 mat-headline-1 [@fadeIn]="state">Unleash Your Digital Potential</h1>
+    <h1 mat-headline-1 [@fadeIn]="state">
+      Custom Web Development & Managed Hosting for West Michigan
+    </h1>
     <p mat-body-1 [@fadeIn]="state">
-      Expert web hosting and development, powered by cutting-edge technology.
+      Senior-level, custom-built websites and fully managed hosting for Grand
+      Rapids and Cedar Springs businesses that need reliability, speed, and
+      long-term support.
     </p>
-    <!-- <div class="wrapper">
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="circle"></div>
-      <div class="shadow"></div>
-      <div class="shadow"></div>
-      <div class="shadow"></div>
-    </div> -->
+    <p mat-body-1 [@fadeIn]="state">
+      Every engagement is built around your goals, with recurring hosting and
+      maintenance so you never have to worry about updates, uptime, or
+      security.
+    </p>
+    <button
+      mat-raised-button
+      color="primary"
+      class="cta btn-space"
+      (click)="navAndScroll()"
+      [@fadeIn]="state"
+    >
+      Book a Consultation
+    </button>
   </div>
 </section>
 
 <section class="services-list">
   <div class="container">
-    <h2 mat-headline-2 [@fadeInUp]="state">Our Web Services</h2>
-    <div class="service-grid">
+    <h2 mat-headline-2 [@fadeInUp]="state">Custom Development</h2>
+    <p mat-body-1 [@fadeInUp]="state">
+      Custom development is how you stop leaking leads and start scaling.
+      You’re not buying pages—you’re buying a system built around your
+      customers, your process, and your business goals.
+    </p>
+
+    <div class="pricing-grid">
       <mat-card
-        class="service-card"
-        *ngFor="let service of services"
+        class="pricing-card"
+        *ngFor="let tier of customDevelopmentTiers"
         [@fadeInUp]="state"
       >
         <mat-card-header>
-          <mat-card-title>{{ service.title }}</mat-card-title>
+          <mat-card-title>{{ tier.name }}</mat-card-title>
+          <div class="price">{{ tier.price }}</div>
+          <div class="tagline">{{ tier.tagline }}</div>
         </mat-card-header>
         <mat-card-content>
-          <p>{{ service.description }}</p>
+          <ul class="feature-list">
+            <li *ngFor="let feature of tier.features">{{ feature }}</li>
+          </ul>
         </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="navAndScroll()">
+            Get a Quote
+          </button>
+        </mat-card-actions>
       </mat-card>
     </div>
+
+    <h2 mat-headline-2 [@fadeInUp]="state">Managed Hosting & Maintenance</h2>
+    <p mat-body-1 [@fadeInUp]="state" class="peace">
+      <strong>Peace of mind</strong> means your website stays fast, secure, and
+      monitored—without you thinking about updates, backups, or downtime. You
+      focus on your business. I keep your site running like it should.
+    </p>
+
+    <div class="pricing-grid">
+      <mat-card
+        class="pricing-card"
+        *ngFor="let tier of managedHostingTiers"
+        [@fadeInUp]="state"
+      >
+        <mat-card-header>
+          <mat-card-title>{{ tier.name }}</mat-card-title>
+          <div class="price">{{ tier.price }}</div>
+          <div class="tagline">{{ tier.tagline }}</div>
+        </mat-card-header>
+        <mat-card-content>
+          <ul class="feature-list">
+            <li *ngFor="let feature of tier.features">{{ feature }}</li>
+          </ul>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" (click)="navAndScroll()">
+            Start Hosting
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+
+    <div class="experience-callout" [@fadeInUp]="state">
+      <h3>13+ Years, State-Level Experience</h3>
+      <p>
+        As a senior web developer for the State of Michigan Senate, I bring
+        enterprise standards for security, performance, and accessibility to
+        every Unycross project.
+      </p>
+      <p>
+        You get the same rigor applied to your local business website and
+        hosting—without agency overhead.
+      </p>
+    </div>
+
     <div class="text-center">
       <button
         mat-raised-button
@@ -40,7 +110,7 @@
         (click)="navAndScroll()"
         [@fadeIn]="state"
       >
-        Get Service
+        Schedule Your Consultation
       </button>
     </div>
   </div>
@@ -48,11 +118,9 @@
 
 <section class="ai-tech">
   <div class="container">
-    <h2 mat-headline-2 [@fadeInUp]="state">Innovate with AI Technology</h2>
-    <!-- <p mat-body-1 [@fadeInUp]="state">
-      Leverage our AI solutions for smarter web experiences—personalized
-      content, analytics, and automation for your motocross or niche projects.
-    </p> -->
+    <h2 mat-headline-2 [@fadeInUp]="state">
+      Smarter Experiences with AI-Driven Enhancements
+    </h2>
     <div class="ai-features">
       <mat-card
         class="ai-card"
@@ -74,7 +142,7 @@
       (click)="navAndScroll()"
       [@fadeIn]="state"
     >
-      Join the Future
+      Book a Consultation
     </button>
   </div>
 </section>

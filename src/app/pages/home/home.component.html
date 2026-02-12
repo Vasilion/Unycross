@@ -1,9 +1,16 @@
 <section class="hero hero-bg">
   <div class="hero-content">
-    <h1 mat-headline-1 [@fadeIn]="state" class="title">Unycross</h1>
+    <h1 mat-headline-1 [@fadeIn]="state" class="title">
+      Custom Web Development & Managed Hosting in Grand Rapids, MI
+    </h1>
     <p mat-body-1 [@fadeIn]="state">
-      100% custom web solutions to accommodate
-      <span class="your">YOUR</span> business needs.
+      High-performance, <span class="your">custom</span> websites and
+      fully-managed hosting for West Michigan businesses that are done settling
+      for DIY builders.
+    </p>
+    <p mat-body-1 [@fadeIn]="state">
+      13+ years of senior-level experience turning complex ideas into fast,
+      secure, conversion-focused websites.
     </p>
     <button
       mat-raised-button
@@ -12,8 +19,58 @@
       routerLink="/contact"
       [@fadeIn]="state"
     >
-      Get Started
+      Book a Consultation
     </button>
+  </div>
+</section>
+
+<section class="who-we-serve">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Who We Serve</h2>
+    <p mat-body-1 [@fadeInUp]="state">
+      Unycross partners with business owners and teams across Grand Rapids,
+      Cedar Springs, and West Michigan who need more than a template:
+    </p>
+    <div class="serve-grid">
+      <mat-card class="serve-card" [@fadeInUp]="state">
+        <mat-card-title>Local Service Businesses</mat-card-title>
+        <mat-card-content>
+          <p>
+            Contractors, home services, trades, and professional services that
+            rely on inbound leads and reputation.
+          </p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="serve-card" [@fadeInUp]="state">
+        <mat-card-title>Established Organizations</mat-card-title>
+        <mat-card-content>
+          <p>
+            Clinics, schools, and community organizations that need secure,
+            accessible, state-level quality experiences.
+          </p>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="serve-card" [@fadeInUp]="state">
+        <mat-card-title>Growth-Minded Brands</mat-card-title>
+        <mat-card-content>
+          <p>
+            Teams ready to invest in a custom site and ongoing hosting to scale
+            traffic, leads, and revenue.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="text-center">
+      <button
+        mat-raised-button
+        color="primary"
+        class="cta btn-space"
+        routerLink="/contact"
+        [@fadeIn]="state"
+      >
+        Talk About Your Project
+      </button>
+    </div>
   </div>
 </section>
 
@@ -45,6 +102,53 @@
         [@fadeIn]="state"
       >
         See Our Work
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="lead-magnet">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Free Website Performance Audit</h2>
+    <p mat-body-1 [@fadeInUp]="state">
+      Want to know why your site isn’t converting or loading fast? I’ll review
+      your current website and send back clear, actionable improvements for
+      performance, SEO, and conversion—tailored to your business in West
+      Michigan.
+    </p>
+    <div class="audit-grid">
+      <mat-card class="audit-card" [@fadeInUp]="state">
+        <mat-card-title>What you get</mat-card-title>
+        <mat-card-content>
+          <ul>
+            <li>Performance + Core Web Vitals snapshot</li>
+            <li>SEO + local visibility opportunities</li>
+            <li>Conversion and UX friction points</li>
+            <li>Top priority fixes you can act on</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+      <mat-card class="audit-card" [@fadeInUp]="state">
+        <mat-card-title>Who it’s for</mat-card-title>
+        <mat-card-content>
+          <ul>
+            <li>Businesses ready to invest in a better site</li>
+            <li>Teams unhappy with Wix/Squarespace limits</li>
+            <li>Sites that feel slow, outdated, or invisible</li>
+            <li>Owners who want more leads from search</li>
+          </ul>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="text-center">
+      <button
+        mat-raised-button
+        color="primary"
+        class="cta btn-space"
+        routerLink="/contact"
+        [@fadeIn]="state"
+      >
+        Request Your Free Audit
       </button>
     </div>
   </div>
@@ -247,7 +351,7 @@
       (click)="navAndScroll('/contact')"
       [@fadeIn]="state"
     >
-      Join the Others
+      Join Them – Book a Consultation
     </button>
   </div>
 </section>

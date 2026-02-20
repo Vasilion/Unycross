@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -39,140 +39,110 @@ import { NavigationService } from '../../shared/navigation.service';
     ]),
   ],
 })
-export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
+export class HomeComponent implements OnInit {
   state = 'visible';
-  selectedImage: string | null = null;
-  private observer: IntersectionObserver | null = null;
 
   constructor(private navigationService: NavigationService) {}
 
-  services = [
+  career = [
     {
-      title: 'Stand Out with Custom Design',
+      company: 'a.i. solutions',
+      role: 'Senior Space Products Frontend Engineer',
+      period: 'Current',
       description:
-        'DIY platforms trap you in cookie-cutter templates that blend into the crowd. With 13 years of expertise, I build bespoke websites that showcase your brand’s personality and vision.',
+        'Building the frontend for FreeFlyer, an astrodynamics software suite powering missions for the International Space Station, James Webb Space Telescope, Lunar Gateway, and Dream Chaser.',
+      tech: ['Angular', 'TypeScript', 'Astrodynamics'],
     },
     {
-      title: 'Grow Without Limits',
+      company: 'State of Michigan, Senate',
+      role: 'Full Stack Developer',
+      period: '2022 - 2025',
       description:
-        'DIY platforms often struggle to scale as your business grows. Unyx custom solutions, backed by over a decade of development experience, ensure your website adapts seamlessly to increased traffic and new features.',
+        'Architected and built Eva from Sprint 0, a legislation processing platform streamlining bills, amendments, and resolutions. Lead front-end developer on a team of 10.',
+      tech: ['Angular', '.NET Core', 'SQL Server', 'Azure'],
     },
     {
-      title: 'Secure, Supported, and Affordable',
+      company: 'Salamander',
+      role: 'Software Developer',
+      period: '2020 - 2022',
       description:
-        'DIY platforms can lack robust security and support. With our competitive pricing and expertise, you get a fast, secure website plus dedicated support value that grows with you.',
+        'Led front-end development for Salamander LIVE, used by 1.2M+ daily users including first responders. Delivered v66 update with 138 new features and zero post-release bugs.',
+      tech: ['Angular', 'TypeScript', 'UI/UX'],
+    },
+    {
+      company: 'Allstate',
+      role: 'Software Developer',
+      period: '2019 - 2020',
+      description:
+        'Developed a secure agent portal using React, replacing Allstate\'s legacy system to meet modern compliance requirements.',
+      tech: ['React', 'JavaScript', 'Enterprise'],
+    },
+    {
+      company: 'Axcelino',
+      role: 'Consultant',
+      period: '2018 - 2019',
+      description:
+        'Delivered custom software solutions to clients across the United States. Built Angular front-end UI for Global Bankers and modernized legacy code.',
+      tech: ['Angular', '.NET Core', 'Git'],
+    },
+    {
+      company: 'General Motors',
+      role: 'Software Developer',
+      period: '2017 - 2018',
+      description:
+        'Worked on the Next Gen Vehicle Configurator, Marketing Admin CMS, and GM Brazil\'s Shop Click Drive platform.',
+      tech: ['Angular', 'JavaScript', 'CMS'],
     },
   ];
-  testimonials = [
+
+  skills = [
+    'Angular',
+    '.NET Core',
+    'TypeScript',
+    'React',
+    'SQL Server',
+    'PostgreSQL',
+    'Azure',
+    'AWS',
+    'NgRx',
+    'Node.js',
+    'Strapi',
+    'CI/CD',
+    'Git',
+    'REST APIs',
+    'WebSockets',
+    'Ionic',
+  ];
+
+  ventures = [
     {
-      quote:
-        'We worked with Unycross to update our website to a more modern, mobile friendly platform. The communication with Luke was great and they did a wonderful job as they tailored it to our business needs. We love the results with a built-in registration system and the user friendly calendar. We would highly recommend Luke Vasilion and everyone at Unycross!',
-      author: 'Martin Motocross Park',
+      title: 'UnyX Web Solutions',
+      description:
+        'My web development, hosting, and digital solutions business serving 25+ clients with scalable architecture.',
+      link: 'https://unyxwebsolutions.com',
+      external: true,
+      icon: 'language',
     },
     {
-      quote:
-        'We are extremely pleased with the website Luke Vasilion designed for our company. His creative input and attention to detail were fantastic. He was able to produce a quality website for us in a reasonable amount of time, giving our website the professional look we wanted to achieve in order to stand out above other piano technicians in our area.',
-      author: 'Kollar Piano Services',
+      title: 'Financial Education',
+      description:
+        'Empowering others with financial literacy, investment strategies, and stock picks services.',
+      link: '/financial-education',
+      external: false,
+      icon: 'trending_up',
     },
     {
-      quote:
-        'As a musician it is imperative to have a website that communicates your brand and who you are. Luke will help you hash out every aspect of your website and will unapologetically ask as many questions as he needs to to get to the bare bones of what your website is being built to do. There really was no detail left behind when they were building my website. Luke and his team were relentless in their pursuit of creating the most efficient website for me and my fans to navigate.',
-      author: 'Rollin Brummette',
-    },
-    {
-      quote:
-        'Went to Lucas with a basic “feel” I wanted in a website. They helped flush out the visual layout and content. Unycross’s services are a bargain when you weigh the cost versus the product you receive. I will be using them again in future endeavors. Thanks again!',
-      author: 'Diesel Fuel Doctor',
-    },
-    {
-      quote:
-        'Unycross excels at turning your website dreams into reality. We are so proud of the work they’ve done for us that we have already recommended them to many of our partners. The Unycross team is heads and shoulders above their competition, and we are very thankful that they call Michigan home.',
-      author: 'Fresh Start Cleaning',
+      title: 'Unycross MX',
+      description:
+        'A passion project platform for motocross riders featuring race tracking, social features, and an interactive track map.',
+      link: null,
+      external: false,
+      icon: 'sports_motorsports',
     },
   ];
 
   ngOnInit() {
     this.state = 'visible';
-
-    // document.addEventListener('DOMContentLoaded', () => {
-    //   const observer = new IntersectionObserver(
-    //     (entries) => {
-    //       entries.forEach((entry) => {
-    //         if (entry.isIntersecting) {
-    //           startAnimation();
-    //           observer.unobserve(entry.target);
-    //         }
-    //       });
-    //     },
-    //     { threshold: 0.2 }
-    //   );
-
-    //   observer.observe(document.querySelector('.benefits-container'));
-
-    //   function startAnimation() {
-    //     const bars = document.querySelectorAll('.bar-container');
-
-    //     bars.forEach((bar, index) => {
-    //       setTimeout(() => {
-    //         bar.classList.add('animate');
-
-    //         setTimeout(() => {
-    //           const value = bar.getAttribute('data-value');
-    //           const barEl = bar.querySelector('.bar') as HTMLElement;
-    //           if (barEl) {
-    //             barEl.style.width = value + '%';
-    //           }
-    //         }, 300);
-    //       }, index * 200);
-    //     });
-    //   }
-    // });
-  }
-
-  ngAfterViewInit() {
-    this.setupIntersectionObserver();
-  }
-
-  ngOnDestroy() {
-    if (this.observer) {
-      this.observer.disconnect();
-    }
-  }
-
-  private setupIntersectionObserver() {
-    const benefitsContainer = document.querySelector('.benefits-container');
-    if (!benefitsContainer) return;
-
-    this.observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            this.startAnimation();
-            this.observer?.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.2 }
-    );
-
-    this.observer.observe(benefitsContainer);
-  }
-
-  private startAnimation() {
-    const bars = document.querySelectorAll('.bar-container');
-    bars.forEach((bar, index) => {
-      setTimeout(() => {
-        bar.classList.add('animate');
-
-        setTimeout(() => {
-          const value = bar.getAttribute('data-value');
-          const barEl = bar.querySelector('.bar') as HTMLElement;
-          if (barEl) {
-            barEl.style.width = `${value}%`;
-          }
-        }, 300);
-      }, index * 200);
-    });
   }
 
   navAndScroll(route: string) {

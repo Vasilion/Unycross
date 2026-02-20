@@ -44,6 +44,7 @@ header.scrolled {
   animation: pulse 2s infinite;
   -webkit-tap-highlight-color: transparent;
   outline: none;
+  white-space: nowrap;
 }
 
 .hamburger {
@@ -90,7 +91,7 @@ header.scrolled {
     a {
       color: #ffffff;
       text-decoration: none;
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       font-family: "Orbitron", sans-serif;
       transition: all 0.3s ease;
       position: relative;
@@ -196,6 +197,7 @@ header.scrolled {
   background-repeat: no-repeat;
   border-radius: 50%;
   top: -34%;
+  left: calc(50% - 42.5px);
   margin-bottom: 5px;
   z-index: 1;
   position: absolute;

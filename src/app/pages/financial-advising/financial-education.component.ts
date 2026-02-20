@@ -45,17 +45,17 @@ export class FinancialEducationComponent implements OnInit {
     {
       title: 'Investment Education',
       description:
-        "Learn how to build and manage a diversified investment portfolio. We'll teach you the fundamentals of investing and help you understand how to align your investments with your goals.",
+        "Learn how to build and manage a diversified investment portfolio. I'll teach you the fundamentals of investing and help you understand how to align your investments with your goals.",
     },
     {
       title: 'Retirement Planning Education',
       description:
-        'Master the art of retirement planning through our comprehensive educational resources. Learn how to create and maintain a sustainable retirement strategy that works for your lifestyle.',
+        'Master the art of retirement planning through comprehensive educational resources. Learn how to create and maintain a sustainable retirement strategy that works for your lifestyle.',
     },
     {
       title: 'Financial Literacy',
       description:
-        "Develop essential financial skills through our educational programs. From budgeting to debt management, we'll help you build a strong foundation for financial success.",
+        "Develop essential financial skills through personalized programs. From budgeting to debt management, I'll help you build a strong foundation for financial success.",
     },
   ];
 

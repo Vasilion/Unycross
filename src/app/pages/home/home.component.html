@@ -1,220 +1,52 @@
 <section class="hero hero-bg">
   <div class="hero-content">
-    <h1 mat-headline-1 [@fadeIn]="state" class="title">Unycross</h1>
-    <p mat-body-1 [@fadeIn]="state">
-      100% custom web solutions to accommodate
-      <span class="your">YOUR</span> business needs.
+    <h1 mat-headline-1 [@fadeIn]="state" class="title">Luke Vasilion</h1>
+    <p mat-body-1 [@fadeIn]="state" class="subtitle">
+      Senior Space Products Frontend Engineer
     </p>
-    <button
-      mat-raised-button
-      color="primary"
-      class="cta"
-      routerLink="/contact"
-      [@fadeIn]="state"
-    >
-      Get Started
-    </button>
-  </div>
-</section>
-
-<section class="services-teaser">
-  <div class="container">
-    <h2 mat-headline-2 [@fadeInUp]="state" class="title-vs">UnyX Custom</h2>
-    <h2 mat-headline-2 [@fadeInUp]="state" class="title-vs vs">vs</h2>
-    <h2 mat-headline-2 [@fadeInUp]="state">DIY Platforms</h2>
-    <div class="cards">
-      <mat-card
-        class="service-card"
-        *ngFor="let service of services"
-        [@fadeInUp]="state"
-      >
-        <mat-card-header>
-          <mat-card-title>{{ service.title }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{ service.description }}</p>
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div class="text-center">
+    <p mat-body-1 [@fadeIn]="state" class="tagline">
+      Software engineer, entrepreneur, and athlete building products that power
+      space missions, businesses, and financial futures.
+    </p>
+    <div class="hero-actions" [@fadeIn]="state">
       <button
         mat-raised-button
         color="primary"
-        class="cta btn-space"
-        (click)="navAndScroll('/portfolio')"
-        [@fadeIn]="state"
+        class="cta"
+        routerLink="/contact"
       >
-        See Our Work
+        Get in Touch
+      </button>
+      <button
+        mat-raised-button
+        class="cta cta-outline"
+        routerLink="/about"
+      >
+        About Me
       </button>
     </div>
   </div>
 </section>
 
-<section class="photo-gallery">
+<section class="career-section">
   <div class="container">
-    <h2 mat-headline-2 [@fadeInUp]="state">Do you really need a website</h2>
-    <div class="gallery-grid">
-      <div class="benefits-container">
-        <div class="glow glow-1"></div>
-        <div class="glow glow-2"></div>
-        <div class="grid-lines"></div>
-        <div class="benefits-title">Benefits of Having a Business Website</div>
-        <div class="chart-wrapper">
-          <div class="bar-container" data-value="81">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">visibility</span>
-                </div>
-                Increased Visibility
-              </div>
-              <div class="label-percentage">81%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-1">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              Shoppers research online before purchases
-            </div>
-          </div>
-          <div class="bar-container" data-value="47">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">storefront</span>
-                </div>
-                Small Business Websites
-              </div>
-              <div class="label-percentage">47%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-2">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              U.S. small businesses enhance online visibility
-            </div>
-          </div>
-          <div class="bar-container" data-value="38">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">verified_user</span>
-                </div>
-                Credibility Establishment
-              </div>
-              <div class="label-percentage">38%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-3">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              Websites build trust through professional presence
-            </div>
-          </div>
-          <div class="bar-container" data-value="62">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">star_rate</span>
-                </div>
-                Consumer Reviews
-              </div>
-              <div class="label-percentage">62%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-4">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              Consumers read reviews to trust businesses
-            </div>
-          </div>
-          <div class="bar-container" data-value="92">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">trending_up</span>
-                </div>
-                Effective Digital Marketing
-              </div>
-              <div class="label-percentage">92%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-5">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              Business owners see websites as key marketing assets
-            </div>
-          </div>
-          <div class="bar-container" data-value="19">
-            <div class="bar-label">
-              <div class="label-text">
-                <div class="label-icon">
-                  <span class="material-icons">shopping_cart</span>
-                </div>
-                E-commerce Sales
-              </div>
-              <div class="label-percentage">19%</div>
-            </div>
-            <div class="bar-track">
-              <div class="bar bar-6">
-                <div class="pulse"></div>
-              </div>
-            </div>
-            <div class="description">
-              Global retail sales trend towards online shopping
-            </div>
-          </div>
-        </div>
-      </div>
-      <div [@fadeInUp]="state">
-        <mat-card class="testimonial-card gallery-card">
-          <mat-card-title>Your Site Matters</mat-card-title>
-          <div>
-            <p>
-              In an increasingly digital marketplace, your website often serves
-              as the <span class="letter">first point of contact</span> between
-              your business and potential customers. More than just a digital
-              storefront, it functions as your 24/7 sales representative,
-              credibility builder, and marketing hub.
-            </p>
-
-            <p>
-              Businesses that invest in
-              <span class="letter">well-designed, functional websites</span>
-              position themselves to capture the growing segment of consumers
-              who begin their purchasing journeys online. Meanwhile, those
-              without an online presence risk becoming increasingly invisible in
-              a competitive marketplace where digital discoverability determines
-              success.
-            </p>
-
-            <p>
-              This visualization serves as both a reminder of the
-              <span class="letter">critical</span>
-              importance of digital presence and a roadmap for understanding the
-              multifaceted benefits a business website provides.
-            </p>
-          </div>
-          <div class="text-center">
-            <button
-              mat-raised-button
-              color="primary"
-              class="cta btn-space"
-              (click)="navAndScroll('/blog')"
-              [@fadeIn]="state"
-            >
-              Find Out More
-            </button>
+    <h2 mat-headline-2 [@fadeInUp]="state">Career Timeline</h2>
+    <div class="timeline">
+      <div
+        class="timeline-item"
+        *ngFor="let job of career; let i = index; let odd = odd"
+        [@fadeInUp]="state"
+        [class.timeline-right]="odd"
+      >
+        <div class="timeline-dot"></div>
+        <div class="timeline-connector"></div>
+        <mat-card class="timeline-card">
+          <div class="timeline-period">{{ job.period }}</div>
+          <h3>{{ job.company }}</h3>
+          <p class="role">{{ job.role }}</p>
+          <p class="description">{{ job.description }}</p>
+          <div class="tech-tags">
+            <span class="tech-tag" *ngFor="let t of job.tech">{{ t }}</span>
           </div>
         </mat-card>
       </div>
@@ -222,32 +54,86 @@
   </div>
 </section>
 
-<section class="testimonials">
+<section class="skills-section">
   <div class="container">
-    <h3 mat-headline-3 [@fadeInUp]="state">What Our Clients Say</h3>
-    <mat-card
-      class="testimonial-card"
-      *ngFor="let testimonial of testimonials"
-      [@fadeInUp]="state"
-    >
-      <mat-card-content>
-        <p>{{ testimonial.quote }}</p>
-        <div class="rating-author-row">
-          <div class="rating">★★★★★</div>
-          <p class="author">- {{ testimonial.author }}</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <h2 mat-headline-2 [@fadeInUp]="state">Tech Stack</h2>
+    <div class="skills-grid" [@fadeInUp]="state">
+      <div class="skill-badge" *ngFor="let skill of skills">
+        {{ skill }}
+      </div>
+    </div>
   </div>
-  <div class="text-center">
-    <button
-      mat-raised-button
-      color="primary"
-      class="cta btn-space"
-      (click)="navAndScroll('/contact')"
-      [@fadeIn]="state"
-    >
-      Join the Others
-    </button>
+</section>
+
+<section class="ventures-section">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Ventures</h2>
+    <div class="ventures-grid">
+      <mat-card
+        class="venture-card"
+        *ngFor="let venture of ventures"
+        [@fadeInUp]="state"
+      >
+        <mat-card-header>
+          <span class="material-icons venture-icon">{{ venture.icon }}</span>
+          <mat-card-title>{{ venture.title }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ venture.description }}</p>
+        </mat-card-content>
+        <mat-card-actions *ngIf="venture.link">
+          <a
+            *ngIf="venture.external"
+            [href]="venture.link"
+            target="_blank"
+            rel="noopener"
+            mat-raised-button
+            color="primary"
+            class="venture-btn"
+          >
+            Visit Site
+          </a>
+          <button
+            *ngIf="!venture.external"
+            mat-raised-button
+            color="primary"
+            class="venture-btn"
+            (click)="navAndScroll(venture.link)"
+          >
+            Learn More
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</section>
+
+<section class="education-section">
+  <div class="container">
+    <h2 mat-headline-2 [@fadeInUp]="state">Education & Achievements</h2>
+    <div class="education-grid">
+      <mat-card class="education-card" [@fadeInUp]="state">
+        <span class="material-icons edu-icon">school</span>
+        <h3>Grand Valley State University</h3>
+        <p class="degree">B.S. Information Systems</p>
+        <p class="detail">GPA: 3.30 | Class of 2017</p>
+      </mat-card>
+      <mat-card class="education-card" [@fadeInUp]="state">
+        <span class="material-icons edu-icon">directions_run</span>
+        <h3>GVSU Track & Field</h3>
+        <p class="degree">All-American Sprinter</p>
+        <p class="detail">
+          60m Dash, Sprint Relays | MVP | GLIAC All-Conference
+        </p>
+      </mat-card>
+      <mat-card class="education-card" [@fadeInUp]="state">
+        <span class="material-icons edu-icon">emoji_events</span>
+        <h3>District 14 Motocross</h3>
+        <p class="degree">2021 State Champion</p>
+        <p class="detail">
+          Vet Sport Open | 9 Wins | 26 Podium Finishes
+        </p>
+      </mat-card>
+    </div>
   </div>
 </section>

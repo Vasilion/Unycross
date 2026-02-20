@@ -97,7 +97,7 @@ export class ContactComponent implements OnInit {
           next: (response) => {
             console.log('Success:', response);
             this.snackBar.open(
-              'Thank you for your message! We’ll get back to you soon.',
+              "Thank you for your message! I'll get back to you soon.",
               'Close',
               {
                 duration: 5000,

@@ -11,6 +11,7 @@ import {
 } from '@angular/animations';
 import { RouterLink } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-about',
@@ -41,10 +42,19 @@ import { NavigationService } from '../../shared/navigation.service';
 })
 export class AboutComponent implements OnInit {
   state = 'visible';
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService,
+  ) {}
 
   ngOnInit() {
     this.state = 'visible';
+    this.seo.setMeta({
+      title: 'About',
+      description:
+        "Luke Vasilion's story — software engineer with nearly a decade of experience building products that matter. Currently powering flight dynamics for the ISS, JWST, and Lunar Gateway at a.i. solutions.",
+      path: '/about',
+    });
   }
 
   navAndScroll() {

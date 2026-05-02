@@ -22,6 +22,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { environment } from '../../../environments/environment';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-contact',
@@ -59,7 +60,8 @@ export class ContactComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private seo: SeoService,
   ) {
     this.contactForm = this.fb.group({
       name: ['', Validators.required],
@@ -78,6 +80,12 @@ export class ContactComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+    this.seo.setMeta({
+      title: 'Contact',
+      description:
+        'Get in touch with Luke Vasilion. For software work, financial education, web solutions inquiries, or just to say hi.',
+      path: '/contact',
+    });
   }
 
   onSubmit() {

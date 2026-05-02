@@ -11,8 +11,9 @@ import { post as p09 } from './09-production-polish';
 import { post as p10 } from './10-lookup';
 import { post as p11 } from './11-insider-chips-and-the-no-data-drag';
 import { post as p12 } from './12-three-audits-three-layers';
+import { post as p13 } from './13-what-ten-years-of-bars-said';
 
-export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12]
+export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12, p13]
   .slice()
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 

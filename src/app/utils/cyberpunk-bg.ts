@@ -32,6 +32,12 @@ export class CyberpunkBackground {
   private clock: THREE.Clock;
   private mouse: THREE.Vector2;
   private particleTexture: THREE.Texture;
+  private animationFrameId: number | null = null;
+  private disposed = false;
+  private boundResize = () => this.onWindowResize();
+  private boundMouseMove = (e: MouseEvent) => this.onMouseMove(e);
+  private boundTouchMove = (e: TouchEvent) => this.onTouchMove(e);
+  private boundScroll = () => this.onWindowScroll();
 
   constructor(container?: string | HTMLElement) {
     if (typeof container === 'string') {
@@ -130,11 +136,11 @@ export class CyberpunkBackground {
 
     this.container.appendChild(this.renderer.domElement);
 
-    // Add event listeners
-    window.addEventListener('resize', this.onWindowResize.bind(this));
-    window.addEventListener('mousemove', this.onMouseMove.bind(this));
-    window.addEventListener('touchmove', this.onTouchMove.bind(this));
-    window.addEventListener('scroll', this.onWindowScroll.bind(this));
+    // Add event listeners (bound refs stored so dispose() can remove them)
+    window.addEventListener('resize', this.boundResize);
+    window.addEventListener('mousemove', this.boundMouseMove);
+    window.addEventListener('touchmove', this.boundTouchMove);
+    window.addEventListener('scroll', this.boundScroll);
 
     // Create elements
     this.createStars();
@@ -251,7 +257,8 @@ export class CyberpunkBackground {
   }
 
   private animate(): void {
-    requestAnimationFrame(this.animate.bind(this));
+    if (this.disposed) return;
+    this.animationFrameId = requestAnimationFrame(this.animate.bind(this));
 
     const delta = this.clock.getDelta();
     const elapsedTime = this.clock.getElapsedTime();
@@ -402,6 +409,36 @@ export class CyberpunkBackground {
       this.camera.position.x = this.mouse.x * 3; // Reduced movement
       this.camera.position.y = this.mouse.y * 3 + 10; // Reduced movement
       this.camera.lookAt(0, 0, 0);
+    }
+  }
+
+  // Tear everything down: cancel the rAF loop, remove window listeners,
+  // dispose the renderer, and detach the canvas. Called when the route
+  // moves to a page that should not render the background (or on mobile).
+  dispose(): void {
+    if (this.disposed) return;
+    this.disposed = true;
+
+    if (this.animationFrameId !== null) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+
+    window.removeEventListener('resize', this.boundResize);
+    window.removeEventListener('mousemove', this.boundMouseMove);
+    window.removeEventListener('touchmove', this.boundTouchMove);
+    window.removeEventListener('scroll', this.boundScroll);
+
+    if (this.renderer) {
+      this.renderer.dispose();
+      const canvas = this.renderer.domElement;
+      if (canvas && canvas.parentNode) {
+        canvas.parentNode.removeChild(canvas);
+      }
+    }
+
+    if (this.particleTexture) {
+      this.particleTexture.dispose();
     }
   }
 }

@@ -60,12 +60,24 @@
   }
 }
 
+// Hero glow — a CSS-only soft radial gradient that reads correctly on or off
+// the three.js canvas. The previous version used `backdrop-filter: blur brightness(6)`
+// plus a dot-grid background, both of which only worked because the WebGL canvas
+// covered them on desktop; once the canvas got gated off on mobile/blog they
+// became visible as a brightened grey rectangle with a halftone dot pattern.
 .hero-bg::after {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -99999;
-  backdrop-filter: blur(1em) brightness(6);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(187, 134, 252, 0.20) 0%,
+    rgba(107, 64, 160, 0.10) 35%,
+    rgba(0, 217, 255, 0.05) 65%,
+    transparent 90%
+  );
+  pointer-events: none;
 }
 
 .hero-bg {

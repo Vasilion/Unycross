@@ -11,6 +11,7 @@ import {
 } from '@angular/animations';
 import { POSTS } from '../posts';
 import { Post } from '../post.model';
+import { SeoService } from '../../../shared/seo.service';
 
 @Component({
   selector: 'app-blog-list',
@@ -43,8 +44,16 @@ export class BlogListComponent implements OnInit {
   state = 'visible';
   posts: Post[] = POSTS;
 
+  constructor(private seo: SeoService) {}
+
   ngOnInit() {
     this.state = 'visible';
+    this.seo.setMeta({
+      title: 'Dev Blog · Building Nova',
+      description:
+        "Logbook for the Jarvis-inspired desktop AI assistant Luke Vasilion is building — voice, brain-swap, skills, a stock screener, and the war stories along the way.",
+      path: '/blog',
+    });
   }
 
   formatDate(iso: string): string {

@@ -11,6 +11,7 @@ import {
 } from '@angular/animations';
 import { RouterLink } from '@angular/router';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-financial-education',
@@ -59,10 +60,19 @@ export class FinancialEducationComponent implements OnInit {
     },
   ];
 
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService,
+  ) {}
 
   ngOnInit() {
     this.state = 'visible';
+    this.seo.setMeta({
+      title: 'Financial Education',
+      description:
+        'Investment education, retirement planning, and financial literacy programs from Luke Vasilion. Personalized guidance to help you build a stronger foundation for financial success.',
+      path: '/financial-education',
+    });
   }
 
   navAndScroll() {

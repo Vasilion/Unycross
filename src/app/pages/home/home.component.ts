@@ -11,6 +11,7 @@ import {
   trigger,
 } from '@angular/animations';
 import { NavigationService } from '../../shared/navigation.service';
+import { SeoService } from '../../shared/seo.service';
 
 @Component({
   selector: 'app-home',
@@ -42,7 +43,10 @@ import { NavigationService } from '../../shared/navigation.service';
 export class HomeComponent implements OnInit {
   state = 'visible';
 
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private seo: SeoService,
+  ) {}
 
   career = [
     {
@@ -143,6 +147,12 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.state = 'visible';
+    this.seo.setMeta({
+      title: 'Software Engineer & Entrepreneur',
+      description:
+        'Personal site of Luke Vasilion — Senior Space Products Frontend Engineer at a.i. solutions. Building products that power space missions, businesses, and financial futures.',
+      path: '/',
+    });
   }
 
   navAndScroll(route: string) {

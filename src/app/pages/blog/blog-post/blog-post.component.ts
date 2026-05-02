@@ -11,6 +11,7 @@ import {
 } from '@angular/animations';
 import { POSTS, findPost } from '../posts';
 import { Post } from '../post.model';
+import { SeoService } from '../../../shared/seo.service';
 
 @Component({
   selector: 'app-blog-post',
@@ -34,6 +35,7 @@ export class BlogPostComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private sanitizer = inject(DomSanitizer);
+  private seo = inject(SeoService);
 
   state = 'visible';
   post: Post | null = null;
@@ -52,6 +54,14 @@ export class BlogPostComponent implements OnInit {
       this.post = found;
       this.body = this.sanitizer.bypassSecurityTrustHtml(found.body);
       this.computeAdjacent(found);
+      this.seo.setMeta({
+        title: found.title,
+        description: found.summary,
+        path: `/blog/${found.slug}`,
+        type: 'article',
+        publishedTime: found.date,
+        tags: found.tags,
+      });
       window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     });
   }

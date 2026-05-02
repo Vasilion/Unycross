@@ -1,0 +1,35 @@
+<article class="post-page" *ngIf="post" [@fadeIn]="state">
+  <div class="container">
+    <p class="back-link">
+      <a routerLink="/blog">← Back to all posts</a>
+    </p>
+
+    <header class="post-header">
+      <p class="post-meta">
+        <span class="post-date">{{ formatDate(post.date) }}</span>
+        <span class="dot">·</span>
+        <span class="post-read">{{ post.readMinutes }} min read</span>
+      </p>
+      <h1>{{ post.title }}</h1>
+      <p class="post-summary">{{ post.summary }}</p>
+      <ul class="post-tags">
+        <li *ngFor="let tag of post.tags">{{ tag }}</li>
+      </ul>
+    </header>
+
+    <div class="post-body" [innerHTML]="body"></div>
+
+    <nav class="post-nav">
+      <a *ngIf="prev" class="nav-link prev" [routerLink]="['/blog', prev.slug]">
+        <span class="nav-direction">← Older</span>
+        <span class="nav-title">{{ prev.title }}</span>
+      </a>
+      <span *ngIf="!prev" class="nav-spacer"></span>
+      <a *ngIf="next" class="nav-link next" [routerLink]="['/blog', next.slug]">
+        <span class="nav-direction">Newer →</span>
+        <span class="nav-title">{{ next.title }}</span>
+      </a>
+      <span *ngIf="!next" class="nav-spacer"></span>
+    </nav>
+  </div>
+</article>

@@ -1,0 +1,32 @@
+<section class="blog-hero">
+  <div class="container">
+    <p class="eyebrow accent-text" [@fadeIn]="state">Dev Log</p>
+    <h1 [@fadeIn]="state">Building Nova</h1>
+    <p class="lede" [@fadeIn]="state">
+      A logbook for the Jarvis-inspired desktop AI assistant I'm building for myself —
+      decisions, dead-ends, and the occasional war story. Voice, brain-swap, skills,
+      a stock screener, a few production-week disasters, and counting.
+    </p>
+  </div>
+</section>
+
+<section class="blog-list">
+  <div class="container">
+    <ul class="post-grid">
+      <li *ngFor="let post of posts" [@fadeInUp]="state">
+        <a class="post-card" [routerLink]="['/blog', post.slug]">
+          <p class="post-meta">
+            <span class="post-date">{{ formatDate(post.date) }}</span>
+            <span class="post-read">{{ post.readMinutes }} min read</span>
+          </p>
+          <h2 class="post-title">{{ post.title }}</h2>
+          <p class="post-summary">{{ post.summary }}</p>
+          <ul class="post-tags">
+            <li *ngFor="let tag of post.tags">{{ tag }}</li>
+          </ul>
+          <span class="post-cta">Read →</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>

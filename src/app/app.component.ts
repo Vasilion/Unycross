@@ -25,8 +25,6 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   title = 'unycross-llc';
 
   private routerSub?: Subscription;
-  private mobileMql = window.matchMedia('(max-width: 760px)');
-  private mobileListener = () => this.applyBackgroundForCurrentRoute();
 
   constructor(
     private cyberpunkService: CyberpunkBackgroundService,
@@ -40,24 +38,10 @@ export class AppComponent implements AfterViewInit, OnDestroy {
     this.routerSub = this.router.events
       .pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))
       .subscribe(() => this.applyBackgroundForCurrentRoute());
-
-    // Re-evaluate when the viewport crosses the mobile breakpoint (rotation,
-    // window resize, devtools toggle). addEventListener form is supported on
-    // every evergreen browser; addListener is the older polyfill path.
-    if (typeof this.mobileMql.addEventListener === 'function') {
-      this.mobileMql.addEventListener('change', this.mobileListener);
-    } else {
-      this.mobileMql.addListener(this.mobileListener);
-    }
   }
 
   ngOnDestroy() {
     this.routerSub?.unsubscribe();
-    if (typeof this.mobileMql.removeEventListener === 'function') {
-      this.mobileMql.removeEventListener('change', this.mobileListener);
-    } else {
-      this.mobileMql.removeListener(this.mobileListener);
-    }
     this.cyberpunkService.stop();
   }
 
@@ -66,17 +50,14 @@ export class AppComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
-   * The cyberpunk three.js scene runs only on desktop, on routes where it
-   * doesn't compete with reading content. The blog routes get a calmer
-   * background so long-form posts don't flicker behind 2000 particles, and
-   * mobile gets the static scanline overlay alone (saving battery + frame
-   * budget).
+   * The cyberpunk three.js scene runs everywhere except the blog routes —
+   * 2000 particles fighting for attention behind a 700-word post is the
+   * one place the visual costs more than it gives.
    */
   private applyBackgroundForCurrentRoute(): void {
     const url = this.router.url;
     const onBlog = url === '/blog' || url.startsWith('/blog/');
-    const onMobile = this.mobileMql.matches;
-    const shouldRun = !onBlog && !onMobile;
+    const shouldRun = !onBlog;
 
     if (shouldRun && !this.cyberpunkService.isActive()) {
       this.cyberpunkService.start();

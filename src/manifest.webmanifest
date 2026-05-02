@@ -1,0 +1,30 @@
+{
+  "name": "Luke Vasilion — Unycross",
+  "short_name": "Unycross",
+  "description": "Personal site of Luke Vasilion — Senior Space Products Frontend Engineer, entrepreneur, athlete, and financial educator.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0d0d12",
+  "theme_color": "#6b40a0",
+  "icons": [
+    {
+      "src": "/assets/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icons/maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

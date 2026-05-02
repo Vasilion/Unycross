@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bb86fc"/>
+      <stop offset="50%" stop-color="#9f5ed8"/>
+      <stop offset="100%" stop-color="#6b40a0"/>
+    </linearGradient>
+    <linearGradient id="uGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#00a8cc"/>
+    </linearGradient>
+    <filter id="cyanGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="purpleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Rounded dark base -->
+  <rect width="256" height="256" rx="48" ry="48" fill="#0d0d12"/>
+
+  <!-- Subtle inner highlight to give depth -->
+  <rect x="2" y="2" width="252" height="252" rx="46" ry="46" fill="none" stroke="#1f1530" stroke-width="2"/>
+
+  <!-- Broken purple outer ring (echoes the spinning semicircle on the live site) -->
+  <g filter="url(#purpleGlow)">
+    <circle cx="128" cy="128" r="98" fill="none" stroke="url(#ringGrad)" stroke-width="6"
+            stroke-linecap="round" stroke-dasharray="430 185"
+            transform="rotate(-50 128 128)"/>
+  </g>
+
+  <!-- Small accent spark on the broken ring -->
+  <circle cx="206" cy="84" r="5" fill="#bb86fc" filter="url(#purpleGlow)"/>
+
+  <!-- The U mark: two vertical strokes joined by a half-circle bottom -->
+  <g filter="url(#cyanGlow)">
+    <path d="M 86 76 L 86 146 A 42 42 0 0 0 170 146 L 170 76"
+          fill="none" stroke="url(#uGrad)" stroke-width="22" stroke-linecap="round"/>
+  </g>
+
+  <!-- Tiny cyan accent dot in the U's negative space, faint -->
+  <circle cx="128" cy="118" r="3" fill="#00d9ff" opacity="0.55"/>
+</svg>

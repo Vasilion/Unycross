@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d0d12"/>
+      <stop offset="100%" stop-color="#15101e"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bb86fc"/>
+      <stop offset="100%" stop-color="#6b40a0"/>
+    </linearGradient>
+    <linearGradient id="uGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00d9ff"/>
+      <stop offset="100%" stop-color="#00a8cc"/>
+    </linearGradient>
+    <pattern id="scanlines" patternUnits="userSpaceOnUse" width="3" height="3">
+      <rect width="3" height="3" fill="transparent"/>
+      <rect width="3" height="1" fill="#bb86fc" opacity="0.04"/>
+    </pattern>
+    <filter id="cyanGlow" x="-10%" y="-50%" width="120%" height="200%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="purpleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#scanlines)"/>
+
+  <!-- Top accent line -->
+  <rect x="0" y="0" width="1200" height="2" fill="#00d9ff" opacity="0.55"/>
+  <rect x="0" y="0" width="1200" height="1" fill="#bb86fc" opacity="0.7"/>
+
+  <!-- Decorative broken ring on the right -->
+  <g opacity="0.95" filter="url(#purpleGlow)">
+    <circle cx="985" cy="315" r="220" fill="none" stroke="url(#ringGrad)" stroke-width="8"
+            stroke-linecap="round" stroke-dasharray="980 400"
+            transform="rotate(-30 985 315)"/>
+  </g>
+  <g opacity="0.55">
+    <circle cx="985" cy="315" r="180" fill="none" stroke="#6b40a0" stroke-width="2"
+            stroke-linecap="round" stroke-dasharray="120 80"
+            transform="rotate(40 985 315)"/>
+  </g>
+
+  <!-- Mark in the top-left -->
+  <g transform="translate(72, 72) scale(0.42)">
+    <rect width="256" height="256" rx="48" ry="48" fill="#0d0d12" stroke="#1f1530" stroke-width="2"/>
+    <g filter="url(#purpleGlow)">
+      <circle cx="128" cy="128" r="98" fill="none" stroke="url(#ringGrad)" stroke-width="6"
+              stroke-linecap="round" stroke-dasharray="430 185"
+              transform="rotate(-50 128 128)"/>
+    </g>
+    <circle cx="206" cy="84" r="5" fill="#bb86fc"/>
+    <g filter="url(#softGlow)">
+      <path d="M 86 76 L 86 146 A 42 42 0 0 0 170 146 L 170 76"
+            fill="none" stroke="url(#uGrad)" stroke-width="22" stroke-linecap="round"/>
+    </g>
+  </g>
+
+  <!-- "UNYCROSS" wordmark next to the mark -->
+  <text x="190" y="138" font-family="'Bahnschrift', 'Trebuchet MS', 'Arial Black', sans-serif"
+        font-size="40" font-weight="700" letter-spacing="6" fill="#bb86fc">UNYCROSS</text>
+
+  <!-- Subtle horizontal rule under header -->
+  <line x1="72" y1="174" x2="900" y2="174" stroke="#6b40a0" stroke-width="1" opacity="0.45"/>
+
+  <!-- Main headline: LUKE VASILION -->
+  <g filter="url(#cyanGlow)">
+    <text x="72" y="320" font-family="'Bahnschrift', 'Impact', 'Arial Black', sans-serif"
+          font-size="118" font-weight="800" letter-spacing="2" fill="#00d9ff">LUKE VASILION</text>
+  </g>
+
+  <!-- Subtitle: tagline in white with strong contrast -->
+  <text x="72" y="395" font-family="'Segoe UI', 'system-ui', sans-serif"
+        font-size="36" font-weight="400" letter-spacing="1" fill="#ffffff" opacity="0.92">
+    Software engineer · Entrepreneur · Athlete
+  </text>
+
+  <!-- Description line -->
+  <text x="72" y="448" font-family="'Segoe UI', 'system-ui', sans-serif"
+        font-size="26" font-weight="300" fill="#ffffff" opacity="0.65">
+    Building products that power space missions, businesses, and financial futures.
+  </text>
+
+  <!-- URL bottom-left -->
+  <g filter="url(#softGlow)">
+    <text x="72" y="558" font-family="'Bahnschrift Light', 'Trebuchet MS', sans-serif"
+          font-size="30" font-weight="500" letter-spacing="6" fill="#bb86fc">
+      UNYCROSS.COM
+    </text>
+  </g>
+
+  <!-- Bottom accent line (matches top) -->
+  <rect x="0" y="628" width="1200" height="2" fill="#00d9ff" opacity="0.5"/>
+  <rect x="0" y="629" width="1200" height="1" fill="#bb86fc" opacity="0.7"/>
+</svg>

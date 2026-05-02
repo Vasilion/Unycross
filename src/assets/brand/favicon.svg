@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="r" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#bb86fc"/>
+      <stop offset="100%" stop-color="#6b40a0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded dark base -->
+  <rect width="64" height="64" rx="12" ry="12" fill="#0d0d12"/>
+
+  <!-- Broken purple outer ring -->
+  <circle cx="32" cy="32" r="24.5" fill="none" stroke="url(#r)" stroke-width="2.5"
+          stroke-linecap="round" stroke-dasharray="108 46"
+          transform="rotate(-50 32 32)"/>
+
+  <!-- The U — sized + thickened so it reads at 16×16 -->
+  <path d="M 21 19 L 21 36 A 11 11 0 0 0 43 36 L 43 19"
+        fill="none" stroke="#00d9ff" stroke-width="6" stroke-linecap="round"/>
+</svg>

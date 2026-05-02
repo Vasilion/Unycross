@@ -107,7 +107,10 @@ $text-color-5: #ab47bc; // Vibrant purple
 
 // Global styles
 body {
-  // background: $background-color;
+  // The dark base must be on the body itself so routes that don't render the
+  // three.js cyberpunk canvas (blog, mobile) still get the cyberpunk dark
+  // backdrop instead of falling through to browser-default white.
+  background: $background-color;
   color: $text-color-1;
   line-height: 1.6;
   margin: 0;

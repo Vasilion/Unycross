@@ -15,8 +15,9 @@ import { post as p13 } from './13-what-ten-years-of-bars-said';
 import { post as p14 } from './14-what-uber-taught-the-scorers';
 import { post as p15 } from './15-one-nova-score-twelve-layers';
 import { post as p16 } from './16-options-flow-and-the-silent-401';
+import { post as p17 } from './17-same-ticker-two-scores';
 
-export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12, p13, p14, p15, p16]
+export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12, p13, p14, p15, p16, p17]
   .slice()
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 

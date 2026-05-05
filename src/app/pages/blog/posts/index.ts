@@ -17,8 +17,9 @@ import { post as p15 } from './15-one-nova-score-twelve-layers';
 import { post as p16 } from './16-options-flow-and-the-silent-401';
 import { post as p17 } from './17-same-ticker-two-scores';
 import { post as p18 } from './18-drip-for-nova-fund';
+import { post as p19 } from './19-role-playing-tool-calls';
 
-export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12, p13, p14, p15, p16, p17, p18]
+export const POSTS: Post[] = [p01, p02, p03, p04, p05, p06, p07, p08, p09, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19]
   .slice()
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 

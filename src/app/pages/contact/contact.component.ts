@@ -100,7 +100,7 @@ export class ContactComponent implements OnInit {
       };
 
       this.http
-        .post(environment.strapiBaseUrl + '/contact/submit', formData)
+        .post(environment.formsUrl + '/unycross/contact', formData)
         .subscribe({
           next: (response) => {
             console.log('Success:', response);
@@ -119,10 +119,7 @@ export class ContactComponent implements OnInit {
           },
           error: (error) => {
             console.error('Error Details:', error);
-
-            console.log('Error Details:', error);
-            const errorMessage =
-              error?.error?.error?.details?.error || 'Something went wrong.';
+            const errorMessage = error?.error?.error || 'Something went wrong.';
 
             this.snackBar.open(errorMessage, 'Close', {
               duration: 5000,
